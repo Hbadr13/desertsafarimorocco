@@ -40,7 +40,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col bg-white">
       {/* Header */}
-      <div className="flex h-14 items-center border-b px-4">
+      <div className="flex h-14 items-center border-gray-200 border-b px-4">
         <Link
           href="/desert26safariadmin/dashboard"
           className="flex items-center space-x-2"
@@ -72,8 +72,10 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                       : " hover:bg-gray-100 rounded-xl hover:text-gray-500 transition-all duration-200"
                   )}
                 >
-                  <item.icon className="mr-2 h-4 w-4" />
-                  {item.title}
+                  <item.icon className="mr-2 h-4 w-4 text-gray-600" />
+                  <div className="text-gray-700">
+                    {item.title}
+                  </div>
                 </Button>
               </Link>
             )
@@ -82,7 +84,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       </ScrollArea>
 
       {/* Logout */}
-      <div className="border-t p-3">
+      <div className="border-t border-gray-200 p-3">
         <Button
           variant="ghost"
           className="w-full justify-start text-destructive"
@@ -101,7 +103,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
 export function Sidebar() {
   return (
-    <div className="hidden border-r bg-muted/40 md:block">
+    <div className="hidden border-gray-200 border-r bg-muted/40 md:block">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <SidebarContent />
       </div>

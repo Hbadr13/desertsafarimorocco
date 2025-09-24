@@ -1,5 +1,8 @@
+
+"use client"
 import { Category } from "@/lib/models"
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 interface FooterProps {
   categories: Category[]
@@ -13,6 +16,10 @@ export function Footer({ categories }: FooterProps) {
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },
   ]
+  const pathname = usePathname()
+  if (pathname.startsWith('/desert26safariadmin')) {
+    return null;
+  }
 
   return (
     <footer className="bg-gradient-to-br from-gray-700 to-gray-600 text-white">

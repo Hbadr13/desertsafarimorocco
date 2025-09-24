@@ -6,6 +6,7 @@ import { Poppins } from 'next/font/google'
 import { getDatabase } from '@/lib/mongodb'
 import { Category } from '@/lib/models'
 import { Footer } from '@/components/footer'
+import { usePathname } from 'next/navigation'
 
 // Load Poppins font
 const poppins = Poppins({
@@ -21,6 +22,7 @@ export default async function RootLayout({
 }) {
 
   const db = await getDatabase()
+
   const categories = await db.collection<Category>("categories")
     .find({})
     .limit(10)

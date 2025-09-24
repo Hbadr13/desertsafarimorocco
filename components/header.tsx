@@ -51,7 +51,9 @@ export default function Header({ categories }: HeaderProps) {
     { href: "/contact", label: "Contact" },
     { href: "/", label: "Home" },
   ]
-
+  if (pathname.startsWith('/desert26safariadmin')) {
+    return null;
+  }
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
       } bg-white/95 backdrop-blur-md border-b border-b-gray-300`}>
