@@ -1,0 +1,374 @@
+ 
+
+
+"use client"
+
+import type React from "react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { 
+  ArrowLeft, 
+  Loader2, 
+  Upload, 
+  X, 
+  Image as ImageIcon,
+  Tag,
+  Type,
+  FileText,
+  AlignLeft,
+  Link as LinkIcon
+} from "lucide-react"
+import Link from "next/link"
+import Image from "next/image"
+import { getDatabase } from "@/lib/mongodb"
+import { Category } from "@/lib/models"
+import { id } from "date-fns/locale"
+import LoadingComponent from "@/components/admin/LoadingComponent"
+  
+export default function NewCategoryPage({
+  params,
+}: {
+  params: { categoryId: string;}
+}) {
+  const [formData, setFormData] = useState({
+    title: "",
+    shortDescription: "",
+    description: "",
+    slug: "",
+  })
+  const [images, setImages] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingData, setIsLoadingData] = useState(true)
+  const [error, setError] = useState("")
+  const router = useRouter()
+
+  useEffect(() => {
+    // Fetch existing category data if editing
+    async function fetchCategory() {
+      if (!params.categoryId) return
+      setIsLoading(true)
+      try {
+        const res = await fetch(`/api/admin/categories/${params.categoryId}`)
+        if (!res.ok) throw new Error("Failed to fetch category")
+        const data = await res.json()
+        setFormData({
+          title: data.title || "",
+          shortDescription: data.shortDescription || "",
+          description: data.description || "",
+          slug: data.slug || "",
+        })
+        setImages(data.images || [])
+        setIsLoadingData(false)
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "An error occurred")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCategory()
+  }, [params.categoryId])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "title" && {
+        slug: value
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, ""),
+      }),
+    }))
+  }
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+
+    setIsLoading(true)
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const formData = new FormData()
+        formData.append("file", file)
+
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        })
+
+        if (!response.ok) throw new Error("Upload failed")
+
+        const data = await response.json()
+        return data.url
+      })
+
+      const uploadedUrls = await Promise.all(uploadPromises)
+      setImages((prev) => [...prev, ...uploadedUrls])
+    } catch (error) {
+      setError("Failed to upload images")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const removeImage = async (index: number) => {
+    try {
+      const url = images[index]
+      if(!url) return
+      setIsLoading(true)
+      
+      const response = await fetch("/api/upload", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
+      })
+      
+      if (!response.ok) throw new Error("Failed to delete images")
+      setImages((prev) => prev.filter((_, i) => i !== index))
+   
+    } catch (error) {
+      setError("Failed to delete images")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError("")
+
+    try {
+      const response = await fetch(`/api/admin/categories/${params.categoryId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          images,
+          id:params.categoryId
+        }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || "Failed to Update category")
+      }
+
+      router.push("/desert26safariadmin/categories")
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "An error occurred")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  if (isLoadingData)
+    return <LoadingComponent/>
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="flex items-center gap-4 mb-6">
+          <Link href="/desert26safariadmin/categories">
+            <Button variant="outline" size="icon" className="rounded-full bg-white shadow-sm border-slate-200 hover:bg-slate-50">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-800">Update Category</h1>
+            <p className="text-slate-500">Modify the details of your existing travel category</p>
+          </div>
+
+        </div>
+
+        <Card className="shadow-lg rounded-2xl border-0 overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700">
+            <CardHeader className="pb-3 border-b border-blue-500/20">
+              <CardTitle className="text-white flex items-center gap-2">
+                <Tag className="h-5 w-5" />
+                Category Details
+              </CardTitle>
+              <CardDescription className="text-blue-100/80">
+               Fill in the information to update the category.
+              </CardDescription>
+            </CardHeader>
+          </div>
+          <CardContent className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <Alert variant="destructive" className="rounded-xl">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="title" className="text-slate-700 flex items-center gap-2">
+                  <Type className="h-4 w-4" />
+                  Title
+                </Label>
+                <Input
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isLoading}
+                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  placeholder="e.g. Amazing Beach Destinations"
+                />
+              </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
+                    <LinkIcon className="h-4 w-4" />
+                    Slug
+                  </Label>
+                  <Input
+                    id="slug"
+                    name="slug"
+                    value={formData.slug}
+                    onChange={handleInputChange}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4 bg-slate-50"
+                    placeholder="e.g. beach-getaways"
+                  />
+                </div>
+
+
+              <div className="space-y-2">
+                <Label htmlFor="shortDescription" className="text-slate-700 flex items-center gap-2">
+                  <AlignLeft className="h-4 w-4" />
+                  Short Description
+                </Label>
+                <Input
+                  id="shortDescription"
+                  name="shortDescription"
+                  value={formData.shortDescription}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isLoading}
+                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  placeholder="Brief description of the category"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description" className="text-slate-700 flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Description
+                </Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  rows={5}
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isLoading}
+                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                  placeholder="Detailed description of the category..."
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-slate-700 flex items-center gap-2">
+                  <ImageIcon className="h-4 w-4" />
+                  Images
+                </Label>
+                <div className="h-[0.1px]"></div>
+                <Label  htmlFor="images" className="cursor-pointer">
+                  <div className="border-2 border-dashed border-blue-300 rounded-2xl p-6 text-center transition-all hover:border-blue-500 hover:bg-blue-50/50 bg-blue-50/30">
+                    <div className="flex flex-col items-center justify-center gap-3">
+                      <div className="p-3 bg-blue-100 rounded-full">
+                        <Upload className="h-8 w-8 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-700">Drop images here or click to browse</p>
+                        <p className="text-sm text-slate-500 mt-1">SVG, PNG, JPG or GIF (max. 5MB each)</p>
+                      </div>
+                    </div>
+                  </div>
+                  <Input
+                    id="images"
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    disabled={isLoading}
+                  />
+                </Label>
+
+                {images.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+                    {images.map((image, index) => (
+                      <div key={index} className="relative group overflow-hidden rounded-xl shadow-sm border border-slate-200">
+                        <div className="aspect-video relative">
+                          <Image
+                            src={image || "/placeholder.svg"}
+                            alt={`Category image ${index + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 rounded-full shadow-md"
+                          onClick={() => removeImage(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
+                <Button 
+                  type="submit" 
+                  disabled={isLoading}
+                  className="rounded-xl py-5 px-6 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 transition-all shadow-md hover:shadow-lg"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      Update Category
+                    </>
+                  )}
+                </Button>
+                <Link href="/desert26safariadmin/categories" className="flex-1">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    disabled={isLoading}
+                    className="w-full rounded-xl py-5 border-slate-300 hover:bg-slate-50"
+                  >
+                    Cancel
+                  </Button>
+                </Link>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
