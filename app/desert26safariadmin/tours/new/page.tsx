@@ -10,9 +10,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { 
-  ArrowLeft, 
-  Loader2, 
+import {
+  ArrowLeft,
+  Loader2,
   Tag,
   Type,
   FileText,
@@ -31,9 +31,9 @@ interface Category {
 
 export default function NewTourPage() {
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    shortDescription: "",
+    title: { en: "", fr: "", es: "" },
+    description: { en: "", fr: "", es: "" },
+    shortDescription: { en: "", fr: "", es: "" },
     slug: "",
     categoryId: "",
   })
@@ -73,6 +73,27 @@ export default function NewTourPage() {
     }))
   }
 
+  const handleMultiLangInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: "title" | "shortDescription" | "description",
+    lang: "en" | "fr" | "es"
+  ) => {
+    const value = e.target.value
+    setFormData((prev) => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        [lang]: value,
+      },
+      ...(field === "title" && lang === "en" && {
+        slug: value
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, ""),
+      }),
+    }))
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -104,7 +125,7 @@ export default function NewTourPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-2 md:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center gap-4 mb-6">
           <Link href="/desert26safariadmin/tours">
@@ -130,7 +151,7 @@ export default function NewTourPage() {
               </CardDescription>
             </CardHeader>
           </div>
-          <CardContent className="p-6">
+          <CardContent className=" p-2.5 md:p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <Alert variant="destructive" className="rounded-xl">
@@ -160,74 +181,97 @@ export default function NewTourPage() {
                 </Select>
               </div>
 
-               
-
+              {/* Multilingual Title */}
               <div className="space-y-2">
-                <Label htmlFor="title" className="text-slate-700 flex items-center gap-2">
-                  <Type className="h-4 w-4" />
-                  Title
-                </Label>
-                <Input
-                  id="title"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  required
-                  disabled={isLoading}
-                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                  placeholder="e.g. Amazing Bali Beach Getaway"
-                />
-              </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
-                    <LinkIcon className="h-4 w-4" />
-                    Slug
-                  </Label>
+                <Label>Title</Label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Input
-                    id="slug"
-                    name="slug"
-                    value={formData.slug}
-                    onChange={handleInputChange}
+                    value={formData.title.en}
+                    onChange={e => handleMultiLangInputChange(e, "title", "en")}
+                    placeholder="Title (English)"
                     required
                     disabled={isLoading}
-                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4 bg-slate-50"
-                    placeholder="e.g. bali-beach-escape"
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                  <Input
+                    value={formData.title.fr}
+                    onChange={e => handleMultiLangInputChange(e, "title", "fr")}
+                    placeholder="Titre (Français)"
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                  <Input
+                    value={formData.title.es}
+                    onChange={e => handleMultiLangInputChange(e, "title", "es")}
+                    placeholder="Título (Español)"
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                   />
                 </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="shortDescription" className="text-slate-700 flex items-center gap-2">
-                  <AlignLeft className="h-4 w-4" />
-                  Short Description
-                </Label>
-                <Input
-                  id="shortDescription"
-                  name="shortDescription"
-                  value={formData.shortDescription}
-                  onChange={handleInputChange}
-                  required
-                  disabled={isLoading}
-                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                  placeholder="Brief description of the category"
-                />
               </div>
+
+              {/* Multilingual Short Description */}
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-slate-700 flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  Description
-                </Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  rows={5}
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  required
-                  disabled={isLoading}
-                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
-                  placeholder="Detailed description of the tour..."
-                />
+                <Label>Short Description</Label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Input
+                    value={formData.shortDescription.en}
+                    onChange={e => handleMultiLangInputChange(e, "shortDescription", "en")}
+                    placeholder="Short Description (English)"
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                  <Input
+                    value={formData.shortDescription.fr}
+                    onChange={e => handleMultiLangInputChange(e, "shortDescription", "fr")}
+                    placeholder="Description courte (Français)"
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                  <Input
+                    value={formData.shortDescription.es}
+                    onChange={e => handleMultiLangInputChange(e, "shortDescription", "es")}
+                    placeholder="Descripción corta (Español)"
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                </div>
+              </div>
+
+              {/* Multilingual Description */}
+              <div className="space-y-2">
+                <Label>Description</Label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Textarea
+                    value={formData.description.en}
+                    onChange={e => handleMultiLangInputChange(e, "description", "en")}
+                    placeholder="Description (English)"
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                  />
+                  <Textarea
+                    value={formData.description.fr}
+                    onChange={e => handleMultiLangInputChange(e, "description", "fr")}
+                    placeholder="Description (Français)"
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                  />
+                  <Textarea
+                    value={formData.description.es}
+                    onChange={e => handleMultiLangInputChange(e, "description", "es")}
+                    placeholder="Descripción (Español)"
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -238,8 +282,8 @@ export default function NewTourPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isLoading || !formData.categoryId}
                   className="rounded-xl py-5 px-6 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 transition-all shadow-md hover:shadow-lg"
                 >
@@ -255,9 +299,9 @@ export default function NewTourPage() {
                   )}
                 </Button>
                 <Link href="/desert26safariadmin/tours" className="flex-1">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
+                  <Button
+                    type="button"
+                    variant="outline"
                     disabled={isLoading}
                     className="w-full rounded-xl py-5 border-slate-300 hover:bg-slate-50"
                   >

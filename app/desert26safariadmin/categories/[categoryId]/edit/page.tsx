@@ -1,6 +1,3 @@
- 
-
-
 "use client"
 
 import type React from "react"
@@ -12,11 +9,11 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { 
-  ArrowLeft, 
-  Loader2, 
-  Upload, 
-  X, 
+import {
+  ArrowLeft,
+  Loader2,
+  Upload,
+  X,
   Image as ImageIcon,
   Tag,
   Type,
@@ -30,16 +27,16 @@ import { getDatabase } from "@/lib/mongodb"
 import { Category } from "@/lib/models"
 import { id } from "date-fns/locale"
 import LoadingComponent from "@/components/admin/LoadingComponent"
-  
+
 export default function NewCategoryPage({
   params,
 }: {
-  params: { categoryId: string;}
+  params: { categoryId: string; }
 }) {
   const [formData, setFormData] = useState({
-    title: "",
-    shortDescription: "",
-    description: "",
+    title: { en: "", fr: "", es: "" },
+    shortDescription: { en: "", fr: "", es: "" },
+    description: { en: "", fr: "", es: "" },
     slug: "",
   })
   const [images, setImages] = useState<string[]>([])
@@ -58,9 +55,9 @@ export default function NewCategoryPage({
         if (!res.ok) throw new Error("Failed to fetch category")
         const data = await res.json()
         setFormData({
-          title: data.title || "",
-          shortDescription: data.shortDescription || "",
-          description: data.description || "",
+          title: data.title || { en: "", fr: "", es: "" },
+          shortDescription: data.shortDescription || { en: "", fr: "", es: "" },
+          description: data.description || { en: "", fr: "", es: "" },
           slug: data.slug || "",
         })
         setImages(data.images || [])
@@ -75,12 +72,34 @@ export default function NewCategoryPage({
     fetchCategory()
   }, [params.categoryId])
 
+  // Handle multilingual input changes
+  const handleMultiLangInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: "title" | "shortDescription" | "description",
+    lang: "en" | "fr" | "es"
+  ) => {
+    const value = e.target.value
+    setFormData((prev) => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        [lang]: value,
+      },
+      ...(field === "title" && lang === "en" && {
+        slug: value
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, ""),
+      }),
+    }))
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-      ...(name === "title" && {
+      ...(name === "slug" && {
         slug: value
           .toLowerCase()
           .replace(/\s+/g, "-")
@@ -122,9 +141,9 @@ export default function NewCategoryPage({
   const removeImage = async (index: number) => {
     try {
       const url = images[index]
-      if(!url) return
+      if (!url) return
       setIsLoading(true)
-      
+
       const response = await fetch("/api/upload", {
         method: "DELETE",
         headers: {
@@ -132,10 +151,10 @@ export default function NewCategoryPage({
         },
         body: JSON.stringify({ url }),
       })
-      
+
       if (!response.ok) throw new Error("Failed to delete images")
       setImages((prev) => prev.filter((_, i) => i !== index))
-   
+
     } catch (error) {
       setError("Failed to delete images")
     } finally {
@@ -154,9 +173,12 @@ export default function NewCategoryPage({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...formData,
+          title: formData.title,
+          shortDescription: formData.shortDescription,
+          description: formData.description,
+          slug: formData.slug,
           images,
-          id:params.categoryId
+          id: params.categoryId
         }),
       })
 
@@ -173,10 +195,10 @@ export default function NewCategoryPage({
     }
   }
   if (isLoadingData)
-    return <LoadingComponent/>
+    return <LoadingComponent />
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-2 md:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center gap-4 mb-6">
           <Link href="/desert26safariadmin/categories">
@@ -199,11 +221,11 @@ export default function NewCategoryPage({
                 Category Details
               </CardTitle>
               <CardDescription className="text-blue-100/80">
-               Fill in the information to update the category.
+                Fill in the information to update the category.
               </CardDescription>
             </CardHeader>
           </div>
-          <CardContent className="p-6">
+          <CardContent className=" p-2.5 md:p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <Alert variant="destructive" className="rounded-xl">
@@ -211,74 +233,145 @@ export default function NewCategoryPage({
                 </Alert>
               )}
 
+              {/* Multilingual Title */}
               <div className="space-y-2">
-                <Label htmlFor="title" className="text-slate-700 flex items-center gap-2">
+                <Label className="text-slate-700 flex items-center gap-2">
                   <Type className="h-4 w-4" />
                   Title
                 </Label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Input
+                    id="title-en"
+                    name="title-en"
+                    value={formData.title.en}
+                    onChange={(e) => handleMultiLangInputChange(e, "title", "en")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    placeholder="Title (English)"
+                  />
+                  <Input
+                    id="title-fr"
+                    name="title-fr"
+                    value={formData.title.fr}
+                    onChange={(e) => handleMultiLangInputChange(e, "title", "fr")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    placeholder="Titre (Français)"
+                  />
+                  <Input
+                    id="title-es"
+                    name="title-es"
+                    value={formData.title.es}
+                    onChange={(e) => handleMultiLangInputChange(e, "title", "es")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    placeholder="Título (Español)"
+                  />
+                </div>
+              </div>
+
+              {/* Slug */}
+              <div className="space-y-2">
+                <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
+                  <LinkIcon className="h-4 w-4" />
+                  Slug
+                </Label>
                 <Input
-                  id="title"
-                  name="title"
-                  value={formData.title}
+                  id="slug"
+                  name="slug"
+                  value={formData.slug}
                   onChange={handleInputChange}
                   required
                   disabled={isLoading}
-                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                  placeholder="e.g. Amazing Beach Destinations"
+                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4 bg-slate-50"
+                  placeholder="e.g. beach-getaways"
                 />
               </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
-                    <LinkIcon className="h-4 w-4" />
-                    Slug
-                  </Label>
-                  <Input
-                    id="slug"
-                    name="slug"
-                    value={formData.slug}
-                    onChange={handleInputChange}
-                    required
-                    disabled={isLoading}
-                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4 bg-slate-50"
-                    placeholder="e.g. beach-getaways"
-                  />
-                </div>
-
-
+              {/* Multilingual Short Description */}
               <div className="space-y-2">
-                <Label htmlFor="shortDescription" className="text-slate-700 flex items-center gap-2">
+                <Label className="text-slate-700 flex items-center gap-2">
                   <AlignLeft className="h-4 w-4" />
                   Short Description
                 </Label>
-                <Input
-                  id="shortDescription"
-                  name="shortDescription"
-                  value={formData.shortDescription}
-                  onChange={handleInputChange}
-                  required
-                  disabled={isLoading}
-                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                  placeholder="Brief description of the category"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Input
+                    id="shortDescription-en"
+                    name="shortDescription-en"
+                    value={formData.shortDescription.en}
+                    onChange={(e) => handleMultiLangInputChange(e, "shortDescription", "en")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    placeholder="Short Description (English)"
+                  />
+                  <Input
+                    id="shortDescription-fr"
+                    name="shortDescription-fr"
+                    value={formData.shortDescription.fr}
+                    onChange={(e) => handleMultiLangInputChange(e, "shortDescription", "fr")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    placeholder="Description courte (Français)"
+                  />
+                  <Input
+                    id="shortDescription-es"
+                    name="shortDescription-es"
+                    value={formData.shortDescription.es}
+                    onChange={(e) => handleMultiLangInputChange(e, "shortDescription", "es")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    placeholder="Descripción corta (Español)"
+                  />
+                </div>
               </div>
 
+              {/* Multilingual Description */}
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-slate-700 flex items-center gap-2">
+                <Label className="text-slate-700 flex items-center gap-2">
                   <FileText className="h-4 w-4" />
                   Description
                 </Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  rows={5}
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  required
-                  disabled={isLoading}
-                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
-                  placeholder="Detailed description of the category..."
-                />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Textarea
+                    id="description-en"
+                    name="description-en"
+                    rows={5}
+                    value={formData.description.en}
+                    onChange={(e) => handleMultiLangInputChange(e, "description", "en")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                    placeholder="Description (English)"
+                  />
+                  <Textarea
+                    id="description-fr"
+                    name="description-fr"
+                    rows={5}
+                    value={formData.description.fr}
+                    onChange={(e) => handleMultiLangInputChange(e, "description", "fr")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                    placeholder="Description (Français)"
+                  />
+                  <Textarea
+                    id="description-es"
+                    name="description-es"
+                    rows={5}
+                    value={formData.description.es}
+                    onChange={(e) => handleMultiLangInputChange(e, "description", "es")}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                    placeholder="Descripción (Español)"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -287,7 +380,7 @@ export default function NewCategoryPage({
                   Images
                 </Label>
                 <div className="h-[0.1px]"></div>
-                <Label  htmlFor="images" className="cursor-pointer">
+                <Label htmlFor="images" className="cursor-pointer">
                   <div className="border-2 border-dashed border-blue-300 rounded-2xl p-6 text-center transition-all hover:border-blue-500 hover:bg-blue-50/50 bg-blue-50/30">
                     <div className="flex flex-col items-center justify-center gap-3">
                       <div className="p-3 bg-blue-100 rounded-full">
@@ -338,8 +431,8 @@ export default function NewCategoryPage({
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isLoading}
                   className="rounded-xl py-5 px-6 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 transition-all shadow-md hover:shadow-lg"
                 >
@@ -355,9 +448,9 @@ export default function NewCategoryPage({
                   )}
                 </Button>
                 <Link href="/desert26safariadmin/categories" className="flex-1">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
+                  <Button
+                    type="button"
+                    variant="outline"
                     disabled={isLoading}
                     className="w-full rounded-xl py-5 border-slate-300 hover:bg-slate-50"
                   >
@@ -372,3 +465,15 @@ export default function NewCategoryPage({
     </div>
   )
 }
+
+// If you have an API endpoint handler in this file, update it like below:
+// (If not, update your backend to expect and store the multilingual structure.)
+
+// Example for Next.js API route handler (pseudo-code):
+/*
+export async function POST(req: Request) {
+  const body = await req.json()
+  // body.title, body.shortDescription, body.description are now objects with en/fr/es keys
+  // ...store in database as needed...
+}
+*/

@@ -1,10 +1,29 @@
+"use client"
 import Header from "@/components/header"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Users, Award, Globe } from "lucide-react"
 import Image from "next/image"
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+
+const LANGS = ["en", "fr", "es"]
 
 export default function AboutPage() {
+  const [lang, setLang] = useState("en")
+  const [about, setAbout] = useState<any>(null)
+
+  useEffect(() => {
+    fetch(`/api/client/about`)
+      .then(res => res.json())
+      .then(data => {
+        setAbout({
+          title: data.title?.[lang] || data.title?.en || "",
+          description: data.description?.[lang] || data.description?.en || "",
+        })
+      })
+  }, [lang])
+
   return (
     <div className="min-h-screen flex flex-col">
 
@@ -27,6 +46,15 @@ export default function AboutPage() {
             </p>
           </div>
         </section>
+
+        {/* Language Selection */}
+        <div className="flex gap-2 mb-4">
+          {LANGS.map(l => (
+            <Button key={l} variant={l === lang ? "default" : "outline"} onClick={() => setLang(l)}>
+              {l.toUpperCase()}
+            </Button>
+          ))}
+        </div>
 
         {/* About Content */}
         <section className="py-16 px-4 sm:px-6 lg:px-8">

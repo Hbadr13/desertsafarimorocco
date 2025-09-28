@@ -48,9 +48,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const {  title, description,shortDescription, slug, categoryId, images } = await request.json()
+    const { title, description, shortDescription, slug, categoryId, images } = await request.json()
 
-    if (  !title || !description || !shortDescription || !slug || !categoryId) {
+    if (!title || !description || !shortDescription || !slug || !categoryId) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 })
     }
 

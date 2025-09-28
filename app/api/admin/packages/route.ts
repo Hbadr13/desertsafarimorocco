@@ -38,30 +38,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
+    const body = await request.json()
+
     const {
       title,
+      shortDescription,
       slug,
       images,
       duration,
+      departureTime,
       departure,
       shareTrip,
       privateTrip,
-      departureTime,
       description,
       itinerary,
       toursIncluded,
       toursExcluded,
       tourId,
-    } = await request.json()
+    } = body
 
     if (
       !title ||
       !slug ||
-      !duration ||
-      !departure ||
-      !shareTrip ||
-      !privateTrip ||
-      !departureTime ||
       !description ||
       !tourId
     ) {
@@ -70,25 +68,24 @@ export async function POST(request: NextRequest) {
 
     const db = await getDatabase()
 
-    // Verify tour exists
     const tour = await db.collection("tours").findOne({ _id: new ObjectId(tourId) })
     if (!tour) {
       return NextResponse.json({ error: "Tour not found" }, { status: 404 })
     }
-
     const newPackage: Package = {
-      title,
+      title, // { en, fr, es }
+      shortDescription, // { en, fr, es }
       slug,
       images: images || [],
-      duration,
-      departure,
+      duration, // { en, fr, es }
+      departureTime,
+      departure, // { en, fr, es }
       shareTrip: Number(shareTrip),
       privateTrip: Number(privateTrip),
-      departureTime,
-      description,
-      itinerary: itinerary || [],
-      toursIncluded: toursIncluded || [],
-      toursExcluded: toursExcluded || [],
+      description, // { en, fr, es }
+      itinerary: itinerary || [], // [{ title: { en, fr, es }, description: { en, fr, es } }]
+      toursIncluded: toursIncluded || [], // [{ description: { en, fr, es } }]
+      toursExcluded: toursExcluded || [], // [{ description: { en, fr, es } }]
       tourId: new ObjectId(tourId),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -96,7 +93,6 @@ export async function POST(request: NextRequest) {
 
     const result = await db.collection<Package>("packages").insertOne(newPackage)
 
-    // Update tour to include this package
     await db.collection("tours").updateOne({ _id: new ObjectId(tourId) }, { $push: { packages: result.insertedId } })
 
     return NextResponse.json({

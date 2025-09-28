@@ -28,7 +28,7 @@ export function Footer({ categories }: FooterProps) {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <h3 className="font-bold text-2xl mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-              Morocco Tours
+              Desert Safari Morocco
             </h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Your trusted partner for authentic Moroccan adventures. Experience the magic of Morocco with our expert
@@ -113,7 +113,7 @@ export function Footer({ categories }: FooterProps) {
                 <div className="p-2 bg-red-500 rounded-lg group-hover:bg-red-600 transition-colors">
                   <Mail className="h-4 w-4" />
                 </div>
-                <span className="text-gray-300 group-hover:text-red-400 transition-colors">info@moroccotours.com</span>
+                <span className="text-gray-300 group-hover:text-red-400 transition-colors">desertsafarimorocco@gmail.com</span>
               </div>
 
               <div className="flex items-start gap-3 group cursor-pointer">
@@ -134,7 +134,7 @@ export function Footer({ categories }: FooterProps) {
         <div className="border-t border-gray-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              &copy; 2024 Morocco Tours. All rights reserved.
+              &copy; 2026 Desert Safari Morocco. All rights reserved.
             </p>
             <div className="flex gap-6 text-gray-400 text-sm">
               <a href="/privacy" className="hover:text-amber-400 transition-colors">Privacy Policy</a>

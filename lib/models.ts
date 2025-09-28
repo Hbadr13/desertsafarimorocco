@@ -2,9 +2,21 @@ import type { ObjectId } from "mongodb"
 
 export interface Category {
   _id?: ObjectId
-  title: string
-  shortDescription: string
-  description: string
+  title: {
+    en: String,
+    fr: String,
+    es: String,
+  },
+  shortDescription: {
+    en: String,
+    fr: String,
+    es: String,
+  }
+  description: {
+    en: String,
+    fr: String,
+    es: String,
+  }
   slug: string
   images: string[]
   tours: ObjectId[]
@@ -14,9 +26,21 @@ export interface Category {
 
 export interface Tour {
   _id?: ObjectId
-  title: string
-  description: string
-  shortDescription: string
+  title: {
+    en: String,
+    fr: String,
+    es: String,
+  }
+  description: {
+    en: String,
+    fr: String,
+    es: String,
+  }
+  shortDescription: {
+    en: String,
+    fr: String,
+    es: String,
+  },
   images: string[]
   slug: string
   packages: ObjectId[]
@@ -27,18 +51,57 @@ export interface Tour {
 
 export interface Package {
   _id?: ObjectId
-  title: string
+  title: {
+    en: String,
+    fr: String,
+    es: String,
+  }
   slug: string
   images: string[]
-  duration: string
-  departure: string
+  duration: {
+    en: String,
+    fr: String,
+    es: String,
+  }
+  departure: {
+    en: String,
+    fr: String,
+    es: String,
+  }
   shareTrip: number
   privateTrip: number
   departureTime: string
-  description: string
-  itinerary: { day: number, title: string, description: string }[]
-  toursIncluded: string[]
-  toursExcluded: string[]
+  description: {
+    en: String,
+    fr: String,
+    es: String,
+  }
+  shortDescription: {
+    en: String,
+    fr: String,
+    es: String,
+  }
+  itinerary: {
+    title: {
+      en: String,
+      fr: String,
+      es: String,
+    }, description: {
+      en: String,
+      fr: String,
+      es: String,
+    }
+  }[]
+  toursIncluded: {
+    en: String,
+    fr: String,
+    es: String,
+  }[]
+  toursExcluded: {
+    en: String,
+    fr: String,
+    es: String,
+  }[]
   tourId: ObjectId
   createdAt?: Date
   updatedAt?: Date

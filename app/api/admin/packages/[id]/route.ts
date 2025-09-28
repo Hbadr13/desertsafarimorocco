@@ -41,6 +41,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
     const {
       title,
+      shortDescription,
       slug,
       images,
       duration,
@@ -58,11 +59,6 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     if (
       !title ||
       !slug ||
-      !duration ||
-      !departure ||
-      !shareTrip ||
-      !privateTrip ||
-      !departureTime ||
       !description ||
       !tourId
     ) {
@@ -86,6 +82,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       slug,
       images: images || [],
       duration,
+      shortDescription,
       departure,
       shareTrip: Number(shareTrip),
       privateTrip: Number(privateTrip),

@@ -67,7 +67,7 @@ export default function Header({ categories }: HeaderProps) {
               <MapPin className="h-6 w-6 text-white" />
             </div>
             <div>
-              <span className="text-xl font-bold text-gray-900">MoroccoTours</span>
+              <span className="text-xl font-bold text-gray-900">Desert Safari Morocco</span>
             </div>
           </Link>
 
@@ -156,7 +156,7 @@ export default function Header({ categories }: HeaderProps) {
                   <MapPin className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <span className="text-xl font-bold text-gray-900">MoroccoTours</span>
+                  <span className="text-xl font-bold text-gray-900">Desert Safari Morocco</span>
                 </div>
               </div>
               <Button

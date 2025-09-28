@@ -1,9 +1,11 @@
 // app/packages/[slug]/page.tsx
+"use client"
 import { Package, Tour } from "@/lib/models"
 import { notFound } from "next/navigation"
-import { ObjectId } from "mongodb"
 import { getDatabase } from "@/lib/mongodb"
 import { PackageDetailsPage } from "@/components/PackageDetailsPage"
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
 
 interface PageProps {
     params: {
@@ -45,14 +47,47 @@ async function getPackageData(slug: string) {
     }
 }
 
-export default async function PackagePage({ params }: PageProps) {
-    const data = await getPackageData(params.slug)
+const LANGS = ["en", "fr", "es"]
 
-    if (!data) {
+export default function PackageDetailPage({ params }: { params: { slug: string } }) {
+    const [lang, setLang] = useState("en")
+    const [pkg, setPkg] = useState<any>(null)
+
+    useEffect(() => {
+        fetch(`/api/client/package/${params.slug}`)
+            .then(res => res.json())
+            .then(data => {
+                setPkg({
+                    ...data,
+                    title: data.title?.[lang] || data.title?.en || "",
+                    description: data.description?.[lang] || data.description?.en || "",
+                    duration: data.duration?.[lang] || data.duration?.en || "",
+                    departure: data.departure?.[lang] || data.departure?.en || "",
+                })
+            })
+    }, [lang, params.slug])
+
+    if (!pkg) {
         notFound()
     }
 
-    return <PackageDetailsPage {...data} />
+    return (
+        <div>
+            {/* Language Switcher */}
+            <div className="flex gap-2 mb-4">
+                {LANGS.map(l => (
+                    <Button key={l} variant={l === lang ? "default" : "outline"} onClick={() => setLang(l)}>
+                        {l.toUpperCase()}
+                    </Button>
+                ))}
+            </div>
+            <PackageDetailsPage
+                package={pkg}
+                tour={pkg.tour}
+                otherPackages={pkg.otherPackages}
+            />
+        </div>
+    )
 }
 
 export async function generateMetadata({ params }: PageProps) {

@@ -17,15 +17,15 @@ const HeroSection = () => {
             <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
                 {/* Main Title */}
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                    <span className="  block text-white">Discover Your</span>
+                    <span className="  block text-white">Discover The Magic Of</span>
                     <span className="block bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
-                        Next Adventure
+                        Moroccan Deserts
                     </span>
                 </h1>
 
                 {/* Subtitle */}
                 <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed text-gray-200 font-light">
-                    Explore breathtaking destinations and create unforgettable memories with our curated travel experiences
+                    Experience unforgettable adventures in the heart of Sahara with expert guides and authentic cultural experiences
                 </p>
 
                 {/* Buttons */}

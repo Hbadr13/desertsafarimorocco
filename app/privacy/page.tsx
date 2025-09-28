@@ -1,6 +1,25 @@
+"use client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react"
+
+const LANGS = ["en", "fr", "es"]
 
 export default function PrivacyPage() {
+  const [lang, setLang] = useState("en")
+  const [privacy, setPrivacy] = useState<any>(null)
+
+  useEffect(() => {
+    fetch(`/api/client/privacy`)
+      .then(res => res.json())
+      .then(data => {
+        setPrivacy({
+          title: data.title?.[lang] || data.title?.en || "",
+          description: data.description?.[lang] || data.description?.en || "",
+        })
+      })
+  }, [lang])
+
   return (
     <div className="min-h-screen flex flex-col">
 
@@ -8,7 +27,7 @@ export default function PrivacyPage() {
         {/* Hero Section */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/50">
           <div className="container mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Privacy Policy</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">{privacy?.title || "Privacy Policy"}</h1>
             <p className="text-lg text-muted-foreground text-balance max-w-2xl mx-auto">
               Last updated: January 1, 2024
             </p>
@@ -24,16 +43,7 @@ export default function PrivacyPage() {
                   <CardTitle>Information We Collect</CardTitle>
                 </CardHeader>
                 <CardContent className="prose prose-gray max-w-none">
-                  <p>
-                    We collect information you provide directly to us, such as when you create an account, make a
-                    booking, or contact us for support. This may include:
-                  </p>
-                  <ul>
-                    <li>Personal information (name, email address, phone number)</li>
-                    <li>Payment information (credit card details, billing address)</li>
-                    <li>Travel preferences and booking history</li>
-                    <li>Communication preferences</li>
-                  </ul>
+                  <div dangerouslySetInnerHTML={{ __html: privacy?.description }} />
                 </CardContent>
               </Card>
 
@@ -144,6 +154,14 @@ export default function PrivacyPage() {
         </section>
       </main>
 
+      {/* Language Switcher */}
+      <div className="flex gap-2 mb-4">
+        {LANGS.map(l => (
+          <Button key={l} variant={l === lang ? "default" : "outline"} onClick={() => setLang(l)}>
+            {l.toUpperCase()}
+          </Button>
+        ))}
+      </div>
     </div>
   )
 }

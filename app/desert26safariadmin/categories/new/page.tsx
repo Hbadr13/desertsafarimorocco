@@ -1,6 +1,3 @@
- 
-
-
 "use client"
 
 import type React from "react"
@@ -12,11 +9,11 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { 
-  ArrowLeft, 
-  Loader2, 
-  Upload, 
-  X, 
+import {
+  ArrowLeft,
+  Loader2,
+  Upload,
+  X,
   Image as ImageIcon,
   Tag,
   Type,
@@ -29,9 +26,9 @@ import Image from "next/image"
 
 export default function NewCategoryPage() {
   const [formData, setFormData] = useState({
-    title: "",
-    shortDescription: "",
-    description: "",
+    title: { en: "", fr: "", es: "" },
+    shortDescription: { en: "", fr: "", es: "" },
+    description: { en: "", fr: "", es: "" },
     slug: "",
   })
   const [images, setImages] = useState<string[]>([])
@@ -44,7 +41,28 @@ export default function NewCategoryPage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-      ...(name === "title" && {
+      ...(name === "slug" && {
+        slug: value
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, ""),
+      }),
+    }))
+  }
+
+  const handleMultiLangInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: "title" | "shortDescription" | "description",
+    lang: "en" | "fr" | "es"
+  ) => {
+    const value = e.target.value
+    setFormData((prev) => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        [lang]: value,
+      },
+      ...(field === "title" && lang === "en" && {
         slug: value
           .toLowerCase()
           .replace(/\s+/g, "-")
@@ -86,9 +104,9 @@ export default function NewCategoryPage() {
   const removeImage = async (index: number) => {
     try {
       const url = images[index]
-      if(!url) return
+      if (!url) return
       setIsLoading(true)
-      
+
       const response = await fetch("/api/upload", {
         method: "DELETE",
         headers: {
@@ -96,10 +114,10 @@ export default function NewCategoryPage() {
         },
         body: JSON.stringify({ url }),
       })
-      
+
       if (!response.ok) throw new Error("Failed to delete images")
       setImages((prev) => prev.filter((_, i) => i !== index))
-   
+
     } catch (error) {
       setError("Failed to delete images")
     } finally {
@@ -119,7 +137,10 @@ export default function NewCategoryPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...formData,
+          title: formData.title,
+          shortDescription: formData.shortDescription,
+          description: formData.description,
+          slug: formData.slug,
           images,
         }),
       })
@@ -138,7 +159,7 @@ export default function NewCategoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-2 md:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center gap-4 mb-6">
           <Link href="/desert26safariadmin/categories">
@@ -164,7 +185,7 @@ export default function NewCategoryPage() {
               </CardDescription>
             </CardHeader>
           </div>
-          <CardContent className="p-6">
+          <CardContent className=" p-2.5 md:p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <Alert variant="destructive" className="rounded-xl">
@@ -172,26 +193,25 @@ export default function NewCategoryPage() {
                 </Alert>
               )}
 
-
+              {/* Multilingual Title */}
               <div className="space-y-2">
-                <Label htmlFor="title" className="text-slate-700 flex items-center gap-2">
+                <Label className="text-slate-700 flex items-center gap-2">
                   <Type className="h-4 w-4" />
                   Title
                 </Label>
                 <Input
-                  id="title"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleInputChange}
+                  id="title-en"
+                  name="title-en"
+                  value={formData.title.en}
+                  onChange={(e) => handleMultiLangInputChange(e, "title", "en")}
                   required
                   disabled={isLoading}
                   className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                  placeholder="e.g. Amazing Beach Destinations"
+                  placeholder="Title (English)"
                 />
               </div>
-
+              {/* Slug */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
                 <div className="space-y-2">
                   <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
                     <LinkIcon className="h-4 w-4" />
@@ -210,40 +230,39 @@ export default function NewCategoryPage() {
                 </div>
               </div>
 
-     
-
+              {/* Multilingual Short Description */}
               <div className="space-y-2">
-                <Label htmlFor="shortDescription" className="text-slate-700 flex items-center gap-2">
+                <Label className="text-slate-700 flex items-center gap-2">
                   <AlignLeft className="h-4 w-4" />
                   Short Description
                 </Label>
                 <Input
-                  id="shortDescription"
-                  name="shortDescription"
-                  value={formData.shortDescription}
-                  onChange={handleInputChange}
+                  id="shortDescription-en"
+                  name="shortDescription-en"
+                  value={formData.shortDescription.en}
+                  onChange={(e) => handleMultiLangInputChange(e, "shortDescription", "en")}
                   required
                   disabled={isLoading}
                   className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                  placeholder="Brief description of the category"
+                  placeholder="Short Description (English)"
                 />
               </div>
-
+              {/* Multilingual Description */}
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-slate-700 flex items-center gap-2">
+                <Label className="text-slate-700 flex items-center gap-2">
                   <FileText className="h-4 w-4" />
                   Description
                 </Label>
                 <Textarea
-                  id="description"
-                  name="description"
+                  id="description-en"
+                  name="description-en"
                   rows={5}
-                  value={formData.description}
-                  onChange={handleInputChange}
+                  value={formData.description.en}
+                  onChange={(e) => handleMultiLangInputChange(e, "description", "en")}
                   required
                   disabled={isLoading}
                   className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
-                  placeholder="Detailed description of the category..."
+                  placeholder="Description (English)"
                 />
               </div>
 
@@ -253,7 +272,7 @@ export default function NewCategoryPage() {
                   Images
                 </Label>
                 <div className="h-[0.1px]"></div>
-                <Label  htmlFor="images" className="cursor-pointer">
+                <Label htmlFor="images" className="cursor-pointer">
                   <div className="border-2 border-dashed border-blue-300 rounded-2xl p-6 text-center transition-all hover:border-blue-500 hover:bg-blue-50/50 bg-blue-50/30">
                     <div className="flex flex-col items-center justify-center gap-3">
                       <div className="p-3 bg-blue-100 rounded-full">
@@ -304,8 +323,8 @@ export default function NewCategoryPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isLoading}
                   className="rounded-xl py-5 px-6 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 transition-all shadow-md hover:shadow-lg"
                 >
@@ -321,9 +340,9 @@ export default function NewCategoryPage() {
                   )}
                 </Button>
                 <Link href="/desert26safariadmin/categories" className="flex-1">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
+                  <Button
+                    type="button"
+                    variant="outline"
                     disabled={isLoading}
                     className="w-full rounded-xl py-5 border-slate-300 hover:bg-slate-50"
                   >

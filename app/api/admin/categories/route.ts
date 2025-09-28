@@ -38,9 +38,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const {  title, shortDescription, description, slug, images } = await request.json()
+    const { title, shortDescription, description, slug, images } = await request.json()
 
-    if ( !title || !shortDescription || !description || !slug) {
+    if (!title || !shortDescription || !description || !slug) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 })
     }
 
@@ -53,9 +53,9 @@ export async function POST(request: NextRequest) {
     }
 
     const newCategory: Category = {
-      title,
-      shortDescription,
-      description,
+      title: title, // { en, fr, es }
+      shortDescription: shortDescription, // { en, fr, es }
+      description: description, // { en, fr, es }
       slug,
       images: images || [],
       tours: [],

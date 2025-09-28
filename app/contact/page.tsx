@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,7 +11,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { MapPin, Phone, Mail, Clock, Loader2 } from "lucide-react"
 
+const LANGS = ["en", "fr", "es"]
+
 export default function ContactPage() {
+  const [lang, setLang] = useState("en")
+  const [contact, setContact] = useState<any>(null)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,6 +25,17 @@ export default function ContactPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
+
+  useEffect(() => {
+    fetch(`/api/client/contact`)
+      .then((res) => res.json())
+      .then((data) => {
+        setContact({
+          title: data.title?.[lang] || data.title?.en || "",
+          description: data.description?.[lang] || data.description?.en || "",
+        })
+      })
+  }, [lang])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -43,6 +58,8 @@ export default function ContactPage() {
     }))
   }
 
+  if (!contact) return null
+
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
@@ -58,10 +75,8 @@ export default function ContactPage() {
           </div>
 
           <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Contact Us</h1>
-            <p className="text-lg md:text-xl text-balance max-w-2xl mx-auto">
-              We're here to help you plan your perfect adventure
-            </p>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">{contact.title}</h1>
+            <p className="text-lg md:text-xl text-balance max-w-2xl mx-auto">{contact.description}</p>
           </div>
         </section>
 
@@ -233,6 +248,14 @@ export default function ContactPage() {
         </section>
       </main>
 
+      {/* Language Switcher */}
+      <div className="flex gap-2 mb-4">
+        {LANGS.map((l) => (
+          <Button key={l} variant={l === lang ? "default" : "outline"} onClick={() => setLang(l)}>
+            {l.toUpperCase()}
+          </Button>
+        ))}
+      </div>
     </div>
   )
 }

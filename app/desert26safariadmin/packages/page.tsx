@@ -27,9 +27,13 @@ async function getPackagesGrouped() {
       return {
         ...pkg,
         tourId: tour?._id?.toString(),
-        tourName: tour?.title || "Unknown",
+        tourName: tour?.title?.en || "Unknown",
         categoryId: category?._id?.toString(),
-        categoryName: category?.title || "Unknown",
+        categoryName: category?.title?.en || "Unknown",
+        // Only English translation for display
+        title: pkg.title || "",
+        duration: pkg.duration || "",
+        departure: pkg.departure || "",
       }
     })
 
@@ -81,7 +85,7 @@ export default async function PackagesPage() {
               <AccordionTrigger className=" bg-gray-200/60 px-4 rounded-xl py-2 mb-2  text-xl font-semibold text-slate-800 flex items-center gap-2">
                 <div className="space-x-3 ">
                   <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-200">
-                    {category.categoryName}
+                    {category.categoryName.en}
                   </Badge>
                   <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
                     {category.tours.reduce((sum, t) => sum + t.packages.length, 0)} packages
@@ -113,9 +117,9 @@ export default async function PackagesPage() {
                                 <Image
                                   src={
                                     pkg.images?.[0] ||
-                                    `/placeholder.svg?height=300&width=400&text=${encodeURIComponent(pkg.title || "package")}`
+                                    `/placeholder.svg?height=300&width=400&text=${encodeURIComponent(pkg.title.en.toString() || "package")}`
                                   }
-                                  alt={pkg.title}
+                                  alt={pkg.title.en}
                                   fill
                                   className="object-cover"
                                 />
@@ -125,18 +129,18 @@ export default async function PackagesPage() {
                                     className="bg-white/90 backdrop-blur-sm text-slate-800 rounded-full px-3 py-1"
                                   >
                                     <Clock className="w-3 h-3 mr-1" />
-                                    {pkg.duration}
+                                    {pkg.duration.en}
                                   </Badge>
                                 </div>
                               </div>
 
                               <CardHeader className="pb-3">
-                                <CardTitle className="line-clamp-1 text-slate-800 text-lg">{pkg.title}</CardTitle>
+                                <CardTitle className="line-clamp-1 text-slate-800 text-lg">{pkg.title.en}</CardTitle>
                               </CardHeader>
                               <CardContent className="pt-0 space-y-3 text-sm">
                                 <div className="flex justify-between">
                                   <span className="text-muted-foreground">Departure:</span>
-                                  <span className="font-medium">{pkg.departure}</span>
+                                  <span className="font-medium">{pkg.departure.en}</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
                                   <div className="flex items-center">
@@ -151,7 +155,6 @@ export default async function PackagesPage() {
                                   </div>
                                 </div>
 
-                                {/* Actions */}
                                 <div className="flex gap-2 pt-2">
                                   <Link href={`/desert26safariadmin/packages/${pkg._id}/edit`} className="flex-1">
                                     <Button

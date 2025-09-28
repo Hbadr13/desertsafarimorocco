@@ -40,35 +40,40 @@ interface Tour {
 }
 
 interface ItineraryItem {
-  day: string
-  title: string
-  description: string
+  title: { en: string; fr: string; es: string }
+  description: { en: string; fr: string; es: string }
 }
 
-interface TourDetail {
-  title: string
-  description: string
+interface TourDetailItem {
+  description: { en: string; fr: string; es: string }
 }
 
-export default function NewPackagePage({
+export default function EditPackagePage({
   params,
 }: {
   params: { packageId: string; }
 }) {
   const [formData, setFormData] = useState({
-    title: "",
+    title: { en: "", fr: "", es: "" },
+    shortDescription: { en: "", fr: "", es: "" },
+    description: { en: "", fr: "", es: "" },
     slug: "",
-    duration: "",
-    departure: "",
+    duration: { en: "", fr: "", es: "" },
     departureTime: "",
+    departure: { en: "", fr: "", es: "" },
     shareTrip: "",
     privateTrip: "",
-    description: "",
     tourId: "",
   })
-  const [itinerary, setItinerary] = useState<ItineraryItem[]>([{ day: "", title: "", description: "" }])
-  const [toursIncluded, setToursIncluded] = useState<string[]>([""])
-  const [toursExcluded, setToursExcluded] = useState<string[]>([""])
+  const [itinerary, setItinerary] = useState<ItineraryItem[]>([
+    { title: { en: "", fr: "", es: "" }, description: { en: "", fr: "", es: "" } }
+  ])
+  const [toursIncluded, setToursIncluded] = useState<TourDetailItem[]>([
+    { description: { en: "", fr: "", es: "" } }
+  ])
+  const [toursExcluded, setToursExcluded] = useState<TourDetailItem[]>([
+    { description: { en: "", fr: "", es: "" } }
+  ])
   const [images, setImages] = useState<string[]>([])
   const [tours, setTours] = useState<Tour[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -90,19 +95,26 @@ export default function NewPackagePage({
       if (!res.ok) throw new Error("Failed to fetch tour data")
       const data = await res.json()
       setFormData({
-        title: data.title || "",
-        description: data.description || "",
+        title: data.title || { en: "", fr: "", es: "" },
+        shortDescription: data.shortDescription || { en: "", fr: "", es: "" },
+        description: data.description || { en: "", fr: "", es: "" },
         slug: data.slug || "",
         tourId: data.tourId || "",
-        departure: data.departure || "",
+        departure: data.departure || { en: "", fr: "", es: "" },
         departureTime: data.departureTime || "",
-        duration: data.duration || "",
+        duration: data.duration || { en: "", fr: "", es: "" },
         privateTrip: data.privateTrip || "",
         shareTrip: data.shareTrip || ""
       })
-      setItinerary(data.itinerary)
-      setToursIncluded(data.toursIncluded)
-      setToursExcluded(data.toursExcluded)
+      setItinerary(data.itinerary || [
+        { title: { en: "", fr: "", es: "" }, description: { en: "", fr: "", es: "" } }
+      ])
+      setToursIncluded(data.toursIncluded || [
+        { description: { en: "", fr: "", es: "" } }
+      ])
+      setToursExcluded(data.toursExcluded || [
+        { description: { en: "", fr: "", es: "" } }
+      ])
       setImages(data.images || [])
       setIsLoadingData(false)
     } catch (error) {
@@ -143,14 +155,40 @@ export default function NewPackagePage({
     }))
   }
 
-  const handleItineraryChange = (index: number, field: keyof ItineraryItem, value: string) => {
+  const handleMultiLangInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: "title" | "shortDescription" | "description" | "duration" | "departure",
+    lang: "en" | "fr" | "es"
+  ) => {
+    const value = e.target.value
+    setFormData((prev) => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        [lang]: value,
+      },
+      ...(field === "title" && lang === "en" && {
+        slug: value
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, ""),
+      }),
+    }))
+  }
+
+  const handleItineraryChange = (
+    index: number,
+    field: "title" | "description",
+    lang: "en" | "fr" | "es",
+    value: string
+  ) => {
     const newItinerary = [...itinerary]
-    newItinerary[index] = { ...newItinerary[index], [field]: value }
+    newItinerary[index][field][lang] = value
     setItinerary(newItinerary)
   }
 
   const addItineraryItem = () => {
-    setItinerary([...itinerary, { day: "", title: "", description: "" }])
+    setItinerary([...itinerary, { title: { en: "", fr: "", es: "" }, description: { en: "", fr: "", es: "" } }])
   }
 
   const removeItineraryItem = (index: number) => {
@@ -158,33 +196,52 @@ export default function NewPackagePage({
       setItinerary(itinerary.filter((_, i) => i !== index))
     }
   }
-  const handleTourIncludedChange = (text: string, index: number) => {
-    const newTourIncluded = [...toursIncluded]
-    newTourIncluded[index] = text
-    setToursIncluded(newTourIncluded)
-  }
 
-  const addTourIncluded = () => {
-    setToursIncluded([...toursIncluded, ""])
-  }
-
-  const removeTourIncluded = (index: number) => {
-    if (toursIncluded.length > 1) {
-      setToursIncluded(toursIncluded.filter((_, i) => i !== index))
+  const handleTourDetailChange = (
+    type: "included" | "excluded",
+    index: number,
+    lang: "en" | "fr" | "es",
+    value: string
+  ) => {
+    if (type === "included") {
+      const newDetails = [...toursIncluded]
+      // Fix: If item is not an object, replace it with a valid object
+      if (
+        typeof newDetails[index] !== "object" ||
+        !newDetails[index] ||
+        typeof newDetails[index].description !== "object"
+      ) {
+        newDetails[index] = { description: { en: "", fr: "", es: "" } }
+      }
+      newDetails[index].description[lang] = value
+      setToursIncluded(newDetails)
+    } else {
+      const newDetails = [...toursExcluded]
+      if (
+        typeof newDetails[index] !== "object" ||
+        !newDetails[index] ||
+        typeof newDetails[index].description !== "object"
+      ) {
+        newDetails[index] = { description: { en: "", fr: "", es: "" } }
+      }
+      newDetails[index].description[lang] = value
+      setToursExcluded(newDetails)
     }
   }
-  const handleTourExcludedChange = (text: string, index: number) => {
-    const newTourExcluded = [...toursExcluded]
-    newTourExcluded[index] = text
-    setToursExcluded(newTourExcluded)
+
+  const addTourDetail = (type: "included" | "excluded") => {
+    if (type === "included") {
+      setToursIncluded([...toursIncluded, { description: { en: "", fr: "", es: "" } }])
+    } else {
+      setToursExcluded([...toursExcluded, { description: { en: "", fr: "", es: "" } }])
+    }
   }
 
-  const addTourExcluded = () => {
-    setToursExcluded([...toursExcluded, ""])
-  }
-
-  const removeTourExcluded = (index: number) => {
-    if (toursExcluded.length > 1) {
+  const removeTourDetail = (type: "included" | "excluded", index: number) => {
+    if (type === "included" && toursIncluded.length > 1) {
+      setToursIncluded(toursIncluded.filter((_, i) => i !== index))
+    }
+    if (type === "excluded" && toursExcluded.length > 1) {
       setToursExcluded(toursExcluded.filter((_, i) => i !== index))
     }
   }
@@ -257,9 +314,10 @@ export default function NewPackagePage({
         body: JSON.stringify({
           ...formData,
           images,
-          itinerary: itinerary.filter(item => item.day && item.title),
-          toursIncluded: toursIncluded,
-          toursExcluded: toursExcluded,
+          shortDescription: formData.shortDescription, // Ensure shortDescription is sent
+          itinerary,
+          toursIncluded,
+          toursExcluded,
           shareTrip: Number(formData.shareTrip),
           privateTrip: Number(formData.privateTrip),
         }),
@@ -280,7 +338,7 @@ export default function NewPackagePage({
   if (isLoadingData)
     return <LoadingComponent />
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-1 md:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex items-center gap-4 mb-6">
           <Link href="/desert26safariadmin/packages">
@@ -289,8 +347,8 @@ export default function NewPackagePage({
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-slate-800">Create New Package</h1>
-            <p className="text-slate-500">Add a new travel package to your collection</p>
+            <h1 className="text-3xl font-bold text-slate-800">Edit Package</h1>
+            <p className="text-slate-500">Update the details of the package</p>
           </div>
         </div>
 
@@ -302,11 +360,11 @@ export default function NewPackagePage({
                 Package Details
               </CardTitle>
               <CardDescription className="text-blue-100/80">
-                Fill in the information for the new package
+                Update the information for the package
               </CardDescription>
             </CardHeader>
           </div>
-          <CardContent className="p-6">
+          <CardContent className=" p-2.5 md:p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <Alert variant="destructive" className="rounded-xl">
@@ -343,40 +401,67 @@ export default function NewPackagePage({
                 </Select>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1  gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="title" className="text-slate-700 flex items-center gap-2">
+                  <Label className="text-slate-700 flex items-center gap-2">
                     <Type className="h-4 w-4" />
                     Package Title
                   </Label>
-                  <Input
-                    id="title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                    required
-                    disabled={isLoading}
-                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                    placeholder="e.g. Premium Bali Experience"
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Input
+                      value={formData.title.en}
+                      onChange={e => handleMultiLangInputChange(e, "title", "en")}
+                      placeholder="Title (English)"
+                      required
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                    <Input
+                      value={formData.title.fr}
+                      onChange={e => handleMultiLangInputChange(e, "title", "fr")}
+                      placeholder="Titre (Français)"
+                      required
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                    <Input
+                      value={formData.title.es}
+                      onChange={e => handleMultiLangInputChange(e, "title", "es")}
+                      placeholder="Título (Español)"
+                      required
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="duration" className="text-slate-700 flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     Duration (days)
                   </Label>
-                  <Input
-                    id="duration"
-                    name="duration"
-                    type="number"
-                    min="1"
-                    value={formData.duration}
-                    onChange={handleInputChange}
-                    required
-                    disabled={isLoading}
-                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                    placeholder="e.g. 7"
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Input
+                      value={formData.duration.en}
+                      onChange={e => handleMultiLangInputChange(e, "duration", "en")}
+                      placeholder="Duration (English)"
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                    <Input
+                      value={formData.duration.fr}
+                      onChange={e => handleMultiLangInputChange(e, "duration", "fr")}
+                      placeholder="Durée (Français)"
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                    <Input
+                      value={formData.duration.es}
+                      onChange={e => handleMultiLangInputChange(e, "duration", "es")}
+                      placeholder="Duración (Español)"
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="space-y-2">
@@ -407,7 +492,7 @@ export default function NewPackagePage({
                     name="departureTime"
                     value={formData.departureTime}
                     onChange={handleInputChange}
-                    required
+                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="8:30 AM"
@@ -418,23 +503,36 @@ export default function NewPackagePage({
                     <MapPin className="h-4 w-4" />
                     Departure Location
                   </Label>
-                  <Input
-                    id="departure"
-                    name="departure"
-                    value={formData.departure}
-                    onChange={handleInputChange}
-                    required
-                    disabled={isLoading}
-                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
-                    placeholder="e.g. Kathmandu, Nepal"
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Input
+                      value={formData.departure.en}
+                      onChange={e => handleMultiLangInputChange(e, "departure", "en")}
+                      placeholder="Departure (English)"
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                    <Input
+                      value={formData.departure.fr}
+                      onChange={e => handleMultiLangInputChange(e, "departure", "fr")}
+                      placeholder="Départ (Français)"
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                    <Input
+                      value={formData.departure.es}
+                      onChange={e => handleMultiLangInputChange(e, "departure", "es")}
+                      placeholder="Salida (Español)"
+                      disabled={isLoading}
+                      className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="shareTrip" className="text-slate-700 flex items-center gap-2">
                     <Users className="h-4 w-4" />
-                    Share Trip Price ($)
+                    Share Trip Price(Euro)
                   </Label>
                   <Input
                     id="shareTrip"
@@ -443,7 +541,7 @@ export default function NewPackagePage({
                     min="0"
                     value={formData.shareTrip}
                     onChange={handleInputChange}
-                    required
+                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="e.g. 999"
@@ -452,7 +550,7 @@ export default function NewPackagePage({
                 <div className="space-y-2">
                   <Label htmlFor="privateTrip" className="text-slate-700 flex items-center gap-2">
                     <DollarSign className="h-4 w-4" />
-                    Private Trip Price ($)
+                    Private Trip Price(Euro)
                   </Label>
                   <Input
                     id="privateTrip"
@@ -461,7 +559,7 @@ export default function NewPackagePage({
                     min="0"
                     value={formData.privateTrip}
                     onChange={handleInputChange}
-                    required
+                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="e.g. 1499"
@@ -470,7 +568,40 @@ export default function NewPackagePage({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-slate-700 flex items-center gap-2">
+                <Label className="text-slate-700 flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Short Description
+                </Label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Input
+                    value={formData.shortDescription.en}
+                    onChange={e => handleMultiLangInputChange(e, "shortDescription", "en")}
+                    placeholder="Short Description (English)"
+                    required
+                    disabled={isLoading}
+                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                  <Input
+                    value={formData.shortDescription.fr}
+                    onChange={e => handleMultiLangInputChange(e, "shortDescription", "fr")}
+                    placeholder="Description courte (Français)"
+                    required
+                    disabled={isLoading}
+                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                  <Input
+                    value={formData.shortDescription.es}
+                    onChange={e => handleMultiLangInputChange(e, "shortDescription", "es")}
+                    placeholder="Descripción corta (Español)"
+                    required
+                    disabled={isLoading}
+                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-slate-700 flex items-center gap-2">
                   <FileText className="h-4 w-4" />
                   Full Description
                 </Label>
@@ -478,8 +609,30 @@ export default function NewPackagePage({
                   id="description"
                   name="description"
                   rows={5}
-                  value={formData.description}
-                  onChange={handleInputChange}
+                  value={formData.description.en}
+                  onChange={e => handleMultiLangInputChange(e, "description", "en")}
+                  required
+                  disabled={isLoading}
+                  className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                  placeholder="Detailed description of the package..."
+                />
+                <Textarea
+                  id="description"
+                  name="description"
+                  rows={5}
+                  value={formData.description.fr}
+                  onChange={e => handleMultiLangInputChange(e, "description", "fr")}
+                  required
+                  disabled={isLoading}
+                  className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
+                  placeholder="Detailed description of the package..."
+                />
+                <Textarea
+                  id="description"
+                  name="description"
+                  rows={5}
+                  value={formData.description.es}
+                  onChange={e => handleMultiLangInputChange(e, "description", "es")}
                   required
                   disabled={isLoading}
                   className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-4 px-4 min-h-[120px]"
@@ -494,66 +647,88 @@ export default function NewPackagePage({
                     Itinerary
                   </Label>
                   <button
-                    className="rounded-[4px] text-xs py-1 px-1 active:opacity-50 active:scale-[101%] transition-all duration-200 text-white bg-gradient-to-r from-blue-400 to-indigo-400 hover:from-blue-400 hover:to-indigo-500  shadow-md hover:shadow-lg"
-
+                    className="rounded-[4px] text-xs py-1 px-1 active:opacity-50 active:scale-[101%] transition-all duration-200 text-white bg-gradient-to-r from-blue-400 to-indigo-400 hover:from-blue-400 hover:to-indigo-500 shadow-md hover:shadow-lg"
                     type="button" onClick={addItineraryItem}
                   >
                     <div className="flex items-center">
                       <div className="">
-                        Add Day
+                        Add Activity
                       </div>
                       <Plus width={14} />
                     </div>
                   </button>
                 </div>
+                <div className="border border-slate-200 rounded-xl p-2 space-y-2">
+                  {itinerary.map((item, index) => (
+                    <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start p-4 border border-slate-200 rounded-xl">
+                      <div className="md:col-span-5">
+                        <Label>Title</Label>
+                        <div className="grid grid-cols-1 gap-2">
+                          <Input
+                            value={item?.title?.en ?? ""}
+                            onChange={e => handleItineraryChange(index, "title", "en", e.target.value)}
+                            placeholder="Title (English)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
 
-                {itinerary.map((item, index) => (
-                  <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start p-4 border border-slate-200 rounded-xl">
-                    <div className="md:col-span-1">
-                      <Label htmlFor={`day-${index}`}>Day</Label>
-                      <Input
-                        id={`day-${index}`}
-                        value={item.day}
-                        onChange={(e) => handleItineraryChange(index, 'day', e.target.value)}
-                        placeholder="Day #"
-                        className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
-                      />
+                          />
+                          <Input
+                            value={item?.title?.fr ?? ""}
+                            onChange={e => handleItineraryChange(index, "title", "fr", e.target.value)}
+                            placeholder="Titre (Français)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                          <Input
+                            value={item?.title?.es ?? ""}
+                            onChange={e => handleItineraryChange(index, "title", "es", e.target.value)}
+                            placeholder="Título (Español)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                        </div>
+                      </div>
+                      <div className="md:col-span-6">
+                        <Label>Description</Label>
+                        <div className="grid grid-cols-1 gap-2">
+                          <Textarea
+                            value={item?.description?.en ?? ""}
+                            onChange={e => handleItineraryChange(index, "description", "en", e.target.value)}
+                            placeholder="Description (English)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                          <Textarea
+                            value={item?.description?.fr ?? ""}
+                            onChange={e => handleItineraryChange(index, "description", "fr", e.target.value)}
+                            placeholder="Description (Français)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                          <Textarea
+                            value={item?.description?.es ?? ""}
+                            onChange={e => handleItineraryChange(index, "description", "es", e.target.value)}
+                            placeholder="Descripción (Español)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                        </div>
+                      </div>
+                      <div className="md:col-span-1 flex items-end h-full">
+                        {itinerary.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            onClick={() => removeItineraryItem(index)}
+                            className="rounded-full h-8 w-8"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                    <div className="md:col-span-4">
-                      <Label htmlFor={`title-${index}`}>Title</Label>
-                      <Input
-                        id={`title-${index}`}
-                        value={item.title}
-                        onChange={(e) => handleItineraryChange(index, 'title', e.target.value)}
-                        placeholder="Activity title"
-                        className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
-                      />
-                    </div>
-                    <div className="md:col-span-6">
-                      <Label htmlFor={`desc-${index}`}>Description</Label>
-                      <Textarea
-                        id={`desc-${index}`}
-                        value={item.description}
-                        onChange={(e) => handleItineraryChange(index, 'description', e.target.value)}
-                        placeholder="Day description"
-                        className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl min-h-[80px] placeholder:text-gray-400/55"
-                      />
-                    </div>
-                    <div className="md:col-span-1 flex items-end h-full">
-                      {itinerary.length > 1 && (
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          onClick={() => removeItineraryItem(index)}
-                          className="rounded-full h-8 w-8"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
               <div className="border border-slate-300 rounded-xl p-2">
@@ -572,8 +747,7 @@ export default function NewPackagePage({
                       </Label>
                       <button
                         className="rounded-[4px] text-xs py-1 px-1 active:opacity-50 active:scale-[101%] transition-all duration-200 text-white bg-gradient-to-r from-blue-400 to-indigo-400 hover:from-blue-400 hover:to-indigo-500  shadow-md hover:shadow-lg"
-
-                        type="button" onClick={addTourIncluded}
+                        type="button" onClick={() => addTourDetail("included")}
                       >
                         <div className="flex items-center">
                           <div className="">
@@ -585,13 +759,27 @@ export default function NewPackagePage({
                     </div>
                     {toursIncluded.map((detail, index) => (
                       <div key={index} className=" items-start p-4 ">
-                        <div className="md:col-span-7">
+                        <div className="md:col-span-7 space-y-2">
                           <Textarea
-                            id={`detail-desc-${index}`}
-                            value={detail}
-                            onChange={(e) => handleTourIncludedChange(e.target.value, index)}
-                            placeholder="Detail description"
-                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl min-h-[80px] placeholder:text-gray-400/55"
+                            value={detail?.description?.en ?? ""}
+                            onChange={e => handleTourDetailChange("included", index, "en", e.target.value)}
+                            placeholder="Detail (English)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                          <Textarea
+                            value={detail?.description?.fr ?? ""}
+                            onChange={e => handleTourDetailChange("included", index, "fr", e.target.value)}
+                            placeholder="Détail (Français)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                          <Textarea
+                            value={detail?.description?.es ?? ""}
+                            onChange={e => handleTourDetailChange("included", index, "es", e.target.value)}
+                            placeholder="Detalle (Español)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
                           />
                         </div>
                         <div className="md:col-span-1 flex items-end h-full">
@@ -600,7 +788,7 @@ export default function NewPackagePage({
                               type="button"
                               variant="destructive"
                               size="icon"
-                              onClick={() => removeTourIncluded(index)}
+                              onClick={() => removeTourDetail("included", index)}
                               className="rounded-full h-8 w-8 placeholder:text-gray-400/55"
                             >
                               <X className="h-4 w-4" />
@@ -618,8 +806,7 @@ export default function NewPackagePage({
                       </Label>
                       <button
                         className="rounded-[4px] text-xs py-1 px-1 active:opacity-50 active:scale-[101%] transition-all duration-200 text-white bg-gradient-to-r from-blue-400 to-indigo-400 hover:from-blue-400 hover:to-indigo-500  shadow-md hover:shadow-lg"
-
-                        type="button" onClick={addTourExcluded}
+                        type="button" onClick={() => addTourDetail("excluded")}
                       >
                         <div className="flex items-center">
                           <div className="">
@@ -631,13 +818,27 @@ export default function NewPackagePage({
                     </div>
                     {toursExcluded.map((detail, index) => (
                       <div key={index} className=" items-start p-4 ">
-                        <div className="md:col-span-7">
+                        <div className="md:col-span-7 space-y-2">
                           <Textarea
-                            id={`detail-desc-${index}`}
-                            value={detail}
-                            onChange={(e) => handleTourExcludedChange(e.target.value, index)}
-                            placeholder="Detail description"
-                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl min-h-[80px] placeholder:text-gray-400/55"
+                            value={detail?.description?.en ?? ""}
+                            onChange={e => handleTourDetailChange("excluded", index, "en", e.target.value)}
+                            placeholder="Detail (English)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                          <Textarea
+                            value={detail?.description?.fr ?? ""}
+                            onChange={e => handleTourDetailChange("excluded", index, "fr", e.target.value)}
+                            placeholder="Détail (Français)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
+                          />
+                          <Textarea
+                            value={detail?.description?.es ?? ""}
+                            onChange={e => handleTourDetailChange("excluded", index, "es", e.target.value)}
+                            placeholder="Detalle (Español)"
+                            className="border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-xl placeholder:text-gray-400/55"
+
                           />
                         </div>
                         <div className="md:col-span-1 flex items-end h-full">
@@ -646,7 +847,7 @@ export default function NewPackagePage({
                               type="button"
                               variant="destructive"
                               size="icon"
-                              onClick={() => removeTourExcluded(index)}
+                              onClick={() => removeTourDetail("excluded", index)}
                               className="rounded-full h-8 w-8 placeholder:text-gray-400/55"
                             >
                               <X className="h-4 w-4" />

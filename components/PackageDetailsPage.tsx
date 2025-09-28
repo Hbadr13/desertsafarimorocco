@@ -476,7 +476,7 @@ export function PackageDetailsPage({ package: pkg, tour, otherPackages }: Packag
                                     </div>
                                     <div className="flex items-center gap-2 text-blue-700">
                                         <Mail className="h-4 w-4" />
-                                        <span>info@moroccotours.com</span>
+                                        <span>desertsafarimorocco@gmail.com</span>
                                     </div>
                                     <div className="text-blue-600 font-medium">24/7 Customer Support</div>
                                 </div>
