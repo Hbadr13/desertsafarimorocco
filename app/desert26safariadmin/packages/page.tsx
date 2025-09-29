@@ -99,7 +99,7 @@ export default async function PackagesPage() {
                     <div key={tour.tourId} className="space-y-3">
                       <h3 className="text-lg font-medium text-slate-700 flex items-center gap-2">
                         <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
-                          {tour.tourName}
+                          {tour.tourName.en}
                         </Badge>
                         <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                           {tour.packages.length} {tour.packages.length === 1 ? "package" : "packages"}

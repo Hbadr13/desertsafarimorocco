@@ -1,7 +1,38 @@
+const translations: Record<'en' | 'fr' | 'es', {
+    titleLine1: string;
+    titleLine2: string;
+    subtitle: string;
+    exploreBtn: string;
+    packagesBtn: string;
+}> = {
+    en: {
+        titleLine1: "Discover The Magic Of",
+        titleLine2: "Moroccan Deserts",
+        subtitle: "We organize desert tours in the Great Moroccan Sahara for an authentic and unforgettable experience.",
+        exploreBtn: "Explore Destinations",
+        packagesBtn: "View Packages"
+    },
+    fr: {
+        titleLine1: "Découvrez la Magie de",
+        titleLine2: "Déserts Marocains",
+        subtitle: "Nous organisons des excursions dans le désert du Grand Sahara marocain pour une expérience authentique et inoubliable.",
+        exploreBtn: "Explorer les Destinations",
+        packagesBtn: "Voir les Forfaits"
+    },
+    es: {
+        titleLine1: "Descubre la Magia de",
+        titleLine2: "Desiertos Marroquíes",
+        subtitle: "Organizamos tours por el desierto del Gran Sahara marroquí para una experiencia auténtica e inolvidable.",
+        exploreBtn: "Explorar Destinos",
+        packagesBtn: "Ver Paquetes"
+    }
+}
 
-const HeroSection = () => {
+const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
+    const t = translations[lang];
+
     return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section className="pt-16 relative min-h-[600px] h-[80vw] max-h-[700px] flex items-center justify-center overflow-hidden">
             {/* Background Image with Gradient Overlay */}
             <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -16,30 +47,28 @@ const HeroSection = () => {
             {/* Main Content */}
             <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
                 {/* Main Title */}
-                <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                    <span className="  block text-white">Discover The Magic Of</span>
+                <h1 className="text-4xl md:text-7xl font-bold mb-6 leading-tight">
+                    <span className="block text-white">{t.titleLine1}</span>
                     <span className="block bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
-                        Moroccan Deserts
+                        {t.titleLine2}
                     </span>
                 </h1>
 
                 {/* Subtitle */}
                 <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed text-gray-200 font-light">
-                    Experience unforgettable adventures in the heart of Sahara with expert guides and authentic cultural experiences
+                    {t.subtitle}
                 </p>
 
                 {/* Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <button className=" rounded-xl px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-lg shadow-2xl hover:shadow-orange-500/30 transition-shadow duration-300">
-                        Explore Destinations
+                <div className="flex flex-row gap-4 justify-center items-center">
+                    <button className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm md:text-lg shadow-2xl hover:shadow-orange-500/30 transition-shadow duration-300">
+                        {t.exploreBtn}
                     </button>
 
-                    <button className="rounded-xl px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300">
-                        View Packages
+                    <button className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold text-sm md:text-lg hover:bg-white/20 transition-all duration-300">
+                        {t.packagesBtn}
                     </button>
                 </div>
-
-
             </div>
 
             {/* Decorative Elements */}

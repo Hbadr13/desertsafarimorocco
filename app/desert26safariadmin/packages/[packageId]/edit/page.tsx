@@ -33,9 +33,9 @@ import LoadingComponent from "@/components/admin/LoadingComponent"
 
 interface Tour {
   _id: string
-  title: string
-  name: string
-  categoryName: string
+  title: { en: string; fr: string; es: string }
+  name: { en: string; fr: string; es: string }
+  categoryName: { en: string; fr: string; es: string }
 
 }
 
@@ -59,6 +59,7 @@ export default function EditPackagePage({
     description: { en: "", fr: "", es: "" },
     slug: "",
     duration: { en: "", fr: "", es: "" },
+    location: { en: "", fr: "", es: "" },
     departureTime: "",
     departure: { en: "", fr: "", es: "" },
     shareTrip: "",
@@ -101,6 +102,7 @@ export default function EditPackagePage({
         slug: data.slug || "",
         tourId: data.tourId || "",
         departure: data.departure || { en: "", fr: "", es: "" },
+        location: data.location || { en: "", fr: "", es: "" },
         departureTime: data.departureTime || "",
         duration: data.duration || { en: "", fr: "", es: "" },
         privateTrip: data.privateTrip || "",
@@ -131,8 +133,8 @@ export default function EditPackagePage({
         const groups: Record<string, Tour[]> = {}
         data.tours.forEach(tour => {
           const catName = tour.categoryName || "Uncategorized"
-          if (!groups[catName]) groups[catName] = []
-          groups[catName].push(tour)
+          if (!groups[catName.en]) groups[catName.en] = []
+          groups[catName.en].push(tour)
         })
         setGroupedTours(groups)
       }
@@ -157,7 +159,7 @@ export default function EditPackagePage({
 
   const handleMultiLangInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: "title" | "shortDescription" | "description" | "duration" | "departure",
+    field: "title" | "shortDescription" | "description" | "duration" | "departure" | "location",
     lang: "en" | "fr" | "es"
   ) => {
     const value = e.target.value
@@ -392,7 +394,7 @@ export default function EditPackagePage({
                         </div>
                         {tours.map((tour) => (
                           <SelectItem key={tour._id} value={tour._id} className="pl-6 py-2 cursor-pointer">
-                            {tour.title}
+                            {tour.title.en}
                           </SelectItem>
                         ))}
                       </Fragment>
@@ -407,7 +409,7 @@ export default function EditPackagePage({
                     <Type className="h-4 w-4" />
                     Package Title
                   </Label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 gap-4">
                     <Input
                       value={formData.title.en}
                       onChange={e => handleMultiLangInputChange(e, "title", "en")}
@@ -433,6 +435,22 @@ export default function EditPackagePage({
                       className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     />
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
+                    <LinkIcon className="h-4 w-4" />
+                    Slug
+                  </Label>
+                  <Input
+                    id="slug"
+                    name="slug"
+                    value={formData.slug}
+                    onChange={handleInputChange}
+                    required
+                    disabled={isLoading}
+                    className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4 bg-slate-50"
+                    placeholder="e.g. beach-getaways"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="duration" className="text-slate-700 flex items-center gap-2">
@@ -464,22 +482,7 @@ export default function EditPackagePage({
                   </div>
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
-                  <LinkIcon className="h-4 w-4" />
-                  Slug
-                </Label>
-                <Input
-                  id="slug"
-                  name="slug"
-                  value={formData.slug}
-                  onChange={handleInputChange}
-                  required
-                  disabled={isLoading}
-                  className="rounded-xl placeholder:text-gray-400/55 border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4 bg-slate-50"
-                  placeholder="e.g. beach-getaways"
-                />
-              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <div className="space-y-2">
@@ -503,7 +506,7 @@ export default function EditPackagePage({
                     <MapPin className="h-4 w-4" />
                     Departure Location
                   </Label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 gap-4">
                     <Input
                       value={formData.departure.en}
                       onChange={e => handleMultiLangInputChange(e, "departure", "en")}
@@ -526,6 +529,35 @@ export default function EditPackagePage({
                       className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     />
                   </div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="departure" className="text-slate-700 flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  Location
+                </Label>
+                <div className="grid grid-cols-1 gap-4">
+                  <Input
+                    value={formData.location.en}
+                    onChange={e => handleMultiLangInputChange(e, "location", "en")}
+                    placeholder="Location (English)"
+                    disabled={isLoading}
+                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                  <Input
+                    value={formData.location.fr}
+                    onChange={e => handleMultiLangInputChange(e, "location", "fr")}
+                    placeholder="Location (Français)"
+                    disabled={isLoading}
+                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
+                  <Input
+                    value={formData.location.es}
+                    onChange={e => handleMultiLangInputChange(e, "location", "es")}
+                    placeholder="Location (Español)"
+                    disabled={isLoading}
+                    className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -572,7 +604,7 @@ export default function EditPackagePage({
                   <FileText className="h-4 w-4" />
                   Short Description
                 </Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <Input
                     value={formData.shortDescription.en}
                     onChange={e => handleMultiLangInputChange(e, "shortDescription", "en")}

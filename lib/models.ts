@@ -3,19 +3,19 @@ import type { ObjectId } from "mongodb"
 export interface Category {
   _id?: ObjectId
   title: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   },
   shortDescription: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   description: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   slug: string
   images: string[]
@@ -27,19 +27,19 @@ export interface Category {
 export interface Tour {
   _id?: ObjectId
   title: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   description: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   shortDescription: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   },
   images: string[]
   slug: string
@@ -52,55 +52,55 @@ export interface Tour {
 export interface Package {
   _id?: ObjectId
   title: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   slug: string
   images: string[]
   duration: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   departure: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   shareTrip: number
   privateTrip: number
   departureTime: string
   description: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   shortDescription: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }
   itinerary: {
     title: {
-      en: String,
-      fr: String,
-      es: String,
+      en: string,
+      fr: string,
+      es: string,
     }, description: {
-      en: String,
-      fr: String,
-      es: String,
+      en: string,
+      fr: string,
+      es: string,
     }
   }[]
   toursIncluded: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }[]
   toursExcluded: {
-    en: String,
-    fr: String,
-    es: String,
+    en: string,
+    fr: string,
+    es: string,
   }[]
   tourId: ObjectId
   createdAt?: Date

@@ -25,8 +25,16 @@ import { ImageUpload } from "@/components/admin/image-upload"
 
 interface Category {
   _id: string
-  name: string
-  title: string
+  name: {
+    en: string
+    fr: string
+    es: string
+  }
+  title: {
+    en: string
+    fr: string
+    es: string
+  }
 }
 
 export default function NewTourPage() {
@@ -174,7 +182,7 @@ export default function NewTourPage() {
                   <SelectContent className="bg-white rounded-xl">
                     {categories.map((category) => (
                       <SelectItem key={category._id} value={category._id} className="py-3 cursor-pointer">
-                        {category.title}
+                        {category.title.en}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -184,7 +192,7 @@ export default function NewTourPage() {
               {/* Multilingual Title */}
               <div className="space-y-2">
                 <Label>Title</Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <Input
                     value={formData.title.en}
                     onChange={e => handleMultiLangInputChange(e, "title", "en")}
@@ -215,7 +223,7 @@ export default function NewTourPage() {
               {/* Multilingual Short Description */}
               <div className="space-y-2">
                 <Label>Short Description</Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <Input
                     value={formData.shortDescription.en}
                     onChange={e => handleMultiLangInputChange(e, "shortDescription", "en")}
@@ -246,7 +254,7 @@ export default function NewTourPage() {
               {/* Multilingual Description */}
               <div className="space-y-2">
                 <Label>Description</Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <Textarea
                     value={formData.description.en}
                     onChange={e => handleMultiLangInputChange(e, "description", "en")}

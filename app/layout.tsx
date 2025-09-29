@@ -1,4 +1,4 @@
-// app/layout.tsx
+"use client"
 import Header from '@/components/header'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
@@ -7,6 +7,7 @@ import { getDatabase } from '@/lib/mongodb'
 import { Category } from '@/lib/models'
 import { Footer } from '@/components/footer'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 // Load Poppins font
 const poppins = Poppins({
@@ -15,28 +16,42 @@ const poppins = Poppins({
   variable: '--font-poppins',
 })
 
-export default async function RootLayout({
-  children,
+export default function RootLayout({
+  children
 }: {
   children: React.ReactNode
 }) {
 
-  const db = await getDatabase()
+  const [categories, setCategories] = useState<any[]>([])
+  const pathname = usePathname()
+  useEffect(() => {
+    fetch(`/api/client/categories`)
+      .then(res => res.json())
+      .then(catData => {
+        setCategories((catData.categories || []).map((cat: any) => ({
+          ...cat,
+          title: cat.title || "",
+          description: cat.description || "",
+          shortDescription: cat.shortDescription || "",
+        })))
+      })
+  }, [])
 
-  const categories = await db.collection<Category>("categories")
-    .find({})
-    .limit(10)
-    .toArray()
   return (
     <html lang="en" className={poppins.className}>
       <head />
       <body>
-        <Header categories={categories} />
-
-        {children}
-        <Analytics />
-        <Footer categories={categories} />
-
+        {pathname == '/' ? <>
+          <Header lang={"en"} categories={categories} />
+          {children}
+          <Analytics />
+          <Footer lang={"en"} categories={categories} />
+        </> :
+          <>
+            {children}
+            <Analytics />
+          </>
+        }
       </body>
     </html>
   )

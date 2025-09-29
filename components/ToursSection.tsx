@@ -58,7 +58,7 @@ export function ToursSection({ tours }: ToursSectionProps) {
 
                 {/* Description */}
                 <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-3">
-                    {tour.shortDescription || tour.description.slice(0, 120)}...
+                    {tour.shortDescription || tour.description.slice(0, 120)}
                 </p>
 
                 {/* Features */}
@@ -120,15 +120,8 @@ export function ToursSection({ tours }: ToursSectionProps) {
                     cardWidth={350}
                     cardGap={24}
                     showNavigation={true}
-                    showPagination={false}
+                // showPagination={false}
                 />
-
-                {/* Bottom CTA */}
-                <div className="text-center mt-12">
-                    <Button variant="outline" size="lg" className="border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold">
-                        Browse All Tours
-                    </Button>
-                </div>
             </div>
         </section>
     )

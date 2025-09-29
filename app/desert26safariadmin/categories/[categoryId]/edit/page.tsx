@@ -239,7 +239,7 @@ export default function NewCategoryPage({
                   <Type className="h-4 w-4" />
                   Title
                 </Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <Input
                     id="title-en"
                     name="title-en"
@@ -297,7 +297,7 @@ export default function NewCategoryPage({
                   <AlignLeft className="h-4 w-4" />
                   Short Description
                 </Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <Input
                     id="shortDescription-en"
                     name="shortDescription-en"
@@ -337,7 +337,7 @@ export default function NewCategoryPage({
                   <FileText className="h-4 w-4" />
                   Description
                 </Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <Textarea
                     id="description-en"
                     name="description-en"
@@ -465,15 +465,3 @@ export default function NewCategoryPage({
     </div>
   )
 }
-
-// If you have an API endpoint handler in this file, update it like below:
-// (If not, update your backend to expect and store the multilingual structure.)
-
-// Example for Next.js API route handler (pseudo-code):
-/*
-export async function POST(req: Request) {
-  const body = await req.json()
-  // body.title, body.shortDescription, body.description are now objects with en/fr/es keys
-  // ...store in database as needed...
-}
-*/

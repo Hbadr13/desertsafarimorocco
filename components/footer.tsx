@@ -6,9 +6,10 @@ import { usePathname } from "next/navigation"
 
 interface FooterProps {
   categories: Category[]
+  lang: "es" | "fr" | "en"
 }
 
-export function Footer({ categories }: FooterProps) {
+export function Footer({ categories, lang }: FooterProps) {
   const quickLinks = [
     { href: "/", label: "Home" },
     { href: "/tours", label: "All Tours" },
@@ -28,7 +29,7 @@ export function Footer({ categories }: FooterProps) {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <h3 className="font-bold text-2xl mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-              Desert Safari Morocco
+              Desert Safaris Morocco
             </h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Your trusted partner for authentic Moroccan adventures. Experience the magic of Morocco with our expert
@@ -79,7 +80,7 @@ export function Footer({ categories }: FooterProps) {
                     className="text-gray-300 hover:text-green-400 transition-colors duration-200 flex items-center group"
                   >
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                    {category.title}
+                    {category.title.en}
                   </a>
                 </li>
               ))}
@@ -134,7 +135,7 @@ export function Footer({ categories }: FooterProps) {
         <div className="border-t border-gray-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              &copy; 2026 Desert Safari Morocco. All rights reserved.
+              &copy; 2026 Desert Safaris Morocco. All rights reserved.
             </p>
             <div className="flex gap-6 text-gray-400 text-sm">
               <a href="/privacy" className="hover:text-amber-400 transition-colors">Privacy Policy</a>

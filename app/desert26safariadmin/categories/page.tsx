@@ -49,9 +49,9 @@ export default async function CategoriesPage() {
                   <Image
                     src={
                       category.images[0] ||
-                      `/placeholder.svg?height=300&width=400&query=${category.title || "/placeholder.svg"} travel category`
+                      `/placeholder.svg?height=300&width=400&query=${category.title.en || "/placeholder.svg"} travel category`
                     }
-                    alt={category.title}
+                    alt={category.title.en}
                     fill
                     className="object-cover"
                   />
@@ -62,9 +62,9 @@ export default async function CategoriesPage() {
                   </div>
                 </div>
                 <CardHeader className="pb-3">
-                  <CardTitle className="line-clamp-1 text-slate-800 text-lg">{category.title}</CardTitle>
+                  <CardTitle className="line-clamp-1 text-slate-800 text-lg">{category.title.en}</CardTitle>
                   <CardDescription className="line-clamp-2 text-slate-600">
-                    {category.shortDescription}
+                    {category.shortDescription.en || "No description available"}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
@@ -75,7 +75,7 @@ export default async function CategoriesPage() {
                         Edit
                       </Button>
                     </Link>
-                    <DeleteButton notAllow={category.tours.length!=0} type="categories" id={category._id.toString()} />
+                    <DeleteButton notAllow={category.tours.length != 0} type="categories" id={category._id.toString()} />
                   </div>
                 </CardContent>
               </Card>

@@ -1,33 +1,35 @@
 "use client"
-import { usePathname, useRouter } from "next/navigation"
+import { notFound, usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import React from "react"
+import React, { useEffect, useState } from "react"
+import Header from "@/components/header"
+import { Footer } from "@/components/footer"
 
 const LANGS = ["en", "fr", "es"]
 
-export default function ClientLayout({ children, params }: { children: React.ReactNode; params: { lang: string } }) {
-    const pathname = usePathname()
-    const router = useRouter()
+export default function ClientLayout({ children, params }: { children: React.ReactNode; params: { lang: "en" | "fr" | "es" } }) {
     const { lang } = params
+    const [categories, setCategories] = useState<any[]>([])
 
-    // Replace the lang in the current path
-    const handleLangSwitch = (newLang: string) => {
-        if (newLang !== lang) {
-            router.push(pathname.replace(/^\/(en|fr|es)/, `/${newLang}`))
-        }
-    }
-
+    useEffect(() => {
+        fetch(`/api/client/categories`)
+            .then(res => res.json())
+            .then(catData => {
+                setCategories((catData.categories || []).map((cat: any) => ({
+                    ...cat,
+                    title: cat.title || "",
+                    description: cat.description || "",
+                    shortDescription: cat.shortDescription || "",
+                })))
+            })
+    }, [])
+    if (!LANGS.includes(lang))
+        return notFound()
     return (
         <div>
-            <nav className="flex gap-2 p-4 border-b bg-white">
-                {LANGS.map(l => (
-                    <Button key={l} variant={l === lang ? "default" : "outline"} onClick={() => handleLangSwitch(l)}>
-                        {l.toUpperCase()}
-                    </Button>
-                ))}
-                {/* ...other navbar items... */}
-            </nav>
+            <Header lang={lang} categories={categories} />
             {children}
+            <Footer lang={lang} categories={categories} />
         </div>
     )
 }
