@@ -1,97 +1,186 @@
-"use client"
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+// app/[lang]/packages/[slug]/page.tsx
+import { getDatabase } from "@/lib/mongodb"
+import { Package, Tour } from "@/lib/models"
 import { PackageDetailsPage } from "@/components/PackageDetailsPage"
-import { Button } from "@/components/ui/button"
+import { notFound } from "next/navigation"
 
 const LANGS = ["en", "fr", "es"]
+const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris morocco"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-export default function PackageDetailPage({ params }: { params: { lang: string; slug: string } }) {
+// SEO Metadata
+export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es", slug: string } }) {
     const { lang, slug } = params
-    const router = useRouter()
-    const [pkg, setPkg] = useState<any>(null)
-    const [tour, setTour] = useState<any>(null)
-    const [otherPackages, setOtherPackages] = useState<any[]>([])
-    const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        setLoading(true)
-        fetch(`/api/client/package/${slug}`)
-            .then(res => res.json())
-            .then(data => {
-                setPkg({
-                    ...data,
-                    title: data.title?.[lang] || data.title?.en || "",
-                    description: data.description?.[lang] || data.description?.en || "",
-                    duration: data.duration?.[lang] || data.duration?.en || "",
-                    departure: data.departure?.[lang] || data.departure?.en || "",
-                })
-                // Fetch tour and other packages if needed
-                fetch(`/api/client/tour/${data.tourSlug}`)
-                    .then(res => res.json())
-                    .then(tourData => setTour({
-                        ...tourData,
-                        title: tourData.title?.[lang] || tourData.title?.en || "",
-                    }))
-                fetch(`/api/client/packages?tour=${data.tourSlug}&exclude=${slug}`)
-                    .then(res => res.json())
-                    .then(pkgs => setOtherPackages(pkgs.packages || []))
-                setLoading(false)
+    try {
+        const db = await getDatabase()
+        const pkg = await db.collection<Package>("packages").findOne({ slug })
+
+        if (!pkg) {
+            return {
+                title: "Package Not Found",
+                description: "The requested package was not found."
+            }
+        }
+
+        const tour = await db.collection<Tour>("tours").findOne({ _id: pkg.tourId })
+
+        const title = `${pkg.title?.[lang] || pkg.title?.en || ""} | ${WEBSITE_NAME}`
+        const description = pkg.shortDescription?.[lang] || pkg.shortDescription?.en || pkg.description?.[lang] || pkg.description?.en || ""
+        const tourTitle = tour?.title?.[lang] || tour?.title?.en || ""
+
+        return {
+            title,
+            description: description.slice(0, 160) + '...',
+            metadataBase: new URL(SITE_URL),
+            keywords: `${pkg.title?.[lang] || pkg.title?.en || ""}, ${tourTitle}, morocco tours, desert safari, ${lang}`,
+            openGraph: {
+                title,
+                description: description.slice(0, 160) + '...',
+                type: 'website',
+                locale: lang,
+                siteName: WEBSITE_NAME,
+                url: `${SITE_URL}/${lang}/packages/${slug}`,
+                images: [
+                    {
+                        url: pkg.images?.[0] || `${SITE_URL}/default-package.jpg`,
+                        width: 1200,
+                        height: 630,
+                        alt: pkg.title?.[lang] || pkg.title?.en || "",
+                    },
+                ],
+            },
+            alternates: {
+                canonical: `${SITE_URL}/${lang}/packages/${slug}`,
+                languages: {
+                    'en': `${SITE_URL}/en/packages/${slug}`,
+                    'fr': `${SITE_URL}/fr/packages/${slug}`,
+                    'es': `${SITE_URL}/es/packages/${slug}`,
+                },
+            },
+            robots: {
+                index: true,
+                follow: true,
+                googleBot: {
+                    index: true,
+                    follow: true,
+                    'max-video-preview': -1,
+                    'max-image-preview': 'large',
+                    'max-snippet': -1,
+                },
+            },
+        }
+    } catch (error) {
+        return {
+            title: "Error Loading Package",
+            description: "There was an error loading the package information."
+        }
+    }
+}
+
+// Generate static params
+export async function generateStaticParams() {
+    try {
+        const db = await getDatabase()
+        const packages = await db.collection<Package>("packages").find({}).toArray()
+
+        return packages.flatMap((pkg) =>
+            LANGS.map((lang) => ({
+                lang,
+                slug: pkg.slug,
+            }))
+        )
+    } catch (error) {
+        return []
+    }
+}
+
+async function getPackageData(lang: "en" | "fr" | "es", slug: string) {
+    try {
+        const db = await getDatabase()
+
+        // Get package
+        const pkg = await db.collection<Package>("packages").findOne({ slug })
+        if (!pkg) {
+            throw new Error('Package not found')
+        }
+
+        // Get tour
+        const tour = await db.collection<Tour>("tours").findOne({ id: pkg.tourId })
+
+        // Get other packages from the same tour
+        const otherPackages = await db.collection<Package>("packages")
+            .find({
+                tourId: pkg.tourId,
+                slug: { $ne: slug }
             })
-    }, [lang, slug])
+            .limit(5)
+            .toArray()
 
-    const handleLangSwitch = (newLang: string) => {
-        if (newLang !== lang) {
-            router.push(`/${newLang}/packages/${slug}`)
+        return {
+            pkg,
+            tour: tour || null,
+            otherPackages
+        }
+    } catch (error) {
+        console.error('Error fetching package data:', error)
+        return { pkg: null, tour: null, otherPackages: [] }
+    }
+}
+
+export default async function PackageDetailPage({ params }: { params: { lang: "en" | "fr" | "es", slug: string } }) {
+    const { lang, slug } = params
+
+    if (!LANGS.includes(lang)) {
+        return notFound()
+    }
+
+    const { pkg, tour, otherPackages } = await getPackageData(lang, slug)
+
+    if (!pkg) {
+        return notFound()
+    }
+
+    // Structured Data for SEO
+    const structuredData = {
+        "@context": "https://schema.org",
+        "@type": "TouristTrip",
+        "name": pkg.title?.[lang] || pkg.title?.en || "",
+        "description": pkg.shortDescription?.[lang] || pkg.shortDescription?.en || "",
+        "url": `${SITE_URL}/${lang}/packages/${slug}`,
+        "image": pkg.images?.[0] || `${SITE_URL}/default-package.jpg`,
+        "offers": {
+            "@type": "Offer",
+            "price": pkg.shareTrip,
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock"
+        },
+        "itinerary": pkg.itinerary?.map((day: any) => ({
+            "@type": "Trip",
+            "name": day.title,
+            "description": day.description
+        })),
+        "duration": pkg.duration?.[lang] || pkg.duration?.en || "",
+        "departureLocation": {
+            "@type": "Place",
+            "name": pkg.departure?.[lang] || pkg.departure?.en || ""
         }
     }
 
-    if (loading || !pkg) {
-        return <div>Loading...</div>
-    }
-
     return (
-        <div>
-            <div className="flex gap-2 mb-4">
-                {LANGS.map(l => (
-                    <Button key={l} variant={l === lang ? "default" : "outline"} onClick={() => handleLangSwitch(l)}>
-                        {l.toUpperCase()}
-                    </Button>
-                ))}
-            </div>
+        <>
+            {/* Structured Data for SEO */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+            />
+
             <PackageDetailsPage
-                package={pkg}
+                pkg={pkg}
                 tour={tour}
                 otherPackages={otherPackages}
+                lang={lang}
             />
-        </div>
+        </>
     )
-}
-
-export async function generateStaticParams() {
-    const db = await getDatabase()
-    const packages = await db.collection("packages").find({}).toArray()
-    const langs = ["en", "fr", "es"]
-    return packages.flatMap(pkg =>
-        langs.map(lang => ({
-            lang,
-            slug: pkg.slug,
-        }))
-    )
-}
-
-export async function generateMetadata({ params }: { params: { lang: string; slug: string } }) {
-    const db = await getDatabase()
-    const pkg = await db.collection("packages").findOne({ slug: params.slug })
-    if (!pkg) {
-        return { title: "Package Not Found" }
-    }
-    const tour = await db.collection("tours").findOne({ _id: pkg.tourId })
-    const title = pkg.title?.[params.lang] || pkg.title?.en || ""
-    const tourTitle = tour?.title?.[params.lang] || tour?.title?.en || ""
-    const description = pkg.description?.[params.lang] || pkg.description?.en || ""
-    return {
-        title: `${title} - ${tourTitle}`,
-        description,
-    }
 }

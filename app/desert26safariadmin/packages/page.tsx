@@ -142,17 +142,21 @@ export default async function PackagesPage() {
                                   <span className="text-muted-foreground">Departure:</span>
                                   <span className="font-medium">{pkg.departure.en}</span>
                                 </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">Location:</span>
+                                  <span className="font-medium">{pkg.location.en}</span>
+                                </div>
                                 <div className="grid grid-cols-2 gap-2">
-                                  <div className="flex items-center">
+                                  {pkg.shareTrip && <div className="flex items-center">
                                     <DollarSign className="w-3 h-3 mr-1 text-muted-foreground" />
                                     <span className="text-muted-foreground">Shared:</span>
                                     <span className="font-semibold ml-1">${pkg.shareTrip}</span>
-                                  </div>
-                                  <div className="flex items-center">
+                                  </div>}
+                                  {pkg.privateTrip && <div className="flex items-center">
                                     <DollarSign className="w-3 h-3 mr-1 text-muted-foreground" />
                                     <span className="text-muted-foreground">Private:</span>
                                     <span className="font-semibold ml-1">${pkg.privateTrip}</span>
-                                  </div>
+                                  </div>}
                                 </div>
 
                                 <div className="flex gap-2 pt-2">

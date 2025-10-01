@@ -50,6 +50,7 @@ export interface Tour {
 }
 
 export interface Package {
+  price: any
   _id?: ObjectId
   title: {
     en: string,
@@ -59,6 +60,11 @@ export interface Package {
   slug: string
   images: string[]
   duration: {
+    en: string,
+    fr: string,
+    es: string,
+  }
+  location: {
     en: string,
     fr: string,
     es: string,
@@ -93,14 +99,18 @@ export interface Package {
     }
   }[]
   toursIncluded: {
-    en: string,
-    fr: string,
-    es: string,
+    description: {
+      en: string,
+      fr: string,
+      es: string,
+    }
   }[]
   toursExcluded: {
-    en: string,
-    fr: string,
-    es: string,
+    description: {
+      en: string,
+      fr: string,
+      es: string,
+    }
   }[]
   tourId: ObjectId
   createdAt?: Date

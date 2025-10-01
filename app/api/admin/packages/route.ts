@@ -50,6 +50,7 @@ export async function POST(request: NextRequest) {
       departure,
       shareTrip,
       privateTrip,
+      location,
       description,
       itinerary,
       toursIncluded,
@@ -80,6 +81,7 @@ export async function POST(request: NextRequest) {
       duration, // { en, fr, es }
       departureTime,
       departure, // { en, fr, es }
+      location, // { en, fr, es }
       shareTrip: Number(shareTrip),
       privateTrip: Number(privateTrip),
       description, // { en, fr, es }

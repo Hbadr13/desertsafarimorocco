@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const translations: Record<'en' | 'fr' | 'es', {
     titleLine1: string;
     titleLine2: string;
@@ -10,21 +12,21 @@ const translations: Record<'en' | 'fr' | 'es', {
         titleLine2: "Moroccan Deserts",
         subtitle: "We organize desert tours in the Great Moroccan Sahara for an authentic and unforgettable experience.",
         exploreBtn: "Explore Destinations",
-        packagesBtn: "View Packages"
+        packagesBtn: "View All Tours"
     },
     fr: {
         titleLine1: "Découvrez la Magie de",
         titleLine2: "Déserts Marocains",
         subtitle: "Nous organisons des excursions dans le désert du Grand Sahara marocain pour une expérience authentique et inoubliable.",
         exploreBtn: "Explorer les Destinations",
-        packagesBtn: "Voir les Forfaits"
+        packagesBtn: "Voir Toutes les Excursions"
     },
     es: {
         titleLine1: "Descubre la Magia de",
         titleLine2: "Desiertos Marroquíes",
         subtitle: "Organizamos tours por el desierto del Gran Sahara marroquí para una experiencia auténtica e inolvidable.",
         exploreBtn: "Explorar Destinos",
-        packagesBtn: "Ver Paquetes"
+        packagesBtn: "Ver Todas las Excursiones"
     }
 }
 
@@ -61,13 +63,13 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
 
                 {/* Buttons */}
                 <div className="flex flex-row gap-4 justify-center items-center">
-                    <button className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm md:text-lg shadow-2xl hover:shadow-orange-500/30 transition-shadow duration-300">
+                    <Link href={`/${lang}/packages`} className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm md:text-lg shadow-2xl hover:shadow-orange-500/30 transition-shadow duration-300">
                         {t.exploreBtn}
-                    </button>
+                    </Link>
 
-                    <button className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold text-sm md:text-lg hover:bg-white/20 transition-all duration-300">
+                    <Link href={`/${lang}/categories/camel-ride`} className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold text-sm md:text-lg hover:bg-white/20 transition-all duration-300">
                         {t.packagesBtn}
-                    </button>
+                    </Link>
                 </div>
             </div>
 

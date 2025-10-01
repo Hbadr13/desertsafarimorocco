@@ -114,7 +114,7 @@ export function Footer({ categories, lang }: FooterProps) {
                 <div className="p-2 bg-red-500 rounded-lg group-hover:bg-red-600 transition-colors">
                   <Mail className="h-4 w-4" />
                 </div>
-                <span className="text-gray-300 group-hover:text-red-400 transition-colors">desertsafarimorocco@gmail.com</span>
+                <span className="text-gray-300 group-hover:text-red-400 transition-colors break-all">desertsafarimorocco@gmail.com</span>
               </div>
 
               <div className="flex items-start gap-3 group cursor-pointer">

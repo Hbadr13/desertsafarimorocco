@@ -208,7 +208,7 @@ export default function Header({ categories, lang }: HeaderProps) {
                     {categories.slice(0, 8).map((category) => (
                       <Link
                         key={category._id?.toString()}
-                        href={`/${lang}/${category.slug}`}
+                        href={`/${lang}/categories/${category.slug}`}
                         className="flex items-center px-4 py-1 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors rounded-lg mx-2 group"
                       >
                         <div className="w-1.5 h-1.5 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity mr-3"></div>
@@ -259,12 +259,8 @@ export default function Header({ categories, lang }: HeaderProps) {
             </Link>
             <LanguageMenu lang={lang} />
 
-            {/* <Button className="ml-2 bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-all">
-              {t.bookNow}
-            </Button> */}
-          </nav>
 
-          {/* Mobile Menu Button */}
+          </nav>
           <Button
             variant="ghost"
             size="icon"
@@ -356,7 +352,7 @@ export default function Header({ categories, lang }: HeaderProps) {
                           {categories.slice(0, 8).map((category) => (
                             <Link
                               key={category._id?.toString()}
-                              href={`/${lang}/${category.slug}`}
+                              href={`/${lang}/categories/${category.slug}`}
                               className="flex items-center space-x-3 px-4 py-2.5 mx-2 rounded-lg hover:bg-white hover:shadow-sm transition-all group"
                               onClick={() => setIsMenuOpen(false)}
                             >
