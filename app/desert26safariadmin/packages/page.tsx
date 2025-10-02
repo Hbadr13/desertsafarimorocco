@@ -135,7 +135,7 @@ export default async function PackagesPage() {
                               </div>
 
                               <CardHeader className="pb-3">
-                                <CardTitle className="line-clamp-1 text-slate-800 text-lg">{pkg.title.en}</CardTitle>
+                                <CardTitle className=" text-slate-800 text-lg">{pkg.title.en}</CardTitle>
                               </CardHeader>
                               <CardContent className="pt-0 space-y-3 text-sm">
                                 <div className="flex justify-between">
@@ -147,12 +147,12 @@ export default async function PackagesPage() {
                                   <span className="font-medium">{pkg.location.en}</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
-                                  {pkg.shareTrip && <div className="flex items-center">
+                                  {pkg.shareTrip != 0 && <div className="flex items-center">
                                     <DollarSign className="w-3 h-3 mr-1 text-muted-foreground" />
                                     <span className="text-muted-foreground">Shared:</span>
                                     <span className="font-semibold ml-1">${pkg.shareTrip}</span>
                                   </div>}
-                                  {pkg.privateTrip && <div className="flex items-center">
+                                  {pkg.privateTrip != 0 && <div className="flex items-center">
                                     <DollarSign className="w-3 h-3 mr-1 text-muted-foreground" />
                                     <span className="text-muted-foreground">Private:</span>
                                     <span className="font-semibold ml-1">${pkg.privateTrip}</span>

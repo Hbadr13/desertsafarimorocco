@@ -54,7 +54,7 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
     return (
         <Card
             key={pkg._id?.toString() || pkg.slug}
-            className="max-w-[320px] border border-gray-200 rounded-lg overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-200 group/child"
+            className="max-w-[320px] w-[80vw] border border-gray-200 rounded-xl overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-200 group/child"
         >
             <div className=" h-44  w-full overflow-hidden relative">
                 <Image
@@ -83,8 +83,8 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
                         </h3>
                     </div>
 
-                    <p className="text-gray-700 text-xs mb-2 leading-relaxed line-clamp-3">
-                        {pkg.description[lang] || pkg.description.en}
+                    <p className="text-gray-700 font-medium text-xs mb-2 leading-relaxed line-clamp-3">
+                        {pkg.shortDescription[lang] || pkg.shortDescription.en}
                     </p>
 
                     <div className="flex flex-col justify-between">
@@ -114,11 +114,6 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
                             </ul>
                         </div>
                     </div>
-
-                    <div className="flex items-center gap-2 text-xs mt-3">
-                        <Shield className="h-3 w-3 text-green-600" />
-                        <span className="text-green-600 font-semibold">{t.totalIncludes}</span>
-                    </div>
                 </div>
 
                 <div className="flex flex-col gap-1 mt-1 px-1.5 md:px-4">
@@ -143,7 +138,7 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
 
                     <Link
                         href={`/${lang}/packages/${pkg.slug}`}
-                        className="bg-indigo-500 hover:bg-indigo-600 text-sm active:bg-indigo-400 text-white font-bold py-1.5 rounded-[5px] transition-all duration-200 flex items-center justify-center gap-2"
+                        className="bg-indigo-500 hover:bg-indigo-600 text-sm active:bg-indigo-400 text-white font-bold py-1.5 mb-1 rounded-[5px] transition-all duration-200 flex items-center justify-center gap-2"
                     >
                         <Calendar className="h-4 w-4" />
                         {t.bookNow}

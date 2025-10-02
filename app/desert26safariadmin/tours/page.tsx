@@ -89,7 +89,7 @@ export default async function ToursPage() {
                         </div>
                       </div>
                       <CardHeader className="pb-3">
-                        <CardTitle className="line-clamp-1 text-slate-800 text-lg">{tour.title.en}</CardTitle>
+                        <CardTitle className=" text-slate-800 text-lg">{tour.title.en}</CardTitle>
                       </CardHeader>
                       <CardContent className="pt-0">
                         <div className="flex gap-2">

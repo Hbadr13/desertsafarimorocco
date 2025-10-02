@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, Users, MapPin, Clock, Star, Shield, Check, ChevronLeft, ChevronRight, Phone, Mail, MessageCircle, User, MailIcon, PhoneIcon } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import PackageCard from "./packageCard"
+import { Swiper } from "./ui/swiper"
 
 interface PackageDetailsPageProps {
     pkg: Package
@@ -315,11 +317,14 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
         const price = selectedPackageType === 'shared' ? pkg.shareTrip : pkg.privateTrip
         return price && price > 0 ? price : 0
     }
+    const swiperItems = otherPackages.map((pkg) => (
+        <PackageCard key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
+    ))
     return (
         <div className="min-h-screen bg-white pt-10">
 
 
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left Column - Package Details */}
                     <div className="lg:col-span-2 space-y-8">
@@ -480,7 +485,7 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                                     <div className="bg-white rounded-lg border border-green-100 p-4">
                                                         <div className="flex items-center justify-between">
                                                             <span className="text-sm font-semibold text-gray-900">{t.content.experience}</span>
-                                                            <span className="text-sm text-green-600 font-bold">4.8/5</span>
+                                                            <span className="text-sm text-green-600 font-bold">3.8/5</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -550,42 +555,7 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                         </div>
 
                         {/* Other Packages */}
-                        {otherPackages.length > 0 && (
-                            <div className="border-t pt-8">
-                                <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.content.otherPackages}</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {otherPackages.map((otherPkg, index) => {
-                                        const otherPkgTitle = otherPkg.title?.[lang] || otherPkg.title?.en || ""
-                                        const otherPkgDescription = otherPkg.description?.[lang] || otherPkg.description?.en || ""
 
-                                        return (
-                                            <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer border-blue-100">
-                                                <CardContent className="p-0">
-                                                    <div className="p-4">
-                                                        <h3 className="font-semibold text-gray-900 mb-2">{otherPkgTitle}</h3>
-                                                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                                                            <span>{otherPkg.duration?.[lang] || otherPkg.duration?.en || ""}</span>
-                                                            <span>•</span>
-                                                            <span>{t.content.from} ${otherPkg.shareTrip}</span>
-                                                        </div>
-                                                        <p className="text-sm text-gray-600 line-clamp-2">
-                                                            {otherPkgDescription.slice(0, 100)}...
-                                                        </p>
-                                                    </div>
-                                                    <div className="border-t border-gray-100 p-4">
-                                                        <Link href={`/${lang}/packages/${otherPkg.slug}`}>
-                                                            <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                                                                {t.content.viewPackageDetails}
-                                                            </Button>
-                                                        </Link>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     {/* Right Column - Booking Widget */}
@@ -605,18 +575,15 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                             {t.booking.contactUsForPrice}
                                         </div>
                                     )}
-                                    <Badge className="bg-green-100 text-green-800 border-0 mt-2">
-                                        {t.booking.freeCancellation}
-                                    </Badge>
                                 </div>
 
                                 <form onSubmit={handleReservation} className="space-y-4">
                                     {/* Trip Type - Only show if prices exist */}
-                                    {(hasSharedPrice || hasPrivatePrice) && (
+                                    {(hasSharedPrice != 0 || hasPrivatePrice != 0) && (
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">{t.booking.selectTripType}</label>
                                             <div className="grid grid-cols-2 gap-3">
-                                                {hasSharedPrice && (
+                                                {hasSharedPrice != 0 && (
                                                     <button
                                                         type="button"
                                                         onClick={() => setSelectedPackageType('shared')}
@@ -630,7 +597,7 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                                         <div className="text-lg font-bold">${pkg.shareTrip}</div>
                                                     </button>
                                                 )}
-                                                {hasPrivatePrice && (
+                                                {hasPrivatePrice != 0 && (
                                                     <button
                                                         type="button"
                                                         onClick={() => setSelectedPackageType('private')}
@@ -859,6 +826,21 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                         </Card>
                     </div>
                 </div>
+            </div>
+
+            <div className="border-t border-gray-200">
+
+                {otherPackages.length > 0 && (
+                    <div className=" pt-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        <h2 className=" text-2xl md:text-5xl font-bold text-gray-900 mb-6">{t.content.otherPackages}</h2>
+                        <Swiper
+                            items={swiperItems}
+                            cardWidth={340}
+                            cardGap={2}
+                            showNavigation={true}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )

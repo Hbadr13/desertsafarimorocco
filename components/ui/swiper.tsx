@@ -132,17 +132,17 @@ export function Swiper({
       {showNavigation && canScrollLeft && (
         <button
           onClick={scrollLeft}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white border rounded-full p-2 transition-all duration-200 opacity-0 group-hover/parent:opacity-100"
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white/50 border border-gray-300 rounded-full p-1 transition-all duration-200 opacity-0 group-hover/parent:opacity-100"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <ChevronLeft className="h-5 w-5 text-blue-600" />
         </button>
       )}
       {showNavigation && canScrollRight && (
         <button
           onClick={scrollRight}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white border rounded-full p-2 transition-all duration-200 opacity-0 group-hover/parent:opacity-100"
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white/50 border border-gray-300 rounded-full p-1 transition-all duration-200 opacity-0 group-hover/parent:opacity-100"
         >
-          <ChevronRight className="h-5 w-5" />
+          <ChevronRight className="h-5 w-5 text-blue-600" />
         </button>
       )}
 
@@ -156,6 +156,9 @@ export function Swiper({
           onTouchEnd={handleTouchEnd}
         >
           {items.map((item, index) => (
+            // <div className="">
+            //   {item}
+            // </div>
             <div key={index} style={{ minWidth: `${cardWidth}px` }} className="px-2 transition-transform duration-300">
               {item}
             </div>

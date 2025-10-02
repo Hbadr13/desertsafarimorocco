@@ -1,4 +1,3 @@
-
 "use client"
 import { Category } from "@/lib/models"
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react"
@@ -10,16 +9,77 @@ interface FooterProps {
 }
 
 export function Footer({ categories, lang }: FooterProps) {
+  // Multilingual content
+  const translations = {
+    en: {
+      companyDescription: "Your trusted partner for authentic Moroccan adventures. Experience the magic of Morocco with our expert guides and carefully curated tours.",
+      quickLinks: "Quick Links",
+      home: "Home",
+      allTours: "All Tours",
+      packages: "Packages",
+      aboutUs: "About Us",
+      contact: "Contact",
+      tourCategories: "Tour Categories",
+      allCategories: "All Categories",
+      contactUs: "Contact Us",
+      copyright: "© 2026 Desert Safaris Morocco. All rights reserved.",
+      privacyPolicy: "Privacy Policy",
+      termsOfService: "Terms of Service",
+      cookiePolicy: "Cookie Policy"
+    },
+    fr: {
+      companyDescription: "Votre partenaire de confiance pour des aventures marocaines authentiques. Vivez la magie du Maroc avec nos guides experts et nos circuits soigneusement organisés.",
+      quickLinks: "Liens Rapides",
+      home: "Accueil",
+      allTours: "Tous les Circuits",
+      packages: "Forfaits",
+      aboutUs: "À Propos",
+      contact: "Contact",
+      tourCategories: "Catégories de Circuits",
+      allCategories: "Toutes les Catégories",
+      contactUs: "Contactez-Nous",
+      copyright: "© 2026 Desert Safaris Morocco. Tous droits réservés.",
+      privacyPolicy: "Politique de Confidentialité",
+      termsOfService: "Conditions d'Utilisation",
+      cookiePolicy: "Politique des Cookies"
+    },
+    es: {
+      companyDescription: "Su socio de confianza para auténticas aventuras marroquíes. Experimente la magia de Marruecos con nuestros guías expertos y tours cuidadosamente seleccionados.",
+      quickLinks: "Enlaces Rápidos",
+      home: "Inicio",
+      allTours: "Todos los Tours",
+      packages: "Paquetes",
+      aboutUs: "Sobre Nosotros",
+      contact: "Contacto",
+      tourCategories: "Categorías de Tours",
+      allCategories: "Todas las Categorías",
+      contactUs: "Contáctenos",
+      copyright: "© 2026 Desert Safaris Morocco. Todos los derechos reservados.",
+      privacyPolicy: "Política de Privacidad",
+      termsOfService: "Términos de Servicio",
+      cookiePolicy: "Política de Cookies"
+    }
+  }
+
+  const t = translations[lang]
+
   const quickLinks = [
-    { href: "/", label: "Home" },
-    { href: "/tours", label: "All Tours" },
-    { href: "/packages", label: "Packages" },
-    { href: "/about", label: "About Us" },
-    { href: "/contact", label: "Contact" },
+    { href: `/${lang}`, label: t.home },
+    { href: `/${lang}/categories`, label: t.allTours },
+    { href: `/${lang}/packages`, label: t.packages },
+    { href: `/${lang}/about`, label: t.aboutUs },
+    { href: `/${lang}/contact`, label: t.contact },
   ]
+
   const pathname = usePathname()
   if (pathname.startsWith('/desert26safariadmin')) {
-    return null;
+    return null
+  }
+
+  // Helper function to get category title in current language
+  const getCategoryTitle = (category: Category) => {
+    if (typeof category.title === 'string') return category.title
+    return category.title?.[lang] || category.title?.en || "Untitled"
   }
 
   return (
@@ -32,8 +92,7 @@ export function Footer({ categories, lang }: FooterProps) {
               Desert Safaris Morocco
             </h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              Your trusted partner for authentic Moroccan adventures. Experience the magic of Morocco with our expert
-              guides and carefully curated tours.
+              {t.companyDescription}
             </p>
             <div className="flex gap-4">
               <div className="p-2 bg-amber-500 rounded-full cursor-pointer hover:bg-amber-600 transition-colors">
@@ -53,7 +112,7 @@ export function Footer({ categories, lang }: FooterProps) {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-lg mb-4 text-amber-400">Quick Links</h4>
+            <h4 className="font-semibold text-lg mb-4 text-amber-400">{t.quickLinks}</h4>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.href}>
@@ -71,16 +130,16 @@ export function Footer({ categories, lang }: FooterProps) {
 
           {/* Categories */}
           <div>
-            <h4 className="font-semibold text-lg mb-4 text-green-400">Tour Categories</h4>
+            <h4 className="font-semibold text-lg mb-4 text-green-400">{t.tourCategories}</h4>
             <ul className="space-y-3">
               {categories.slice(0, 6).map((category) => (
                 <li key={category.slug}>
                   <a
-                    href={`/${category.slug}`}
+                    href={`/${lang}/categories/${category.slug}`}
                     className="text-gray-300 hover:text-green-400 transition-colors duration-200 flex items-center group"
                   >
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                    {category.title.en}
+                    {getCategoryTitle(category)}
                   </a>
                 </li>
               ))}
@@ -88,20 +147,19 @@ export function Footer({ categories, lang }: FooterProps) {
             <ul className="space-y-3 mt-3">
               <li key={'all'}>
                 <a
-                  href={`/all-categories`}
+                  href={`/${lang}/all-categories`}
                   className="text-gray-300 hover:text-green-400 transition-colors duration-200 flex items-center group"
                 >
                   <span className="w-2 h-2 bg-green-500 rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
-                  All Categories
+                  {t.allCategories}
                 </a>
               </li>
             </ul>
-
           </div>
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-semibold text-lg mb-4 text-blue-400">Contact Us</h4>
+            <h4 className="font-semibold text-lg mb-4 text-blue-400">{t.contactUs}</h4>
             <div className="space-y-4">
               <div className="flex items-center gap-3 group cursor-pointer">
                 <div className="p-2 bg-blue-500 rounded-lg group-hover:bg-blue-600 transition-colors">
@@ -135,13 +193,9 @@ export function Footer({ categories, lang }: FooterProps) {
         <div className="border-t border-gray-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              &copy; 2026 Desert Safaris Morocco. All rights reserved.
+              {t.copyright}
             </p>
-            <div className="flex gap-6 text-gray-400 text-sm">
-              <a href="/privacy" className="hover:text-amber-400 transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-amber-400 transition-colors">Terms of Service</a>
-              <a href="/cookies" className="hover:text-amber-400 transition-colors">Cookie Policy</a>
-            </div>
+
           </div>
         </div>
       </div>

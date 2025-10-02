@@ -6,7 +6,7 @@ import { Poppins } from 'next/font/google'
 import { getDatabase } from '@/lib/mongodb'
 import { Category } from '@/lib/models'
 import { Footer } from '@/components/footer'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 // Load Poppins font
@@ -24,6 +24,7 @@ export default function RootLayout({
 
   const [categories, setCategories] = useState<any[]>([])
   const pathname = usePathname()
+  const router = useRouter()
   useEffect(() => {
     fetch(`/api/client/categories`)
       .then(res => res.json())
@@ -36,7 +37,8 @@ export default function RootLayout({
         })))
       })
   }, [])
-
+  if (pathname == '/')
+    router.push('/en')
   return (
     <html lang="en" className={poppins.className}>
       <head />

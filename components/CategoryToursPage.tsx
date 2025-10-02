@@ -136,8 +136,8 @@ export function CategoryToursPage({ category, tours, allCategories, lang, transl
 
                                         <Swiper
                                             items={packageSwiperItems(tour.packages)}
-                                            cardWidth={380}
-                                            cardGap={24}
+                                            cardWidth={340}
+                                            cardGap={1}
                                             showNavigation={true}
                                         />
                                     </div>
@@ -163,7 +163,7 @@ export function CategoryToursPage({ category, tours, allCategories, lang, transl
                             <Swiper
                                 items={swiperItems}
                                 cardWidth={340}
-                                cardGap={2}
+                                cardGap={1}
                                 showNavigation={true}
                             />
 

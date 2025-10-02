@@ -145,23 +145,20 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
     })
 
     return (
-        <section className="py-16 bg-white">
+        <section className="py-10 bg-white">
             <div className="max-w-7xl mx-auto px-4">
                 {/* Header */}
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                <div className="text-center mb-7">
+                    <h2 className=" text-xl md:text-3xl font-bold text-gray-900 mb-3">
                         {t.header.title}
                     </h2>
-                    <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                        {t.header.subtitle}
-                    </p>
                 </div>
 
                 {/* Swiper */}
                 <Swiper
                     items={swiperItems}
-                    cardWidth={350}
-                    cardGap={24}
+                    cardWidth={340}
+                    cardGap={1}
                     showNavigation={true}
                 />
             </div>

@@ -12,11 +12,12 @@ import Link from "next/link"
 interface TopTripsProps {
     packages: Package[]
     lang: 'fr' | 'es' | 'en'
+    index: number
 }
 
-export function TopTrips({ packages, lang }: TopTripsProps) {
+export function TopTrips({ packages, lang, index }: TopTripsProps) {
     // Translations for all text in the component
-    const translations = {
+    const translations = [{
         en: {
             title: "Best Deals in Marrakech",
             subtitle: "Handpicked experiences with the best value and reviews",
@@ -32,9 +33,26 @@ export function TopTrips({ packages, lang }: TopTripsProps) {
             subtitle: "Experiencias seleccionadas con la mejor relación calidad-precio y reseñas",
             viewAll: "Ver Todos los Paquetes"
         }
-    }
+    },
+    {
+        en: {
+            title: "Desert Safaris Day Tours",
+            subtitle: "Unforgettable desert adventures from Marrakech with great deals",
+            viewAll: "View All Desert Packages"
+        },
+        fr: {
+            title: "Excursions Journalières dans le Désert",
+            subtitle: "Aventures inoubliables depuis Marrakech avec les meilleures offres",
+            viewAll: "Voir Tous les Forfaits Désert"
+        },
+        es: {
+            title: "Excursiones de Un Día al Desierto",
+            subtitle: "Aventuras inolvidables desde Marrakech con las mejores ofertas",
+            viewAll: "Ver Todos los Paquetes del Desierto"
+        }
+    }]
 
-    const t = translations[lang]
+    const t = translations[index][lang]
 
     const swiperItems = packages.map((pkg) => (
         <PackageCard key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
@@ -44,10 +62,10 @@ export function TopTrips({ packages, lang }: TopTripsProps) {
         <section className="py-16 bg-white">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text- mb-2">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                    <h2 className=" text-xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-3">
                         {t.title}
                     </h2>
-                    <p className="text-blue-800 text-lg mx-auto">
+                    <p className="text-blue-800 text-sm  md:text-lg mx-auto">
                         {t.subtitle}
                     </p>
                 </div>
@@ -55,13 +73,13 @@ export function TopTrips({ packages, lang }: TopTripsProps) {
                 <Swiper
                     items={swiperItems}
                     cardWidth={340}
-                    cardGap={2}
+                    cardGap={1}
                     showNavigation={true}
                 />
 
                 {/* Bottom CTA */}
-                <div className="text-center mt-12">
-                    <Link href={`/${lang}/packages`}>
+                <div className="text-center mt-4">
+                    <Link href={`/${lang}/categories/desert-safaris`}>
                         <Button variant="outline" size="lg" className="border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold">
                             {t.viewAll}
                         </Button>

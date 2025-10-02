@@ -64,16 +64,13 @@ export function CategoriesSection({ categories, lang }: { categories: Array<Cate
                     showNavigation={true}
                 />
 
-                <div className="text-center mt-12">
+                <div className="text-center mt-6">
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <Link href={`/${lang}/categories`}>
                             <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8">
                                 {t.browseAll}
                             </Button>
                         </Link>
-                        <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold">
-                            {t.specialOffers}
-                        </Button>
                     </div>
                 </div>
             </div>

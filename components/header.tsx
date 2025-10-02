@@ -176,7 +176,7 @@ export default function Header({ categories, lang }: HeaderProps) {
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold text-gray-900 leading-tight">
-                Desert Safari Morocco
+                Desert Safaris Morocco
               </span>
             </div>
           </Link>
@@ -291,8 +291,7 @@ export default function Header({ categories, lang }: HeaderProps) {
                     <MapPin className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-lg font-bold text-gray-900">Desert Safari Morocco</span>
-                    <span className="text-xs text-gray-600">Adventure Awaits</span>
+                    <span className="text-lg font-bold text-gray-900">Desert Safaris Morocco</span>
                   </div>
                 </div>
                 <Button

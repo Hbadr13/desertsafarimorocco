@@ -43,7 +43,7 @@ const CategoryCard = ({ category, lang }: { category: Category, lang: 'fr' | 'es
                         {category.shortDescription[lang]}
                     </p>
                     <div className="w-full flex justify-end">
-                        <Link href={`/${lang}/${category.slug}`} className=" rounded-xl flex items-center py-1 px-3 justify-center duration-200  w-max hover:bg-blue-100 text-blue-500 font-semibold mt-auto gap-2">
+                        <Link href={`/${lang}/categories/${category.slug}`} className=" rounded-xl flex items-center py-1 px-3 justify-center duration-200  w-max hover:bg-blue-100 text-blue-500 font-semibold mt-auto gap-2">
                             Explore Options <ArrowRight className="h-4 w-4" />
                         </Link>
                     </div>

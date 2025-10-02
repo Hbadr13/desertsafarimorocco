@@ -329,8 +329,9 @@ export default function EditPackagePage({
         const data = await response.json()
         throw new Error(data.error || "Failed to create package")
       }
+      window.location.href = "/desert26safariadmin/packages"
 
-      router.push("/desert26safariadmin/packages")
+      // router.push("/desert26safariadmin/packages")
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {

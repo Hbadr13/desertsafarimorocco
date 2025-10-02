@@ -6,6 +6,8 @@ import { CategoriesSection } from "@/components/CategoriesSection"
 import { KeyFeatures } from "@/components/key-features"
 import { ToursSection } from "@/components/ToursSection"
 import { TopTrips } from "@/components/TopTrips"
+import { ObjectId } from "mongodb"
+import GallerySection from "@/components/GallerySection"
 
 const LANGS = ["en", "fr", "es"]
 const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris morocco"
@@ -33,8 +35,8 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
     const t = translations[lang]
 
     return {
-        title: t.title,
-        description: t.description,
+        title: t?.title,
+        description: t?.description,
         metadataBase: new URL(SITE_URL),
         keywords: `desert safaris, morocco tours, sahara desert, ${lang}, luxury travel`,
         openGraph: {
@@ -87,15 +89,17 @@ async function getHomeData() {
         const db = await getDatabase()
 
         // Get all data in parallel
-        const [categories, packages, tours] = await Promise.all([
+        const [categories, packagesDay, packagesMarrakech, tours] = await Promise.all([
             db.collection<Category>("categories").find({}).toArray(),
-            db.collection<Package>("packages").find({}).limit(12).toArray(), // Limit packages for home page
+            db.collection<Package>("packages").find({ tourId: new ObjectId('68d9b92cabc6733561312e71') }).limit(12).toArray(),
+            db.collection<Package>("packages").find({ tourId: new ObjectId('68dbc748e852b9e051011779') }).limit(12).toArray(),
             db.collection<Tour>("tours").find({}).toArray()
         ])
 
         return {
             categories,
-            packages,
+            packagesDay,
+            packagesMarrakech,
             tours
         }
     } catch (error) {
@@ -111,7 +115,7 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
         return <div>Not Found</div>
     }
 
-    const { categories, packages, tours } = await getHomeData()
+    const { categories, packagesDay, packagesMarrakech, tours } = await getHomeData()
 
     // Structured Data for SEO
     const structuredData = {
@@ -127,8 +131,8 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
         },
         "offers": {
             "@type": "AggregateOffer",
-            "offerCount": packages.length,
-            "offers": packages.slice(0, 5).map((pkg: Package) => ({
+            "offerCount": packagesDay?.concat(packagesMarrakech || []).length,
+            "offers": packagesDay?.concat(packagesMarrakech || []).slice(0, 9).map((pkg: Package) => ({
                 "@type": "Offer",
                 "name": pkg.title?.en || "",
                 "description": pkg.shortDescription?.en || "",
@@ -137,10 +141,20 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
             }))
         }
     }
-
+    interface CategoryImage {
+        id: string
+        url: string
+        packageTitle: {
+            en: string,
+            fr: string,
+            es: string
+        },
+        packageSlug: string
+    }
+    const imagesUrl: CategoryImage[] = []
+    packagesMarrakech?.concat(packagesDay).forEach((pk) => pk.images.forEach((url) => imagesUrl.push({ id: pk._id.toString(), url: url, packageSlug: pk.slug, packageTitle: pk.title })))
     return (
         <>
-            {/* Structured Data for SEO */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -150,9 +164,14 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
                 <main className="flex-1">
                     <HeroSection lang={lang} />
                     <CategoriesSection categories={categories} lang={lang} />
-                    <TopTrips packages={packages} lang={lang} />
+                    <TopTrips index={0} packages={packagesMarrakech || []} lang={lang} />
+                    <TopTrips index={1} packages={packagesDay || []} lang={lang} />
                     <ToursSection tours={tours} lang={lang} />
                     <KeyFeatures lang={lang} />
+                    <div className=" max-w-5xl mx-auto pb-10">
+
+                        {packagesMarrakech && packagesDay && <GallerySection lang={lang} images={imagesUrl} />}
+                    </div>
                 </main>
             </div>
         </>

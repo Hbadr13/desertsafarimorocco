@@ -62,7 +62,7 @@ export default async function CategoriesPage() {
                   </div>
                 </div>
                 <CardHeader className="pb-3">
-                  <CardTitle className="line-clamp-1 text-slate-800 text-lg">{category.title.en}</CardTitle>
+                  <CardTitle className="text-slate-800 text-lg">{category.title.en}</CardTitle>
                   <CardDescription className="line-clamp-2 text-slate-600">
                     {category.shortDescription.en || "No description available"}
                   </CardDescription>
