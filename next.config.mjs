@@ -14,7 +14,12 @@ const nextConfig = {
       {
         source: '/',
         destination: '/en',
-        permanent: true, // 301 redirect
+        permanent: true,
+      },
+      {
+        source: '/desert26safariadmin',
+        destination: '/desert26safariadmin/dashboard',
+        permanent: true,
       },
     ]
   },

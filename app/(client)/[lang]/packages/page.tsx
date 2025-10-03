@@ -1,3 +1,4 @@
+export const revalidate = 60;
 import { Package } from "@/lib/models"
 import { Star, MapPin, Clock, Users, Shield } from "lucide-react"
 import Image from "next/image"

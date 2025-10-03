@@ -1,4 +1,5 @@
 // app/[lang]/categories/page.tsx
+export const revalidate = 60;
 import { Category } from "@/lib/models"
 import { MapPin, ArrowRight, Shield, Users, Star } from "lucide-react"
 import Image from "next/image"

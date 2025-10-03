@@ -1,15 +1,17 @@
+export const dynamic = "force-dynamic"
+
 import { getDatabase } from "@/lib/mongodb"
 import type { Category, Tour, Package, User, Booking } from "@/lib/models"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { 
-  FolderOpen, 
-  MapPin, 
-  PackageIcon, 
-  Users, 
-  Calendar, 
-  TrendingUp, 
+import {
+  FolderOpen,
+  MapPin,
+  PackageIcon,
+  Users,
+  Calendar,
+  TrendingUp,
   DollarSign,
   BookOpen,
   BarChart3,
@@ -185,66 +187,66 @@ export default async function AdminDashboard() {
           </Card>
         </div>
 
-          <Card className="shadow-lg border-0 rounded-2xl overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-700">
-              <CardHeader className="pb-3 border-b border-blue-500/20">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Calendar className="h-5 w-5" />
-                      Recent Bookings
-                    </CardTitle>
-                    <CardDescription className="text-blue-100/80">
-                      Latest customer reservations
-                    </CardDescription>
-                  </div>
-                  <Link href="/desert26safariadmin/bookings">
-                    <Button variant="ghost" size="sm" className="text-white hover:bg-blue-700">
-                      View All
-                      <ArrowRight className="h-4 w-4 ml-1" />
-                    </Button>
-                  </Link>
+        <Card className="shadow-lg border-0 rounded-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700">
+            <CardHeader className="pb-3 border-b border-blue-500/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Calendar className="h-5 w-5" />
+                    Recent Bookings
+                  </CardTitle>
+                  <CardDescription className="text-blue-100/80">
+                    Latest customer reservations
+                  </CardDescription>
                 </div>
-              </CardHeader>
-            </div>
-            <CardContent className="p-6">
-              {stats.recentBookings.length > 0 ? (
-                <div className="space-y-4">
-                  {stats.recentBookings.map((booking) => (
-                    <div key={booking._id?.toString()} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
-                      <div className="flex-1">
-                        <p className="font-medium text-slate-800">{booking.name}</p>
-                        <p className="text-sm text-slate-500">{booking.email}</p>
-                        <p className="text-xs text-slate-400 mt-1">
-                          {booking.createdAt ? new Date(booking.createdAt).toLocaleDateString() : "Date not available"}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <Badge 
-                          variant={booking.status === "confirmed" ? "default" : "secondary"} 
-                          className={
-                            booking.status === "confirmed" 
-                              ? "bg-green-100 text-green-800 border-green-200" 
-                              : "bg-blue-100 text-blue-800 border-blue-200"
-                          }
-                        >
-                          {booking.status}
-                        </Badge>
-                      </div>
+                <Link href="/desert26safariadmin/bookings">
+                  <Button variant="ghost" size="sm" className="text-white hover:bg-blue-700">
+                    View All
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </Link>
+              </div>
+            </CardHeader>
+          </div>
+          <CardContent className="p-6">
+            {stats.recentBookings.length > 0 ? (
+              <div className="space-y-4">
+                {stats.recentBookings.map((booking) => (
+                  <div key={booking._id?.toString()} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <div className="flex-1">
+                      <p className="font-medium text-slate-800">{booking.name}</p>
+                      <p className="text-sm text-slate-500">{booking.email}</p>
+                      <p className="text-xs text-slate-400 mt-1">
+                        {booking.createdAt ? new Date(booking.createdAt).toLocaleDateString() : "Date not available"}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <div className="p-3 bg-slate-100 rounded-full inline-flex mb-4">
-                    <Sparkles className="h-8 w-8 text-slate-400" />
+                    <div className="text-right">
+                      <Badge
+                        variant={booking.status === "confirmed" ? "default" : "secondary"}
+                        className={
+                          booking.status === "confirmed"
+                            ? "bg-green-100 text-green-800 border-green-200"
+                            : "bg-blue-100 text-blue-800 border-blue-200"
+                        }
+                      >
+                        {booking.status}
+                      </Badge>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-700 mb-2">No bookings yet</h3>
-                  <p className="text-slate-500">Customer bookings will appear here</p>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="p-3 bg-slate-100 rounded-full inline-flex mb-4">
+                  <Sparkles className="h-8 w-8 text-slate-400" />
                 </div>
-              )}
-            </CardContent>
-          </Card>
+                <h3 className="text-lg font-semibold text-slate-700 mb-2">No bookings yet</h3>
+                <p className="text-slate-500">Customer bookings will appear here</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
       </div>
     </div>

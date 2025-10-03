@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import { getDatabase } from "@/lib/mongodb"
 import type { Package, Tour, Category } from "@/lib/models"
 import { Button } from "@/components/ui/button"

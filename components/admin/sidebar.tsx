@@ -26,7 +26,6 @@ const sidebarItems = [
   { title: "Packages", href: "/desert26safariadmin/packages", icon: Package },
   { title: "Users", href: "/desert26safariadmin/users", icon: Users },
   { title: "Bookings", href: "/desert26safariadmin/bookings", icon: Calendar },
-  { title: "Settings", href: "/desert26safariadmin/settings", icon: Settings },
 ]
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {

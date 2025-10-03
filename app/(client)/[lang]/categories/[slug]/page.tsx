@@ -1,4 +1,5 @@
 // app/[lang]/categories/[slug]/page.tsx
+export const revalidate = 60;
 import { getDatabase } from "@/lib/mongodb"
 import { Category, Tour, Package } from "@/lib/models"
 import { CategoryToursPage } from "@/components/CategoryToursPage"

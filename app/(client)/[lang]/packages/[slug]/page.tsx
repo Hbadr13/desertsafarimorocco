@@ -1,4 +1,5 @@
 // app/[lang]/packages/[slug]/page.tsx
+export const revalidate = 60;
 import { getDatabase } from "@/lib/mongodb"
 import { Package, Tour } from "@/lib/models"
 import { PackageDetailsPage } from "@/components/PackageDetailsPage"

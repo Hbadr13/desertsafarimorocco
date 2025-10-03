@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import { getDatabase } from "@/lib/mongodb"
 import type { Booking } from "@/lib/models"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"

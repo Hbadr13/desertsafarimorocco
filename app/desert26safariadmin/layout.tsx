@@ -30,6 +30,8 @@ export default function AdminLayout({
   }, [pathname, router])
   if (pathname === '/desert26safariadmin/reset-password' || pathname === "/desert26safariadmin/forgot-password" || pathname === "/desert26safariadmin/login")
     return <div className="">{children}</div>
+  if (pathname === '/desert26safariadmin')
+    router.push('desert26safariadmin/dashboard')
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[180px_1fr]">
       <Sidebar />
