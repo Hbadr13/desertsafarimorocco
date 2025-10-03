@@ -56,9 +56,10 @@ export function TopTrips({ packages, lang, index }: TopTripsProps) {
     const t = translations[index][lang]
 
     const swiperItems = packages.map((pkg) => (
-        index == 0 ?
-            <PackageCard key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} /> :
-            <PackageCardV2 key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
+        // index == 0 ?
+        <PackageCard key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
+        // :
+        // <PackageCardV2 key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
     ))
 
     return (
