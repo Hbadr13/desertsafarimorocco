@@ -193,7 +193,7 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
 
             images: [
                 {
-                    url: `${WEBSITE_NAME}/image_processing20190808-4-1vbvby8.jpg`,
+                    url: `${WEBSITE_NAME}/TravelPackages-bg.png`,
                     width: 1200,
                     height: 630,
                     alt: 'Travel packages',
@@ -297,12 +297,12 @@ export default async function PackagesPage({ params }: { params: { lang: "en" | 
             <div className="min-h-screen bg-gray-50">
                 <div className="relative py-16 overflow-hidden">
                     <Image
-                        src="/image_processing20190808-4-1vbvby8.jpg"
+                        src="/TravelPackages-bg.png"
                         alt="Travel Packages"
                         fill
                         className="object-cover"
                         priority
-                        quality={85}
+                        quality={100}
                     />
                     <div className="absolute inset-0 bg-black/40"></div>
 

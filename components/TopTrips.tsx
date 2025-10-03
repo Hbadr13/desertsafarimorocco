@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Swiper } from "./ui/swiper"
 import { Package } from "@/lib/models"
 import { Badge } from "@/components/ui/badge"
-import { MapPin, Clock, Users, Star, ArrowRight, Shield } from "lucide-react"
+import { MapPin, Clock, Users, Star, ArrowRight, Shield, LucideArrowLeft } from "lucide-react"
 import PackageCard from "./packageCard"
 import Link from "next/link"
+import PackageCardV2 from "./packageCardV2"
 
 interface TopTripsProps {
     packages: Package[]
@@ -55,12 +56,14 @@ export function TopTrips({ packages, lang, index }: TopTripsProps) {
     const t = translations[index][lang]
 
     const swiperItems = packages.map((pkg) => (
-        <PackageCard key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
+        index == 0 ?
+            <PackageCard key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} /> :
+            <PackageCardV2 key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
     ))
 
     return (
-        <section className="py-16 bg-white">
-            <div className="max-w-7xl mx-auto px-4">
+        <section className={`py-16 ${index == 0 ? 'bg-white' : ''}`}>
+            <div className="max-w-7xl mx-auto px-2 md:px-4">
                 <div className="text- mb-2">
                     <h2 className=" text-xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-3">
                         {t.title}
@@ -72,17 +75,15 @@ export function TopTrips({ packages, lang, index }: TopTripsProps) {
 
                 <Swiper
                     items={swiperItems}
-                    cardWidth={340}
-                    cardGap={1}
-                    showNavigation={true}
                 />
 
                 {/* Bottom CTA */}
-                <div className="text-center mt-4">
-                    <Link href={`/${lang}/categories/desert-safaris`}>
-                        <Button variant="outline" size="lg" className="border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold">
-                            {t.viewAll}
-                        </Button>
+                <div className=" mt-4 w-max ">
+                    <Link
+                        className={`${index == 0 ? 'border-blue-600 text-blue-600 hover:bg-blue-50 ' : 'text-white hover:bg-blue-50/25'} transition-all duration-200  rounded-xl px-2 border-0  font-semibold flex items-center space-x-1`}
+                        href={`/${lang}/categories/desert-safaris`}>
+                        {t.viewAll}
+                        <ArrowRight className="rotate- " />
                     </Link>
                 </div>
             </div>

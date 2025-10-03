@@ -2,6 +2,7 @@
 
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 type Language = "en" | "fr" | "es";
 
@@ -221,22 +222,42 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
     };
 
     return (
-        <div className="min-h-screen  bg-white py-12 pt-20">
-            <div className="max-w-7xl mx-auto px-4">
-                {/* Header Section */}
-                <div className="text-center max-w-3xl mx-auto mb-16">
-                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-amber-100 border border-amber-200 mb-6">
-                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></span>
-                        <span className="text-amber-800 text-sm font-medium">Contact Us</span>
+        <div className="min-h-screen bg-white pt-12">
+            {/* Hero Section with Background Image */}
+            <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-r from-black/60 to-black/40">
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src="/contact-us-bg-marrakech.png" // Replace with your actual contact image path
+                        alt="Moroccan Desert Contact"
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="100vw"
+                    />
+                    {/* Overlay for better text readability */}
+                    <div className="absolute inset-0 bg-black/40"></div>
+                </div>
+
+                {/* Hero Content */}
+                <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
+                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-300/30 mb-6">
+                        <span className="w-2 h-2 bg-amber-400 rounded-full mr-2 animate-pulse"></span>
+                        <span className="text-amber-100 text-sm font-medium">Contact Us</span>
                     </div>
-                    <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+
+                    <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                         {t.contactTitle}
                     </h1>
-                    <p className="text-xl text-gray-700 leading-relaxed">
+
+                    <p className="text-lg md:text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
                         {t.contactSubtitle}
                     </p>
                 </div>
+            </section>
 
+            {/* Contact Form Section */}
+            <div className="max-w-7xl mx-auto px-4 py-16">
                 <div className="grid lg:grid-cols-3 gap-12">
                     {/* Contact Information */}
                     <div className="lg:col-span-1 space-y-8">
@@ -246,7 +267,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                             <div className="space-y-6">
                                 {/* Address */}
                                 <div className="flex items-start">
-                                    <div className="w-12 h-12 bg-blue-400 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -260,7 +281,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
 
                                 {/* Phone */}
                                 <div className="flex items-start">
-                                    <div className="w-12 h-12 bg-blue-400 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                         </svg>
@@ -273,7 +294,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
 
                                 {/* Email */}
                                 <div className="flex items-start">
-                                    <div className="w-12 h-12 bg-blue-400 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
@@ -286,7 +307,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
 
                                 {/* Hours */}
                                 <div className="flex items-start">
-                                    <div className="w-12 h-12 bg-blue-400 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
@@ -300,18 +321,18 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                         </div>
 
                         {/* Social Media */}
-                        <div className="bg-gradient-to-br from-blue-300 to-blue-500 rounded-2xl p-8 shadow-xl text-white">
+                        <div className="bg-gradient-to-br from-amber-500 to-amber-400 rounded-2xl p-8 shadow-xl text-white">
                             <h3 className="text-xl font-bold mb-4">{t.followUs}</h3>
                             <div className="flex space-x-4">
                                 {[
-                                    { name: 'Facebook', icon: <Facebook />, color: 'bg-blue-600' },
-                                    { name: 'Instagram', icon: <Instagram />, color: 'bg-pink-600' },
-                                    { name: 'Twitter', icon: <Twitter />, color: 'bg-blue-400' },
-                                    { name: 'YouTube', icon: <Youtube />, color: 'bg-red-600' }
+                                    { name: 'Facebook', icon: <Facebook className="w-5 h-5" />, color: 'hover:bg-amber-600' },
+                                    { name: 'Instagram', icon: <Instagram className="w-5 h-5" />, color: 'hover:bg-pink-600' },
+                                    { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, color: 'hover:bg-amber-400' },
+                                    { name: 'YouTube', icon: <Youtube className="w-5 h-5" />, color: 'hover:bg-red-600' }
                                 ].map((social, index) => (
                                     <button
                                         key={index}
-                                        className={`w-12 h-12  rounded-xl flex items-center justify-center text-white font-bold transition-transform hover:scale-110`}
+                                        className={`w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-white transition-all duration-300 hover:bg-white/30 hover:scale-110 backdrop-blur-sm`}
                                     >
                                         {social.icon}
                                     </button>
@@ -337,7 +358,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                             value={formData.name}
                                             onChange={handleChange}
                                             className={`w-full px-4 py-3 rounded-xl border ${errors.name ? 'border-red-500' : 'border-gray-300'
-                                                } focus:ring-2 focus:ring-gray-100 focus:border-transparent transition-all`}
+                                                } focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all`}
                                             placeholder={t.namePlaceholder}
                                         />
                                         {errors.name && (
@@ -357,7 +378,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                             value={formData.email}
                                             onChange={handleChange}
                                             className={`w-full px-4 py-3 rounded-xl border ${errors.email ? 'border-red-500' : 'border-gray-300'
-                                                } focus:ring-2 focus:ring-gray-100 focus:border-transparent transition-all`}
+                                                } focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all`}
                                             placeholder={t.emailPlaceholder}
                                         />
                                         {errors.email && (
@@ -378,7 +399,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                             name="phone"
                                             value={formData.phone}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gray-100 focus:border-transparent transition-all"
+                                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
                                             placeholder={t.phonePlaceholder}
                                         />
                                     </div>
@@ -395,7 +416,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                             value={formData.subject}
                                             onChange={handleChange}
                                             className={`w-full px-4 py-3 rounded-xl border ${errors.subject ? 'border-red-500' : 'border-gray-300'
-                                                } focus:ring-2 focus:ring-gray-100 focus:border-transparent transition-all`}
+                                                } focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all`}
                                             placeholder={t.subjectPlaceholder}
                                         />
                                         {errors.subject && (
@@ -416,7 +437,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                         onChange={handleChange}
                                         rows={6}
                                         className={`w-full px-4 py-3 rounded-xl border ${errors.message ? 'border-red-500' : 'border-gray-300'
-                                            } focus:ring-2 focus:ring-gray-100 focus:border-transparent transition-all resize-none`}
+                                            } focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all resize-none`}
                                         placeholder={t.messagePlaceholder}
                                     />
                                     {errors.message && (
@@ -428,7 +449,7 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-300 text-white py-4 px-6 rounded-xl font-semibold text-lg transition-all hover:from-blue-600 hover:to-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale- active:scale-95"
+                                    className="w-full bg-gradient-to-r from-amber-500 to-amber-400 text-white py-4 px-6 rounded-xl font-semibold text-lg transition-all hover:from-amber-600 hover:to-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
                                 >
                                     {isSubmitting ? (
                                         <div className="flex items-center justify-center">

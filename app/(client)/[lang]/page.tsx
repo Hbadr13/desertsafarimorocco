@@ -8,6 +8,7 @@ import { ToursSection } from "@/components/ToursSection"
 import { TopTrips } from "@/components/TopTrips"
 import { ObjectId } from "mongodb"
 import GallerySection from "@/components/GallerySection"
+import DesertServices from "@/components/DesertServices";
 
 const LANGS = ["en", "fr", "es"]
 const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris morocco"
@@ -93,7 +94,7 @@ async function getHomeData() {
             db.collection<Category>("categories").find({}).toArray(),
             db.collection<Package>("packages").find({ tourId: new ObjectId('68d9b92cabc6733561312e71') }).limit(12).toArray(),
             db.collection<Package>("packages").find({ tourId: new ObjectId('68dbc748e852b9e051011779') }).limit(12).toArray(),
-            db.collection<Tour>("tours").find({}).toArray()
+            db.collection<Tour>("tours").find({}).limit(12).toArray()
         ])
 
         return {
@@ -160,15 +161,30 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
 
-            <div className="min-h-screen flex flex-col">
+            <div className=" px-2 md:px-4  rounded-2xl flex flex-col">
                 <main className="flex-1">
                     <HeroSection lang={lang} />
                     <CategoriesSection categories={categories} lang={lang} />
                     <TopTrips index={0} packages={packagesMarrakech || []} lang={lang} />
-                    <TopTrips index={1} packages={packagesDay || []} lang={lang} />
+                    <div
+                        className="relative rounded-2xl bg-cover bg-center h-[700px] overflow-hidden"
+                        style={{
+                            backgroundImage: `url('/contact-us-bg-marrakech.png')`,
+                        }}
+                    >
+                        {/* Gradient overlay */}
+                        <div className="absolute rounded-2xl inset-0 bg-gradient-to-t from-green-800/90 to-red-green/50"></div>
+
+                        {/* Content */}
+                        <div className="relative max-w-6xl mx-auto">
+                            <TopTrips index={1} packages={packagesDay?.concat(packagesDay) || []} lang={lang} />
+                        </div>
+                    </div>
+
                     <ToursSection tours={tours} lang={lang} />
+                    <DesertServices lang={lang} />
                     <KeyFeatures lang={lang} />
-                    <div className=" max-w-5xl mx-auto pb-10">
+                    <div className=" max-w-5xl mx-auto pb-10 px-2">
 
                         {packagesMarrakech && packagesDay && <GallerySection lang={lang} images={imagesUrl} />}
                     </div>

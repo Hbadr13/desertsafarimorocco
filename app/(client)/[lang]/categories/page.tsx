@@ -331,7 +331,6 @@ export default async function CategoriesPage({ params }: { params: { lang: "en" 
                         fill
                         className="object-cover"
                         priority
-                        quality={85}
                     />
                     <div className="absolute inset-0 bg-black/40"></div>
 

@@ -148,7 +148,7 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
   const t = translations[lang]
 
   const swiperItems = t.features.map((feature, index) => (
-    <Card key={index} className={`p-2 text-center ${feature.bgColor} border-gray-200 border-[1px] rounded-lg`}>
+    <Card key={index} className={` w-[60vw] max-w-[200px] p-2 h-full text-center ${feature.bgColor} border-gray-200 border-[1px] rounded-lg`}>
       <CardContent className="p-0">
         <div className="flex justify-center mb-4">
           <div className={`w-16 h-16 rounded-full flex items-center justify-center ${feature.iconBg}`}>
@@ -165,7 +165,7 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
 
   return (
     <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto p-0 md:px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">{t.title}</h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -175,9 +175,6 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
 
         <Swiper
           items={swiperItems}
-          cardWidth={220}
-          cardGap={24}
-          showNavigation={true}
         />
       </div>
     </section>

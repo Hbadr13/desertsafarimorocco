@@ -7,14 +7,14 @@ import { Badge } from "./ui/badge"
 const CategoryCard = ({ category, lang }: { category: Category, lang: 'fr' | 'es' | 'en' }) => {
 
     return (
-        <Card className="border max-w-sm border-gray-200 bg-white rounded-xl overflow-hidden h-full hover:border-blue-300 transition-all duration-200 group">
+        <Card className="border max-w-[280px] w-[80vw] border-gray-200 bg-white rounded-xl overflow-hidden h-full hover:border-blue-300 transition-all duration-200 group">
             <CardContent className="p-0 flex flex-col h-full">
                 {/* Image with Gradient Overlay */}
                 <div className="h-52 w-full overflow-hidden relative">
                     <img
                         src={category.images[0]}
                         alt={category.title[lang]}
-                        className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"></div>
 
@@ -38,7 +38,7 @@ const CategoryCard = ({ category, lang }: { category: Category, lang: 'fr' | 'es
                 </div>
 
                 {/* Content Section */}
-                <div className=" p-1.5  md:p-3 flex flex-col flex-grow">
+                <div className=" p-1.5  md:p-3 flex flex-col flex-grow justify-between">
                     <p className="text-gray-600 text-sm leading-relaxed">
                         {category.shortDescription[lang]}
                     </p>

@@ -29,7 +29,6 @@ export function CategoryToursPage({ category, tours, allCategories, lang, transl
             <PackageCard key={pkg.slug || index} pkg={pkg} lang={lang} />
         ))
 
-    // Get translated texts directly from the objects
     const categoryTitle = category.title?.[lang] || category.title?.en || ""
     const categoryDescription = category.description?.[lang] || category.description?.en || ""
     const categoryShortDescription = category.shortDescription?.[lang] || category.shortDescription?.en || ""
@@ -136,9 +135,6 @@ export function CategoryToursPage({ category, tours, allCategories, lang, transl
 
                                         <Swiper
                                             items={packageSwiperItems(tour.packages)}
-                                            cardWidth={340}
-                                            cardGap={1}
-                                            showNavigation={true}
                                         />
                                     </div>
                                 </div>

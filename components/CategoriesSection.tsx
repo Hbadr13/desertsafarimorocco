@@ -43,7 +43,7 @@ export function CategoriesSection({ categories, lang }: { categories: Array<Cate
 
     return (
         <section className="py-16 bg-gray-50">
-            <div className="max-w-7xl mx-auto px-4">
+            <div className="max-w-7xl mx-auto px-2 md:px-4">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">
                         {t.title}
@@ -59,9 +59,7 @@ export function CategoriesSection({ categories, lang }: { categories: Array<Cate
 
                 <Swiper
                     items={swiperItems}
-                    cardWidth={340}
-                    cardGap={2}
-                    showNavigation={true}
+
                 />
 
                 <div className="text-center mt-6">

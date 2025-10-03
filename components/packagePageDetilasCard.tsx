@@ -25,6 +25,7 @@ const PackagePageDetailsCard = ({ pkg, lang, packagesTranslations }: { pkg: Pack
                                 prevEl: `.prev-${pkg.slug}`,
                                 nextEl: `.next-${pkg.slug}`
                             }}
+
                             spaceBetween={0}
                             slidesPerView={1}
                             className="h-full"

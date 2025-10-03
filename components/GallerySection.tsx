@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import Image from "next/image"
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -7,6 +7,7 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 interface CategoryImage {
     id: string
@@ -53,18 +54,25 @@ export default function GallerySection({
 }: GallerySectionProps) {
     const t = categoryTranslations[lang]
     const router = useRouter()
+    const [shuffledImages, setShuffledImages] = useState<CategoryImage[]>([])
+
+    // Shuffle images only on client to avoid hydration errors
+    useEffect(() => {
+        const shuffled = [...images].sort(() => Math.random() - 0.5)
+        setShuffledImages(shuffled)
+    }, [images])
 
     const handleImageClick = (image: CategoryImage) => {
         router.push(`/${lang}/packages/${image.packageSlug}`);
     };
 
     return (
-        <section className={`space-y-8  max-w-5xl mx-auto`}>
+        <section className="space-y-5 max-w-5xl mx-auto pt-6">
             <div className="text-center">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                <h2 className=" text-2xl md:text-4xl font-bold text-gray-900 mb-4">
                     {t.galleryTitle}
                 </h2>
-                <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+                <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-lg">
                     {t.description}
                 </p>
             </div>
@@ -74,38 +82,41 @@ export default function GallerySection({
                     <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-amber-500 mx-auto mb-4"></div>
                     <p className="text-gray-500 text-lg">{t.loadingImages}</p>
                 </div>
-            ) : images.length > 0 ? (
+            ) : shuffledImages.length > 0 ? (
                 <div className="space-y-8">
-                    {/* Swiper for featured images */}
-                    <div className="rounded-2xl overflow-hidden shadow-2xl">
+                    <div className="rounded-2xl overflow-hidden shadow-2xl relative">
                         <Swiper
-                            modules={[Navigation, Pagination, Autoplay]}
+                            modules={[Navigation, Autoplay]}
                             navigation
                             pagination={{ clickable: true }}
                             autoplay={{ delay: 4000, disableOnInteraction: false }}
-                            loop
+                            // loop
                             spaceBetween={0}
                             slidesPerView={1}
+                            breakpoints={{
+                                768: {
+                                    slidesPerView: 2,
+                                },
+                            }}
                             className="w-full"
                         >
-                            {images.slice(0, 8).map((image) => (
+                            {shuffledImages.slice(0, 40).map((image) => (
                                 <SwiperSlide key={image.id}>
                                     <div
-                                        className="relative w-full h-64 md:h-96 cursor-pointer group"
+                                        className="relative w-full h-64 md:h-96 cursor-pointer group "
                                         onClick={() => handleImageClick(image)}
                                     >
                                         <Image
                                             src={image.url}
-                                            alt={`${image.packageTitle[lang]} - Image`}
+                                            alt="My Image"
                                             fill
-                                            className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                            sizes="(max-width: 768px) 100vw, 80vw"
-                                            priority
+                                            className="object-cover"
+                                            unoptimized
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex items-end">
                                             <div className="p-8 text-white w-full">
                                                 <div className="transform transition-transform duration-500">
-                                                    <h3 className="text-2xl font-bold mb-2 transition-opacity duration-500">
+                                                    <h3 className=" text-base md:text-xl font-bold mb-2 transition-opacity duration-500">
                                                         {image.packageTitle[lang]}
                                                     </h3>
                                                     <div className="flex items-center transition-opacity duration-500 delay-200">

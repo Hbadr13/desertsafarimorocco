@@ -87,14 +87,14 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
         return (
             <Card
                 key={tour._id?.toString() || tour.slug}
-                className="border border-gray-200 rounded-lg overflow-hidden cursor-pointer h-full flex flex-col hover:shadow-lg transition-all duration-200 group"
+                className="border  max-w-[280px] w-[80vw] border-gray-200 rounded-lg overflow-hidden cursor-pointer h-full flex flex-col hover:shadow-sm transition-all duration-200 group"
             >
                 {/* Image with Badge */}
                 <div className="h-48 w-full overflow-hidden relative">
                     <img
                         src={tour.images?.[0] || "/default-tour.jpg"}
                         alt={tourTitle}
-                        className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3">
                         <Badge className="bg-green-600 text-white border-0 font-semibold shadow-md">
@@ -109,31 +109,34 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
                 </div>
 
                 {/* Content */}
-                <CardContent className="flex flex-col flex-grow p-2 md:p-4">
+                <CardContent className="flex flex-col flex-grow p-2 md:p-4 justify-between">
                     {/* Title and Rating */}
-                    <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-lg font-bold text-gray-900 line-clamp-2 leading-tight flex-1">
-                            {tourTitle}
-                        </h3>
+                    <div className="">
+
+                        <div className="flex justify-between items-start mb-3">
+                            <h3 className="text-lg font-bold text-gray-900 line-clamp-2 leading-tight flex-1">
+                                {tourTitle}
+                            </h3>
+                        </div>
+
+                        {/* Location */}
+                        <div className="flex items-center gap-2 text-gray-600 mb-3">
+                            <MapPin className="h-4 w-4" />
+                            <span className="text-sm">{t.card.multipleDestinations}</span>
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-gray-600 text-sm mb-2 leading-relaxed line-clamp-3">
+                            {tourDescription.slice(0, 120)}
+                            {tourDescription.length > 120 ? '...' : ''}
+                        </p>
+
+                        <div className="flex items-center gap-2 text-xs text-gray-600">
+                            <Clock className="h-3 w-3" />
+                            <span>{t.features.duration}</span>
+                        </div>
+
                     </div>
-
-                    {/* Location */}
-                    <div className="flex items-center gap-2 text-gray-600 mb-3">
-                        <MapPin className="h-4 w-4" />
-                        <span className="text-sm">{t.card.multipleDestinations}</span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-gray-600 text-sm mb-2 leading-relaxed line-clamp-3">
-                        {tourDescription.slice(0, 120)}
-                        {tourDescription.length > 120 ? '...' : ''}
-                    </p>
-
-                    <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <Clock className="h-3 w-3" />
-                        <span>{t.features.duration}</span>
-                    </div>
-
                     <Link className="px-4" href={`/${lang}/tours/${tour.slug}`}>
                         <Button className="w-full text-blue-600 hover:bg-blue-100 font-semibold mt-1 p-2 gap-2">
                             {t.card.viewDetails} <ArrowRight className="h-4 w-4" />
@@ -146,7 +149,7 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
 
     return (
         <section className="py-10 bg-white">
-            <div className="max-w-7xl mx-auto px-4">
+            <div className="max-w-7xl mx-auto px-1 md:px-4">
                 {/* Header */}
                 <div className="text-center mb-7">
                     <h2 className=" text-xl md:text-3xl font-bold text-gray-900 mb-3">
@@ -157,9 +160,6 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
                 {/* Swiper */}
                 <Swiper
                     items={swiperItems}
-                    cardWidth={340}
-                    cardGap={1}
-                    showNavigation={true}
                 />
             </div>
         </section>
