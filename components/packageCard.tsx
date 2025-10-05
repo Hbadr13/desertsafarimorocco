@@ -4,7 +4,7 @@ import "swiper/css"
 import "swiper/css/navigation"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
-import { ArrowRight, Calendar, Clock, LucideMessageCircle, MapPin, MessageCircle, Phone, PhoneCall, Shield, User, Users } from "lucide-react"
+import { ArrowRight, Calendar, Clock, LucideMessageCircle, MapPin, MapPinHouse, MessageCircle, Phone, PhoneCall, Shield, User, Users } from "lucide-react"
 import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
 import Image from "next/image"
@@ -60,9 +60,9 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
     return (
         <Card
             key={pkg._id?.toString() || pkg.slug}
-            className="max-w-[280px] w-[80vw] border border-gray-200 rounded-xl overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-200 group/child"
+            className="max-w-[330px] w-[90vw] border border-gray-200 rounded-xl overflow-hidden h-full flex flex-col transition-all duration-200 group/child"
         >
-            <div className="h-40  w-full relative">
+            <div className="h-52  w-full relative">
                 <Swiper
                     modules={[Navigation]}
                     navigation={{
@@ -128,42 +128,39 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
             <CardContent className="flex flex-col justify-between flex-grow p-1.5 md:p-3">
                 <div className="">
 
-                    <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-lg font-bold text-gray-900 line-clamp-2 leading-tight flex-1">
+                    <div className="flex justify-between items-start mb-1">
+                        <h3 className="text-lg font-bold text-gray-900  leading-tight flex-1">
                             <Link className="active:text-blue-600 duration-200" href={`/${lang}/packages/${pkg.slug}`}>
                                 {pkg.title[lang] || pkg.title.en}
                             </Link>
                         </h3>
                     </div>
 
-                    <p className="text-gray-700 font-medium text-xs mb-2 leading-relaxed line-clamp-3">
+                    <p className="mt-2 text-gray-700 font-medium text-xs mb-2 leading-relaxed line-clamp-3">
                         {pkg.shortDescription[lang] || pkg.shortDescription.en}
                     </p>
 
                     <div className="flex flex-col justify-between">
                         <div>
                             <ul className="text-xs text-gray-700 space-y-1">
-                                <li className="flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-red-600" />
-                                    <span>{t.departure}: {pkg.departure[lang] || pkg.departure.en}</span>
-                                </li>
-                                {pkg.location && <li className="flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-red-600" />
-                                    <span>{t.location}: {pkg.location[lang] || pkg.location.en}</span>
-                                </li>}
 
-                                <li className="flex items-center gap-2">
-                                    <Clock className="w-4 h-4 text-red-600" />
+
+                                {pkg.location[lang] != '' && <div className="flex items-center gap-2 text-xs text-gray-700">
+                                    <MapPin className="w-4 h-4 text-orange-400" />
+                                    <span> {pkg.location[lang] || pkg.location.en}</span>
+                                </div>}
+                                {pkg.duration[lang] != '' && <li className="flex items-center gap-2">
+                                    <Clock className="w-4 h-4 text-orange-400" />
                                     <span>{t.duration}: {pkg.duration[lang] || pkg.duration.en}</span>
-                                </li>
-                                <li className="flex items-center gap-2">
-                                    <Users className="w-4 h-4 text-red-600" />
+                                </li>}
+                                {pkg.shareTrip != 0 && <li className="flex items-center gap-2">
+                                    <Users className="w-4 h-4 text-orange-400" />
                                     <span>{t.shared}: {pkg.shareTrip} Euro</span>
-                                </li>
-                                <li className="flex items-center gap-2">
-                                    <User className="w-4 h-4 text-red-600" />
+                                </li>}
+                                {pkg.privateTrip != 0 && <li className="flex items-center gap-2">
+                                    <User className="w-4 h-4 text-orange-400" />
                                     <span>{t.private}: {pkg.privateTrip} Euro</span>
-                                </li>
+                                </li>}
                             </ul>
                         </div>
                     </div>

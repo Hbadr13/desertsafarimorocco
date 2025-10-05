@@ -3,7 +3,6 @@ import { Card, CardContent } from "./ui/card"
 import { Swiper } from "./ui/swiper"
 
 export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
-  // Translations for all text in the component
   const translations = {
     en: {
       title: "Why Desert Safaris Morocco",

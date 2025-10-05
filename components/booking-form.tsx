@@ -24,7 +24,7 @@ export default function BookingForm({ packageId }: BookingFormProps) {
     adults: 1,
     children: 0,
     message: "",
-    phone: "", // Added phone field for SMS notifications
+    phone: "",
   })
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -44,7 +44,6 @@ export default function BookingForm({ packageId }: BookingFormProps) {
     setError("")
     setSuccess(false)
 
-    // Update total guests
     const totalGuests = formData.adults + formData.children
     const bookingData = {
       ...formData,

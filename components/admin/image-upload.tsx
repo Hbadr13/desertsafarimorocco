@@ -60,8 +60,6 @@ export function ImageUpload({ images, onImagesChange, maxImages = 10, disabled =
 
   const removeImage = async (index: number) => {
     const imageUrl = images[index]
-
-    // Remove from Cloudinary
     try {
       await fetch("/api/upload", {
         method: "DELETE",
@@ -73,45 +71,43 @@ export function ImageUpload({ images, onImagesChange, maxImages = 10, disabled =
     } catch (error) {
       console.error("Failed to delete image from Cloudinary:", error)
     }
-
-    // Remove from state
     onImagesChange(images.filter((_, i) => i !== index))
   }
 
   return (
     <div className="space-y-4">
-            <Label htmlFor="images" className="cursor-pointer">
-      <div className="border-2 border-dashed border-blue-300 rounded-2xl  p-6">
-        <div className="text-center">
-          <div className="w-full flex justify-center items-center">
+      <Label htmlFor="images" className="cursor-pointer">
+        <div className="border-2 border-dashed border-blue-300 rounded-2xl  p-6">
+          <div className="text-center">
+            <div className="w-full flex justify-center items-center">
 
               <div className="p-3 bg-blue-100 rounded-full w-min">
-                        <Upload className="h-8 w-8 text-blue-600" />
-                </div>
-          </div>
+                <Upload className="h-8 w-8 text-blue-600" />
+              </div>
+            </div>
             <div className="mt-4">
               <div className="">
 
-              <span className="mt-2 block text-sm font-medium text-muted-foreground">
-                {isUploading ? "Uploading..." : "Click to upload images"}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {images.length}/{maxImages} images uploaded
-              </span>
-              <Input
-                id="images"
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-                disabled={disabled || isUploading}
-              />
-                </div>
+                <span className="mt-2 block text-sm font-medium text-muted-foreground">
+                  {isUploading ? "Uploading..." : "Click to upload images"}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {images.length}/{maxImages} images uploaded
+                </span>
+                <Input
+                  id="images"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  disabled={disabled || isUploading}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-            </Label>
+      </Label>
 
       {error && (
         <Alert variant="destructive">

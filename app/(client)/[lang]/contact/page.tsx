@@ -145,7 +145,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
-    // Contact information from environment variables
     const contactInfo = {
         phone: process.env.NEXT_PUBLIC_PHONE_NUMBER || "+212-600-000000",
         email: process.env.NEXT_PUBLIC_EMAIL || "contact@desertsafarimorocco.com",
@@ -175,7 +174,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
             ...prev,
             [name]: value
         }));
-        // Clear error when user starts typing
         if (errors[name as keyof FormErrors]) {
             setErrors(prev => ({
                 ...prev,
@@ -223,23 +221,19 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
 
     return (
         <div className="min-h-screen bg-white pt-12">
-            {/* Hero Section with Background Image */}
             <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-r from-black/60 to-black/40">
-                {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/contact-us-bg-marrakech.png" // Replace with your actual contact image path
+                        src="/contact-us-bg-marrakech.png"
                         alt="Moroccan Desert Contact"
                         fill
                         className="object-cover"
                         priority
                         sizes="100vw"
                     />
-                    {/* Overlay for better text readability */}
                     <div className="absolute inset-0 bg-black/40"></div>
                 </div>
 
-                {/* Hero Content */}
                 <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
                     <div className="inline-flex items-center px-4 py-2 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-300/30 mb-6">
                         <span className="w-2 h-2 bg-amber-400 rounded-full mr-2 animate-pulse"></span>
@@ -256,16 +250,13 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                 </div>
             </section>
 
-            {/* Contact Form Section */}
             <div className="max-w-7xl mx-auto px-4 py-16">
                 <div className="grid lg:grid-cols-3 gap-12">
-                    {/* Contact Information */}
                     <div className="lg:col-span-1 space-y-8">
                         <div className="bg-white rounded-2xl p-8 shadow-xl border border-amber-200">
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.ourInfo}</h2>
 
                             <div className="space-y-6">
-                                {/* Address */}
                                 <div className="flex items-start">
                                     <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -275,11 +266,10 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                     </div>
                                     <div>
                                         <h3 className="font-semibold text-gray-900 mb-1">{t.address}</h3>
-                                        <p className="text-gray-600">{contactInfo.address}</p>
+                                        <p className="text-gray-600 break-all">{contactInfo.address}</p>
                                     </div>
                                 </div>
 
-                                {/* Phone */}
                                 <div className="flex items-start">
                                     <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -292,7 +282,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                     </div>
                                 </div>
 
-                                {/* Email */}
                                 <div className="flex items-start">
                                     <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,11 +290,10 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                     </div>
                                     <div>
                                         <h3 className="font-semibold text-gray-900 mb-1">{t.email}</h3>
-                                        <p className="text-gray-600">{contactInfo.email}</p>
+                                        <p className="text-gray-600 break-all">{contactInfo.email}</p>
                                     </div>
                                 </div>
 
-                                {/* Hours */}
                                 <div className="flex items-start">
                                     <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
                                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -320,7 +308,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                             </div>
                         </div>
 
-                        {/* Social Media */}
                         <div className="bg-gradient-to-br from-amber-500 to-amber-400 rounded-2xl p-8 shadow-xl text-white">
                             <h3 className="text-xl font-bold mb-4">{t.followUs}</h3>
                             <div className="flex space-x-4">
@@ -341,12 +328,10 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                         </div>
                     </div>
 
-                    {/* Contact Form */}
                     <div className="lg:col-span-2">
                         <div className="bg-white rounded-2xl p-8 shadow-xl border border-amber-200">
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid md:grid-cols-2 gap-6">
-                                    {/* Name */}
                                     <div>
                                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                                             {t.nameLabel} *
@@ -366,7 +351,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                         )}
                                     </div>
 
-                                    {/* Email */}
                                     <div>
                                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                                             {t.emailLabel} *
@@ -388,7 +372,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                 </div>
 
                                 <div className="grid md:grid-cols-2 gap-6">
-                                    {/* Phone */}
                                     <div>
                                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                                             {t.phoneLabel}
@@ -404,7 +387,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                         />
                                     </div>
 
-                                    {/* Subject */}
                                     <div>
                                         <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
                                             {t.subjectLabel} *
@@ -425,7 +407,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                     </div>
                                 </div>
 
-                                {/* Message */}
                                 <div>
                                     <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                                         {t.messageLabel} *
@@ -445,7 +426,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                     )}
                                 </div>
 
-                                {/* Submit Button */}
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
@@ -461,7 +441,6 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                                     )}
                                 </button>
 
-                                {/* Status Messages */}
                                 {submitStatus === 'success' && (
                                     <div className="p-4 bg-green-50 border border-green-200 rounded-xl">
                                         <p className="text-green-800 flex items-center">

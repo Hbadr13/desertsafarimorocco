@@ -74,20 +74,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Tour not found" }, { status: 404 })
     }
     const newPackage: Package = {
-      title, // { en, fr, es }
-      shortDescription, // { en, fr, es }
+      title,
+      shortDescription,
       slug,
       images: images || [],
-      duration, // { en, fr, es }
+      duration,
       departureTime,
-      departure, // { en, fr, es }
-      location, // { en, fr, es }
+      departure,
+      location,
       shareTrip: Number(shareTrip),
       privateTrip: Number(privateTrip),
-      description, // { en, fr, es }
-      itinerary: itinerary || [], // [{ title: { en, fr, es }, description: { en, fr, es } }]
-      toursIncluded: toursIncluded || [], // [{ description: { en, fr, es } }]
-      toursExcluded: toursExcluded || [], // [{ description: { en, fr, es } }]
+      description,
+      itinerary: itinerary || [],
+      toursIncluded: toursIncluded || [],
+      toursExcluded: toursExcluded || [],
       tourId: new ObjectId(tourId),
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -35,7 +35,6 @@ export default function PrivacyPage({ params }: { params: { lang: string } }) {
                     </Button>
                 ))}
             </div>
-            {/* ...display privacy.title and privacy.description... */}
         </div>
     )
 }

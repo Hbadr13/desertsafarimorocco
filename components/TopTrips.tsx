@@ -1,14 +1,10 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Swiper } from "./ui/swiper"
 import { Package } from "@/lib/models"
-import { Badge } from "@/components/ui/badge"
 import { MapPin, Clock, Users, Star, ArrowRight, Shield, LucideArrowLeft } from "lucide-react"
 import PackageCard from "./packageCard"
 import Link from "next/link"
-import PackageCardV2 from "./packageCardV2"
 
 interface TopTripsProps {
     packages: Package[]
@@ -17,7 +13,6 @@ interface TopTripsProps {
 }
 
 export function TopTrips({ packages, lang, index }: TopTripsProps) {
-    // Translations for all text in the component
     const translations = [{
         en: {
             title: "Best Deals in Marrakech",
@@ -78,10 +73,9 @@ export function TopTrips({ packages, lang, index }: TopTripsProps) {
                     items={swiperItems}
                 />
 
-                {/* Bottom CTA */}
                 <div className=" mt-4 w-max ">
                     <Link
-                        className={`${index == 0 ? 'border-blue-600 text-blue-600 hover:bg-blue-50 ' : 'text-white hover:bg-blue-50/25'} transition-all duration-200  rounded-xl px-2 border-0  font-semibold flex items-center space-x-1`}
+                        className={`border-blue-600 text-blue-600 hover:bg-blue-50  transition-all duration-200  rounded-xl px-2 border-0  font-semibold flex items-center space-x-1`}
                         href={`/${lang}/categories/desert-safaris`}>
                         {t.viewAll}
                         <ArrowRight className="rotate- " />

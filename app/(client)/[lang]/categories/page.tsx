@@ -1,11 +1,9 @@
-// app/[lang]/categories/page.tsx
 export const revalidate = 60;
 import { Category } from "@/lib/models"
 import { MapPin, ArrowRight, Shield, Users, Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation";
-// lib/translations/categories.ts
 const categoriesTranslations: Record<'en' | 'fr' | 'es', {
     hero: {
         title: string;
@@ -142,7 +140,6 @@ const categoriesTranslations: Record<'en' | 'fr' | 'es', {
 const LANGS = ["en", "fr", "es"]
 const WEBSITE_NAME = process.env.NEXT_PUBLIC_SITE_URL
 
-// SEO Metadata
 export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es" } }) {
     const { lang } = params
     const t = categoriesTranslations[lang]
@@ -191,7 +188,6 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
     }
 }
 
-// Generate static params for better performance
 export async function generateStaticParams() {
     return LANGS.map((lang) => ({
         lang: lang,
@@ -227,12 +223,10 @@ async function getCategories(lang: "en" | "fr" | "es") {
     }
 }
 
-// Category Card Component
 function CategoryCard({ category, lang, t }: { category: Category, lang: string, t: any }) {
     return (
         <article className="border max-w-sm border-gray-200 rounded-xl overflow-hidden h-full hover:border-blue-300 transition-all duration-200 group">
             <div className="p-0 flex flex-col h-full">
-                {/* Image with Gradient Overlay */}
                 <div className="h-52 w-full overflow-hidden relative">
                     <Image
                         src={category.images[0]}
@@ -244,14 +238,12 @@ function CategoryCard({ category, lang, t }: { category: Category, lang: string,
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"></div>
 
-                    {/* Top Badge */}
                     <div className="absolute top-4 left-4">
                         <div className="bg-white text-gray-800 font-semibold border-0 shadow-md px-3 py-1 rounded-full text-sm">
                             ⭐ {t.category.popular}
                         </div>
                     </div>
 
-                    {/* Bottom Text Overlay */}
                     <div className="absolute bottom-4 left-4 right-4">
                         <h2 className="text-xl font-bold text-white drop-shadow-lg">
                             {category.title}
@@ -263,7 +255,6 @@ function CategoryCard({ category, lang, t }: { category: Category, lang: string,
                     </div>
                 </div>
 
-                {/* Content Section */}
                 <div className="p-5 flex flex-col flex-grow">
                     <p className="text-gray-600 text-sm mb-4 leading-relaxed">
                         {category.shortDescription}
@@ -316,14 +307,12 @@ export default async function CategoriesPage({ params }: { params: { lang: "en" 
 
     return (
         <>
-            {/* Structured Data for SEO */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
 
             <div className="min-h-screen bg-gray-50">
-                {/* Hero Section with Background Image */}
                 <div className="relative py-16 overflow-hidden">
                     <Image
                         src="/categories-hero.webp"
@@ -344,9 +333,7 @@ export default async function CategoriesPage({ params }: { params: { lang: "en" 
                     </div>
                 </div>
 
-                {/* Main Content */}
                 <main className="container mx-auto px-4 py-8">
-                    {/* Results Header */}
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
                         <div>
                             <h2 className="text-2xl font-semibold text-gray-900">
@@ -358,7 +345,6 @@ export default async function CategoriesPage({ params }: { params: { lang: "en" 
                         </div>
                     </div>
 
-                    {/* Categories Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {categories.map((category: Category) => (
                             <CategoryCard
@@ -370,7 +356,6 @@ export default async function CategoriesPage({ params }: { params: { lang: "en" 
                         ))}
                     </div>
 
-                    {/* Empty State */}
                     {categories.length === 0 && (
                         <div className="text-center py-12">
                             <div className="text-gray-400 text-6xl mb-4">🏝️</div>

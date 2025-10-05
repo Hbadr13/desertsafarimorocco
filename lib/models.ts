@@ -133,15 +133,19 @@ export interface User {
 export interface Booking {
   _id?: ObjectId
   packageId: ObjectId
+  packageName: string
+  packageType: 'shared' | 'private'
+  packageSlug: string
   email: string
-  tripStart: Date
-  tripEnd: Date
+  startDate: Date
   name: string
-  guests: number
+  phone: string
   adults: number
   children: number
-  message?: string
-  status: "pending" | "confirmed" | "cancelled"
+  totalPrice: number
+  notes?: string
+  lang: string
+  status: "pending" | "paid" | "confirmed" | "cancelled"
   createdAt?: Date
   updatedAt?: Date
 }

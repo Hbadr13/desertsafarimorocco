@@ -173,7 +173,6 @@ const WEBSITE_NAME = process.env.NEXT_PUBLIC_SITE_URL
 
 
 
-// SEO Metadata
 export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es" } }) {
     const { lang } = params
     const t = packagesTranslations[lang]
@@ -215,7 +214,6 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
     }
 }
 
-// Generate static params for better performance
 export async function generateStaticParams() {
     return LANGS.map((lang) => ({
         lang: lang,
@@ -264,7 +262,6 @@ export default async function PackagesPage({ params }: { params: { lang: "en" | 
     const packages = await getPackages(lang)
     const t = packagesTranslations[lang]
 
-    // Structured Data for SEO
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -335,7 +332,6 @@ export default async function PackagesPage({ params }: { params: { lang: "en" | 
                     </div>
                 </main>
 
-                {/* Trust Badges */}
                 <div className="bg-white border-t border-gray-200 py-8">
                     <div className="container mx-auto px-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">

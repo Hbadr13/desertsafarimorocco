@@ -207,7 +207,6 @@ export default function EditPackagePage({
   ) => {
     if (type === "included") {
       const newDetails = [...toursIncluded]
-      // Fix: If item is not an object, replace it with a valid object
       if (
         typeof newDetails[index] !== "object" ||
         !newDetails[index] ||
@@ -316,10 +315,10 @@ export default function EditPackagePage({
         body: JSON.stringify({
           ...formData,
           images,
-          shortDescription: formData.shortDescription, // Ensure shortDescription is sent
-          itinerary,
-          toursIncluded,
-          toursExcluded,
+          shortDescription: formData.shortDescription,
+          itinerary: itinerary.filter((it) => it.title),
+          toursIncluded: toursIncluded.filter((it) => it.description),
+          toursExcluded: toursExcluded.filter((it) => it.description),
           shareTrip: Number(formData.shareTrip),
           privateTrip: Number(formData.privateTrip),
         }),
@@ -331,7 +330,6 @@ export default function EditPackagePage({
       }
       window.location.href = "/desert26safariadmin/packages"
 
-      // router.push("/desert26safariadmin/packages")
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {
@@ -496,7 +494,6 @@ export default function EditPackagePage({
                     name="departureTime"
                     value={formData.departureTime}
                     onChange={handleInputChange}
-                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="8:30 AM"
@@ -574,7 +571,6 @@ export default function EditPackagePage({
                     min="0"
                     value={formData.shareTrip}
                     onChange={handleInputChange}
-                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="e.g. 999"
@@ -592,7 +588,6 @@ export default function EditPackagePage({
                     min="0"
                     value={formData.privateTrip}
                     onChange={handleInputChange}
-                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="e.g. 1499"

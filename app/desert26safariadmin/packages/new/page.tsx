@@ -61,15 +61,9 @@ export default function NewPackagePage() {
     privateTrip: "",
     tourId: "",
   })
-  const [itinerary, setItinerary] = useState<ItineraryItem[]>([
-    { title: { en: "", fr: "", es: "" }, description: { en: "", fr: "", es: "" } }
-  ])
-  const [toursIncluded, setToursIncluded] = useState<TourDetailItem[]>([
-    { description: { en: "", fr: "", es: "" } }
-  ])
-  const [toursExcluded, setToursExcluded] = useState<TourDetailItem[]>([
-    { description: { en: "", fr: "", es: "" } }
-  ])
+  const [itinerary, setItinerary] = useState<ItineraryItem[]>([])
+  const [toursIncluded, setToursIncluded] = useState<TourDetailItem[]>([])
+  const [toursExcluded, setToursExcluded] = useState<TourDetailItem[]>([])
   const [images, setImages] = useState<string[]>([])
   const [tours, setTours] = useState<Tour[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -258,9 +252,9 @@ export default function NewPackagePage() {
         body: JSON.stringify({
           ...formData,
           images,
-          itinerary,
-          toursIncluded,
-          toursExcluded,
+          itinerary: itinerary.filter((it) => it.title),
+          toursIncluded: toursIncluded.filter((it) => it.description),
+          toursExcluded: toursExcluded.filter((it) => it.description),
           shareTrip: Number(formData.shareTrip),
           privateTrip: Number(formData.privateTrip),
         }),
@@ -272,7 +266,6 @@ export default function NewPackagePage() {
       }
       window.location.href = "/desert26safariadmin/packages"
 
-      // router.push("/desert26safariadmin/packages")
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {
@@ -351,7 +344,6 @@ export default function NewPackagePage() {
                     <Type className="h-4 w-4" />
                     Package Title
                   </Label>
-                  {/* Multilingual Title */}
                   <div className="grid grid-cols-1 gap-4">
                     <Input
                       value={formData.title.en}
@@ -467,7 +459,6 @@ export default function NewPackagePage() {
                     name="departureTime"
                     value={formData.departureTime}
                     onChange={handleInputChange}
-                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="e.g. Kathmandu, Nepal"
@@ -516,7 +507,6 @@ export default function NewPackagePage() {
                     min="0"
                     value={formData.shareTrip}
                     onChange={handleInputChange}
-                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="e.g. 999"
@@ -534,7 +524,6 @@ export default function NewPackagePage() {
                     min="0"
                     value={formData.privateTrip}
                     onChange={handleInputChange}
-                    // required
                     disabled={isLoading}
                     className="placeholder:text-gray-400/55 rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500 py-5 px-4"
                     placeholder="e.g. 1499"
@@ -542,7 +531,6 @@ export default function NewPackagePage() {
                 </div>
               </div>
 
-              {/* Multilingual Short Description */}
               <div className="space-y-2">
                 <Label>Short Description</Label>
                 <div className="grid grid-cols-1 gap-4">
@@ -573,7 +561,6 @@ export default function NewPackagePage() {
                 </div>
               </div>
 
-              {/* Multilingual Description */}
               <div className="space-y-2">
                 <Label>Description</Label>
                 <div className="grid grid-cols-1 gap-4">
@@ -604,7 +591,6 @@ export default function NewPackagePage() {
                 </div>
               </div>
 
-              {/* Itinerary */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-slate-700 flex items-center gap-2">
@@ -689,7 +675,6 @@ export default function NewPackagePage() {
                   ))}
                 </div>
               </div>
-              {/* Tour Details */}
               <div className="border border-slate-300 rounded-xl p-2">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">

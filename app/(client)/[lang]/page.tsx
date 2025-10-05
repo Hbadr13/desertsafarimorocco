@@ -14,7 +14,6 @@ const LANGS = ["en", "fr", "es"]
 const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris morocco"
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-// SEO Metadata
 export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es" } }) {
     const { lang } = params
 
@@ -78,7 +77,6 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
     }
 }
 
-// Generate static params
 export async function generateStaticParams() {
     return LANGS.map((lang) => ({
         lang: lang,
@@ -89,7 +87,6 @@ async function getHomeData() {
     try {
         const db = await getDatabase()
 
-        // Get all data in parallel
         const [categories, packagesDay, packagesMarrakech, tours] = await Promise.all([
             db.collection<Category>("categories").find({}).toArray(),
             db.collection<Package>("packages").find({ tourId: new ObjectId('68d9b92cabc6733561312e71') }).limit(12).toArray(),
@@ -118,7 +115,6 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
 
     const { categories, packagesDay, packagesMarrakech, tours } = await getHomeData()
 
-    // Structured Data for SEO
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "TravelAgency",
@@ -161,35 +157,20 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
 
-            <div className=" px-2 md:px-4  rounded-2xl flex flex-col">
-                <main className="flex-1">
-                    <HeroSection lang={lang} />
-                    <CategoriesSection categories={categories} lang={lang} />
-                    <TopTrips index={0} packages={packagesMarrakech || []} lang={lang} />
-                    <div
-                        className="relative rounded-2xl bg-cover bg-center h-[700px] overflow-hidden"
-                        style={{
-                            backgroundImage: `url('/contact-us-bg-marrakech.png')`,
-                        }}
-                    >
-                        {/* Gradient overlay */}
-                        <div className="absolute rounded-2xl inset-0 bg-gradient-to-t from-green-800/90 to-red-green/50"></div>
+            <main className="flex-1">
+                <HeroSection lang={lang} />
+                <CategoriesSection categories={categories} lang={lang} />
+                <TopTrips index={0} packages={packagesMarrakech || []} lang={lang} />
+                <TopTrips index={1} packages={packagesDay || []} lang={lang} />
 
-                        {/* Content */}
-                        <div className="relative max-w-6xl mx-auto">
-                            <TopTrips index={1} packages={packagesDay?.concat(packagesDay) || []} lang={lang} />
-                        </div>
-                    </div>
+                <ToursSection tours={tours} lang={lang} />
+                <DesertServices lang={lang} />
+                <KeyFeatures lang={lang} />
+                <div className=" max-w-5xl mx-auto pb-10 px-2">
 
-                    <ToursSection tours={tours} lang={lang} />
-                    <DesertServices lang={lang} />
-                    <KeyFeatures lang={lang} />
-                    <div className=" max-w-5xl mx-auto pb-10 px-2">
-
-                        {packagesMarrakech && packagesDay && <GallerySection lang={lang} images={imagesUrl} />}
-                    </div>
-                </main>
-            </div>
+                    {packagesMarrakech && packagesDay && <GallerySection lang={lang} images={imagesUrl} />}
+                </div>
+            </main>
         </>
     )
 }

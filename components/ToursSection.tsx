@@ -1,12 +1,10 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Swiper } from "./ui/swiper"
 import { Tour } from "@/lib/models"
-import { Badge } from "@/components/ui/badge"
-import { MapPin, Clock, Star, ArrowRight, Users, Shield } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface ToursSectionProps {
     tours: Tour[]
@@ -14,7 +12,6 @@ interface ToursSectionProps {
 }
 
 export function ToursSection({ tours, lang }: ToursSectionProps) {
-    // Translations for all text in the component
     const translations = {
         en: {
             header: {
@@ -29,7 +26,7 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
                 packageOptions: "package options",
                 flexibleDates: "Flexible dates",
                 freeCancellation: "Free cancellation • Best price guarantee",
-                viewDetails: "View Tour Details"
+                viewDetails: "View Tour"
             },
             features: {
                 duration: "1-9 days",
@@ -49,7 +46,7 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
                 packageOptions: "options de forfaits",
                 flexibleDates: "Dates flexibles",
                 freeCancellation: "Annulation gratuite • Meilleur prix garanti",
-                viewDetails: "Voir les Détails du Circuit"
+                viewDetails: "Voir la visite"
             },
             features: {
                 duration: "1-9 jours",
@@ -69,7 +66,7 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
                 packageOptions: "opciones de paquetes",
                 flexibleDates: "Fechas flexibles",
                 freeCancellation: "Cancelación gratuita • Mejor precio garantizado",
-                viewDetails: "Ver Detalles del Tour"
+                viewDetails: "Ver Tour"
             },
             features: {
                 duration: "1-9 días",
@@ -81,83 +78,55 @@ export function ToursSection({ tours, lang }: ToursSectionProps) {
     const t = translations[lang]
 
     const swiperItems = tours.map((tour) => {
-        const tourTitle = tour.title?.[lang] || tour.title?.en || ""
-        const tourDescription = tour.shortDescription?.[lang] || tour.shortDescription?.en || tour.description?.[lang] || tour.description?.en || ""
 
         return (
-            <Card
-                key={tour._id?.toString() || tour.slug}
-                className="border  max-w-[280px] w-[80vw] border-gray-200 rounded-lg overflow-hidden cursor-pointer h-full flex flex-col hover:shadow-sm transition-all duration-200 group"
+            <div
+                key={tour._id?.toString()}
+                className="bg-white rounded-2xl h-full  max-w-[350px] w-[85vw] hover:shadow-lg overflow-hidden border border-gray-200   transition-all group/shilder"
             >
-                {/* Image with Badge */}
-                <div className="h-48 w-full overflow-hidden relative">
-                    <img
+                <div className="relative h-48">
+                    <Image
                         src={tour.images?.[0] || "/default-tour.jpg"}
-                        alt={tourTitle}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        alt={tour.title[lang] || tour.title.en || "Tour Image"}
+                        fill
+                        className="object-cover group-hover/shilder:scale-[102%] transition-transform duration-300"
                     />
-                    <div className="absolute top-3 left-3">
-                        <Badge className="bg-green-600 text-white border-0 font-semibold shadow-md">
-                            {t.card.popular}
-                        </Badge>
-                    </div>
-                    <div className="absolute top-3 right-3">
-                        <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm text-gray-800 border-0 font-medium">
-                            {tour.packages?.length || 0} {t.card.options}
-                        </Badge>
-                    </div>
+                    <div className="absolute inset-0 bg-black/0 group-hover/shilder:bg-black/10 transition-colors"></div>
                 </div>
 
-                {/* Content */}
-                <CardContent className="flex flex-col flex-grow p-2 md:p-4 justify-between">
-                    {/* Title and Rating */}
-                    <div className="">
+                <div className=" p-3 md:p-6 justify-between flex-col flex ">
+                    <div className=" ">
+                        <h3 className="text-xl font-bold text-amber-500 mb-2 line-clamp-2 group-hover:text-amber-600 active:text-amber-600 transition-colors">
+                            <Link
+                                href={`/${lang}/tours/${tour.slug}`}
 
-                        <div className="flex justify-between items-start mb-3">
-                            <h3 className="text-lg font-bold text-gray-900 line-clamp-2 leading-tight flex-1">
-                                {tourTitle}
-                            </h3>
-                        </div>
-
-                        {/* Location */}
-                        <div className="flex items-center gap-2 text-gray-600 mb-3">
-                            <MapPin className="h-4 w-4" />
-                            <span className="text-sm">{t.card.multipleDestinations}</span>
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-gray-600 text-sm mb-2 leading-relaxed line-clamp-3">
-                            {tourDescription.slice(0, 120)}
-                            {tourDescription.length > 120 ? '...' : ''}
+                            >
+                                {tour.title[lang] || tour.title.en}
+                            </Link>
+                        </h3>
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                            {tour.shortDescription[lang] || tour.shortDescription.en || tour.description[lang]?.slice(0, 100) || tour.description.en?.slice(0, 100)}
                         </p>
-
-                        <div className="flex items-center gap-2 text-xs text-gray-600">
-                            <Clock className="h-3 w-3" />
-                            <span>{t.features.duration}</span>
-                        </div>
-
                     </div>
-                    <Link className="px-4" href={`/${lang}/tours/${tour.slug}`}>
-                        <Button className="w-full text-blue-600 hover:bg-blue-100 font-semibold mt-1 p-2 gap-2">
-                            {t.card.viewDetails} <ArrowRight className="h-4 w-4" />
-                        </Button>
+
+                    <Link href={`/${lang}/tours/${tour.slug}`} className="flex items-center  px-1 w-max active:bg-amber-100 rounded-lg text-amber-600 font-medium">
+                        <span>{t.card.viewDetails}</span>
+                        <ArrowLeft className="w-4 h-4 ml-1 rotate-180" />
                     </Link>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         )
     })
 
     return (
-        <section className="py-10 bg-white">
-            <div className="max-w-7xl mx-auto px-1 md:px-4">
-                {/* Header */}
+        <section className="py-5 bg-white">
+            <div className="max-w-7xl mx-auto px-1 md:px-4  pb-3">
                 <div className="text-center mb-7">
                     <h2 className=" text-xl md:text-3xl font-bold text-gray-900 mb-3">
                         {t.header.title}
                     </h2>
                 </div>
 
-                {/* Swiper */}
                 <Swiper
                     items={swiperItems}
                 />

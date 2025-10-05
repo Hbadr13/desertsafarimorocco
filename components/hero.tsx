@@ -35,7 +35,6 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
 
     return (
         <section className="pt-16 relative min-h-[600px] h-[80vw] max-h-[700px] flex items-center justify-center overflow-hidden">
-            {/* Background Image with Gradient Overlay */}
             <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{
@@ -46,9 +45,7 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-purple-900/20" />
             </div>
 
-            {/* Main Content */}
             <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
-                {/* Main Title */}
                 <h1 className="text-4xl md:text-7xl font-bold mb-6 leading-tight">
                     <span className="block text-white">{t.titleLine1}</span>
                     <span className="block bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
@@ -56,12 +53,10 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
                     </span>
                 </h1>
 
-                {/* Subtitle */}
                 <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed text-gray-200 font-light">
                     {t.subtitle}
                 </p>
 
-                {/* Buttons */}
                 <div className="flex flex-row gap-4 justify-center items-center">
                     <Link href={`/${lang}/packages`} className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm md:text-lg shadow-2xl hover:shadow-orange-500/30 transition-shadow duration-300">
                         {t.exploreBtn}
@@ -73,7 +68,6 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
                 </div>
             </div>
 
-            {/* Decorative Elements */}
             <div className="absolute top-20 left-10 w-3 h-3 bg-amber-400/40 rounded-full blur-sm" />
             <div className="absolute top-40 right-20 w-4 h-4 bg-blue-400/30 rounded-full blur-sm" />
             <div className="absolute bottom-40 left-20 w-2 h-2 bg-purple-400/40 rounded-full blur-sm" />

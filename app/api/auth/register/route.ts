@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
 
     const db = await getDatabase()
 
-    // Check if user already exists
     const existingUser = await db.collection<User>("users").findOne({ email })
     if (existingUser) {
       return NextResponse.json({ error: "User already exists" }, { status: 409 })
@@ -48,7 +47,7 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60, // 7 days
+      maxAge: 7 * 24 * 60 * 60,
     })
 
     return response

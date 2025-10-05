@@ -35,8 +35,7 @@ async function getDashboardStats() {
       db.collection<Booking>("bookings").find({}).sort({ createdAt: -1 }).limit(5).toArray(),
     ])
 
-    // Calculate some additional stats for demonstration
-    const totalRevenue = bookingsCount * 299 // Example calculation
+    const totalRevenue = bookingsCount * 299
 
     return {
       categoriesCount,
@@ -63,9 +62,8 @@ export default async function AdminDashboard() {
   const stats = await getDashboardStats()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-2 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-slate-800 mb-2">Admin Dashboard</h1>
           <p className="text-slate-600 text-lg max-w-2xl mx-auto">
@@ -73,9 +71,7 @@ export default async function AdminDashboard() {
           </p>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Categories Card */}
           <Card className="shadow-lg border-0 rounded-2xl overflow-hidden transition-all hover:shadow-xl">
             <CardHeader className="pb-3 bg-gradient-to-r from-blue-600/5 to-indigo-700/5">
               <div className="flex items-center justify-between">
@@ -190,7 +186,7 @@ export default async function AdminDashboard() {
         <Card className="shadow-lg border-0 rounded-2xl overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-700">
             <CardHeader className="pb-3 border-b border-blue-500/20">
-              <div className="flex items-center justify-between">
+              <div className="flex  flex-col lg:flex-row items-center justify-between">
                 <div>
                   <CardTitle className="text-white flex items-center gap-2">
                     <Calendar className="h-5 w-5" />
@@ -209,11 +205,11 @@ export default async function AdminDashboard() {
               </div>
             </CardHeader>
           </div>
-          <CardContent className="p-6">
+          <CardContent className=" p-3 md:p-6">
             {stats.recentBookings.length > 0 ? (
               <div className="space-y-4">
                 {stats.recentBookings.map((booking) => (
-                  <div key={booking._id?.toString()} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div key={booking._id?.toString()} className="flex  lg:items-center flex-col lg:flex-row  lg:justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
                     <div className="flex-1">
                       <p className="font-medium text-slate-800">{booking.name}</p>
                       <p className="text-sm text-slate-500">{booking.email}</p>

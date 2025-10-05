@@ -1,6 +1,8 @@
 "use client"
 import { Category } from "@/lib/models"
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 interface FooterProps {
@@ -9,7 +11,6 @@ interface FooterProps {
 }
 
 export function Footer({ categories, lang }: FooterProps) {
-  // Multilingual content
   const translations = {
     en: {
       companyDescription: "Your trusted partner for authentic Moroccan adventures. Experience the magic of Morocco with our expert guides and carefully curated tours.",
@@ -62,6 +63,8 @@ export function Footer({ categories, lang }: FooterProps) {
   }
 
   const t = translations[lang]
+  const email = process.env.NEXT_PUBLIC_EMAIL || "desertsafarimorocco@gmail.com"
+  const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || "+12395375059";
 
   const quickLinks = [
     { href: `/${lang}`, label: t.home },
@@ -76,7 +79,6 @@ export function Footer({ categories, lang }: FooterProps) {
     return null
   }
 
-  // Helper function to get category title in current language
   const getCategoryTitle = (category: Category) => {
     if (typeof category.title === 'string') return category.title
     return category.title?.[lang] || category.title?.en || "Untitled"
@@ -86,10 +88,17 @@ export function Footer({ categories, lang }: FooterProps) {
     <footer className="bg-gradient-to-br from-gray-700 to-gray-600 text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info */}
           <div className="lg:col-span-1">
-            <h3 className="font-bold text-2xl mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-              Desert Safaris Morocco
+            <h3 className="font-bold text-2xl rounded-xl  p-1 mb-4 ">
+              <Link href={`/${lang}`}>
+                <Image
+                  alt="Desert-safaris-morocco-logo"
+                  src="/white-logo.png"
+                  width={140}
+                  height={50}
+                  className="h-14 w-max rounded-lg"
+                />
+              </Link>
             </h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
               {t.companyDescription}
@@ -110,7 +119,6 @@ export function Footer({ categories, lang }: FooterProps) {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="font-semibold text-lg mb-4 text-amber-400">{t.quickLinks}</h4>
             <ul className="space-y-3">
@@ -128,7 +136,6 @@ export function Footer({ categories, lang }: FooterProps) {
             </ul>
           </div>
 
-          {/* Categories */}
           <div>
             <h4 className="font-semibold text-lg mb-4 text-green-400">{t.tourCategories}</h4>
             <ul className="space-y-3">
@@ -157,7 +164,6 @@ export function Footer({ categories, lang }: FooterProps) {
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h4 className="font-semibold text-lg mb-4 text-blue-400">{t.contactUs}</h4>
             <div className="space-y-4">
@@ -165,14 +171,14 @@ export function Footer({ categories, lang }: FooterProps) {
                 <div className="p-2 bg-blue-500 rounded-lg group-hover:bg-blue-600 transition-colors">
                   <Phone className="h-4 w-4" />
                 </div>
-                <span className="text-gray-300 group-hover:text-blue-400 transition-colors">+1 239 537 5059</span>
+                <span className="text-gray-300 group-hover:text-blue-400 transition-colors">{phoneNumber}</span>
               </div>
 
               <div className="flex items-center gap-3 group cursor-pointer">
                 <div className="p-2 bg-red-500 rounded-lg group-hover:bg-red-600 transition-colors">
                   <Mail className="h-4 w-4" />
                 </div>
-                <span className="text-gray-300 group-hover:text-red-400 transition-colors break-all">desertsafarimorocco@gmail.com</span>
+                <span className="text-gray-300 group-hover:text-red-400 transition-colors break-all">{email}</span>
               </div>
 
               <div className="flex items-start gap-3 group cursor-pointer">
@@ -189,7 +195,6 @@ export function Footer({ categories, lang }: FooterProps) {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="border-t border-gray-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">

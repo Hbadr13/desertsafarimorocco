@@ -35,7 +35,6 @@ async function getToursWithCategories() {
 export default async function ToursPage() {
   const { tours, categories } = await getToursWithCategories()
 
-  // Group tours by category
   const groupedTours = categories.map((category) => ({
     ...category,
     tours: tours.filter((tour) => tour.categoryId === category._id?.toString()),
@@ -44,7 +43,6 @@ export default async function ToursPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-10">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-slate-800">Tours by Category</h1>

@@ -1,4 +1,3 @@
-// components/Header.tsx
 "use client"
 
 import { useState, useEffect } from "react"
@@ -7,13 +6,13 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Menu, X, MapPin, ChevronDown, Languages, MessageCircle } from "lucide-react"
 import { Category } from "@/lib/models"
+import Image from "next/image"
 
 interface HeaderProps {
   categories: Category[]
   lang: "es" | "fr" | "en"
 }
 
-// Translation interface
 interface Translations {
   home: string;
   packages: string;
@@ -117,21 +116,18 @@ export default function Header({ categories, lang }: HeaderProps) {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false)
   const [isMobileCategoriesOpen, setIsMobileCategoriesOpen] = useState(false)
   const [isMobileLanguagesOpen, setIsMobileLanguagesOpen] = useState(false)
-  const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || "+12395375059"; // Default number if not set
+  const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || "+12395375059";
 
   const pathname = usePathname()
   const t = translations[lang]
 
-  // Scroll handling - hide on scroll down, show on scroll up
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
 
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down
         setIsVisible(false)
       } else {
-        // Scrolling up
         setIsVisible(true)
       }
 
@@ -169,21 +165,17 @@ export default function Header({ categories, lang }: HeaderProps) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href={`/${lang}`} className="flex  z-30 items-center space-x-3 group">
-            <div className="p-2 bg-blue-600 rounded-lg shadow-md group-hover:shadow-lg transition-all">
-              <MapPin className="h-6 w-6 text-white" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-gray-900 leading-tight">
-                Desert Safaris Morocco
-              </span>
-            </div>
+          <Link href={`/${lang}`}>
+            <Image
+              alt="Desert-safaris-morocco-logo"
+              src="/logo.png"
+              width={120}
+              height={40}
+              className="h-10 w-auto"
+            />
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            {/* Categories Dropdown */}
             <div className="relative">
               <button
                 onMouseEnter={() => setIsCategoriesOpen(true)}
@@ -234,7 +226,6 @@ export default function Header({ categories, lang }: HeaderProps) {
               )}
             </div>
 
-            {/* Main Navigation Items */}
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -274,17 +265,14 @@ export default function Header({ categories, lang }: HeaderProps) {
             )}
           </Button>
 
-          {/* Mobile Navigation Sidebar */}
           <div className={`fixed  rounded-bl-xl  h-screen bg-blue-500= inset-0 z-40 lg:hidden transform transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}>
-            {/* Backdrop */}
             <div
               className="absolute inset-0 bg-opacity-50"
               onClick={() => setIsMenuOpen(false)}
             />
 
             <div className="absolute z-50 right-0 top-0 h-full w-80 bg-white shadow-xl overflow-hidden">
-              {/* Mobile Header */}
               <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-white">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-blue-600 rounded-lg">
@@ -303,12 +291,9 @@ export default function Header({ categories, lang }: HeaderProps) {
                   <X className="h-6 w-6" />
                 </Button>
               </div>
-
-              {/* Mobile Nav Items */}
               <div className="h-full overflow-y-auto">
-                <div className="p-4 space-y-2">
-                  {/* Main Navigation */}
-                  <div className="space-y-1">
+                <div className="p-4 space-y-1">
+                  <div className="space-y-0">
                     {navItems.map((item) => (
                       <Link
                         key={item.href}
@@ -327,16 +312,12 @@ export default function Header({ categories, lang }: HeaderProps) {
                     ))}
                   </div>
 
-                  {/* Mobile Categories Accordion */}
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="x rounded-lg overflow-hidden">
                     <button
                       onClick={() => setIsMobileCategoriesOpen(!isMobileCategoriesOpen)}
-                      className="flex items-center justify-between w-full px-4 py-3 bg-white hover:bg-gray-50 transition-colors border-b border-gray-200"
+                      className="flex items-center justify-between w-full px-4 py-3 bg-white hover:bg-gray-50 transition-colors"
                     >
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-indigo-200 rounded flex items-center justify-center">
-                          <ChevronDown className="h-4 w-4 text-black" />
-                        </div>
                         <span className="font-semibold text-gray-900">{t.categories}</span>
                       </div>
                       <ChevronDown
@@ -347,12 +328,12 @@ export default function Header({ categories, lang }: HeaderProps) {
 
                     {isMobileCategoriesOpen && (
                       <div className="bg-gray-50">
-                        <div className="py-2 space-y-1 max-h-60 overflow-y-auto">
+                        <div className=" space-y-1 max-h-60 overflow-y-auto">
                           {categories.slice(0, 8).map((category) => (
                             <Link
                               key={category._id?.toString()}
                               href={`/${lang}/categories/${category.slug}`}
-                              className="flex items-center space-x-3 px-4 py-2.5 mx-2 rounded-lg hover:bg-white hover:shadow-sm transition-all group"
+                              className="flex items-center space-x-3 px-4 p mx-2 rounded-lg hover:bg-white hover:shadow-sm transition-all group"
                               onClick={() => setIsMenuOpen(false)}
                             >
                               <div className="w-1.5 h-1.5 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -363,10 +344,10 @@ export default function Header({ categories, lang }: HeaderProps) {
                           ))}
                         </div>
 
-                        <div className="border-t border-gray-200 mt-2 pt-2">
+                        <div className="mt-2">
                           <Link
                             href={`/${lang}/categories`}
-                            className="flex items-center space-x-3 px-4 py-3 mx-2 rounded-lg bg-white hover:shadow-md transition-all group border border-gray-200"
+                            className="pl-7  mx-2 rounded-lg bg-white hover:shadow-md transition-all group "
                             onClick={() => setIsMenuOpen(false)}
                           >
                             <span className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
@@ -378,16 +359,12 @@ export default function Header({ categories, lang }: HeaderProps) {
                     )}
                   </div>
 
-                  {/* Mobile Languages Accordion */}
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="  overflow-hidden">
                     <button
                       onClick={() => setIsMobileLanguagesOpen(!isMobileLanguagesOpen)}
-                      className="flex items-center justify-between w-full px-4 py-3 bg-white hover:bg-gray-50 transition-colors border-b border-gray-200"
+                      className="flex items-center justify-between w-full px-4 py-1 bg-white hover:bg-gray-50 transition-colors  "
                     >
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-indigo-200 rounded flex items-center justify-center">
-                          <span className="text-sm text-black"><Languages /></span>
-                        </div>
+                      <div className="flex items-center ">
                         <span className="font-semibold text-gray-900">{t.languages}</span>
                       </div>
                       <ChevronDown
@@ -397,12 +374,12 @@ export default function Header({ categories, lang }: HeaderProps) {
                     </button>
 
                     {isMobileLanguagesOpen && (
-                      <div className="bg-gray-50 py-2 space-y-1">
+                      <div className="bg-gray-50 py-2 space-y-0">
                         {languages.map((language) => (
                           <Link
                             key={language.code}
                             href={`/${language.code}`}
-                            className={`flex items-center space-x-3 px-4 py-2.5 mx-2 rounded-lg transition-colors group ${lang === language.code
+                            className={`flex items-center space-x-3 px-4 py-1 mx-2 rounded-lg transition-colors group ${lang === language.code
                               ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
                               : 'text-gray-700 hover:bg-white'
                               }`}
@@ -419,13 +396,6 @@ export default function Header({ categories, lang }: HeaderProps) {
                     )}
                   </div>
 
-                  {/* Mobile Book Now Button */}
-                  {/* <Button
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold shadow-md mt-5"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {t.bookNow}
-                  </Button> */}
                   <Link
                     href={`https://wa.me/${phoneNumber.replace(/\D/g, "")}`}
                     target="_blank"

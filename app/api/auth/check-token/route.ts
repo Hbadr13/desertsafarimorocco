@@ -1,4 +1,3 @@
-// app/api/auth/check-token/route.ts
 import { NextRequest, NextResponse } from "next/server"
 import { verifyToken } from "@/lib/auth"
 

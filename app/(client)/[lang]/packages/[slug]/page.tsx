@@ -1,4 +1,3 @@
-// app/[lang]/packages/[slug]/page.tsx
 export const revalidate = 60;
 import { getDatabase } from "@/lib/mongodb"
 import { Package, Tour } from "@/lib/models"
@@ -9,7 +8,6 @@ const LANGS = ["en", "fr", "es"]
 const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris morocco"
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-// SEO Metadata
 export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es", slug: string } }) {
     const { lang, slug } = params
 
@@ -79,7 +77,6 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
     }
 }
 
-// Generate static params
 export async function generateStaticParams() {
     try {
         const db = await getDatabase()
@@ -100,16 +97,13 @@ async function getPackageData(lang: "en" | "fr" | "es", slug: string) {
     try {
         const db = await getDatabase()
 
-        // Get package
         const pkg = await db.collection<Package>("packages").findOne({ slug })
         if (!pkg) {
             throw new Error('Package not found')
         }
 
-        // Get tour
         const tour = await db.collection<Tour>("tours").findOne({ id: pkg.tourId })
 
-        // Get other packages from the same tour
         const otherPackages = await db.collection<Package>("packages")
             .find({
                 tourId: pkg.tourId,
@@ -142,7 +136,6 @@ export default async function PackageDetailPage({ params }: { params: { lang: "e
         return notFound()
     }
 
-    // Structured Data for SEO
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "TouristTrip",
@@ -170,7 +163,6 @@ export default async function PackageDetailPage({ params }: { params: { lang: "e
 
     return (
         <>
-            {/* Structured Data for SEO */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

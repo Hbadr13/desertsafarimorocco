@@ -17,16 +17,15 @@ export async function POST(request: NextRequest) {
     const user = await db.collection<User>("users").findOne({ email })
 
     if (!user) {
-      // Don't reveal if user exists or not
       return NextResponse.json({
         message: "If an account with that email exists, a reset link has been sent.",
       })
     }
 
-    const resetToken = crypto.randomBytes(32).toString("hex"); 
+    const resetToken = crypto.randomBytes(32).toString("hex");
     const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
-        
-    const resetTokenExpiry = new Date(Date.now() + (60 * 60 * 1000) / 6) // 10 min
+
+    const resetTokenExpiry = new Date(Date.now() + (60 * 60 * 1000) / 6)
     await db.collection<User>("users").updateOne(
       { email },
       {
@@ -38,7 +37,6 @@ export async function POST(request: NextRequest) {
       },
     )
 
-    // Send email
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: Number(process.env.EMAIL_PORT),

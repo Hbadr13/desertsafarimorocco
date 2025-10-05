@@ -32,14 +32,12 @@ async function getPackagesGrouped() {
         tourName: tour?.title?.en || "Unknown",
         categoryId: category?._id?.toString(),
         categoryName: category?.title?.en || "Unknown",
-        // Only English translation for display
         title: pkg.title || "",
         duration: pkg.duration || "",
         departure: pkg.departure || "",
       }
     })
 
-    // Group by category > tour
     const groupedByCategory = categories.map((cat) => {
       const toursInCategory = tours.filter((t) => t.categoryId?.toString() === cat._id.toString())
       return {
@@ -66,7 +64,6 @@ export default async function PackagesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-10">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className=" text-lg md:text-3xl font-bold text-slate-800">Packages by Category</h1>
@@ -80,7 +77,6 @@ export default async function PackagesPage() {
           </Link>
         </div>
 
-        {/* Categories Accordion */}
         <Accordion type="multiple" className="space-y-6 ">
           {groupedCategories.length ? groupedCategories.map((category) => (
             <AccordionItem key={category.categoryId} value={category.categoryId}>

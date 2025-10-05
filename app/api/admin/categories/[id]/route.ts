@@ -7,10 +7,6 @@ import { deleteImage, extractPublicId } from "@/lib/cloudinary"
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // const token = req.headers.get("authorization")?.replace("Bearer ", "")
-    // if (!token) {
-    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    // }
 
     const token = req.cookies.get("auth-token")?.value
     if (!token) {
@@ -22,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
 
     const db = await getDatabase()
-    const category  = await db.collection("categories").findOne({ _id: new ObjectId(params.id) })
+    const category = await db.collection("categories").findOne({ _id: new ObjectId(params.id) })
     if (!category) {
       return NextResponse.json({ error: "Category not found" }, { status: 404 })
     }
@@ -56,11 +52,11 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     if (category.images && Array.isArray(category.images)) {
       for (const url of category.images) {
         try {
-            const publicId = extractPublicId(url)
-            await deleteImage(`tourist-website/${publicId}`)
-          } catch (err) {
-            console.error("Failed to delete image:", url, err)
-          }
+          const publicId = extractPublicId(url)
+          await deleteImage(`tourist-website/${publicId}`)
+        } catch (err) {
+          console.error("Failed to delete image:", url, err)
+        }
       }
     }
     const { deletedCount } = await db.collection("categories").deleteOne({ _id: new ObjectId(params.id) })
@@ -88,7 +84,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const {title, shortDescription, description, slug, images ,id} = await request.json()
+    const { title, shortDescription, description, slug, images, id } = await request.json()
 
     if (!id || !title || !shortDescription || !description || !slug) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 })
@@ -110,8 +106,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Slug already exists" }, { status: 409 })
     }
     const result = await db.collection<Category>("categories").updateOne(
-      {_id: new ObjectId(id)},
-       { $set: newCategory}
+      { _id: new ObjectId(id) },
+      { $set: newCategory }
     )
 
     return NextResponse.json({

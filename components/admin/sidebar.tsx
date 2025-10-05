@@ -24,7 +24,6 @@ const sidebarItems = [
   { title: "Categories", href: "/desert26safariadmin/categories", icon: FolderOpen },
   { title: "Tours", href: "/desert26safariadmin/tours", icon: MapPin },
   { title: "Packages", href: "/desert26safariadmin/packages", icon: Package },
-  { title: "Users", href: "/desert26safariadmin/users", icon: Users },
   { title: "Bookings", href: "/desert26safariadmin/bookings", icon: Calendar },
 ]
 
@@ -38,7 +37,6 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="flex h-full flex-col bg-white">
-      {/* Header */}
       <div className="flex h-14 items-center border-gray-200 border-b px-4">
         <Link
           href="/desert26safariadmin/dashboard"
@@ -50,7 +48,6 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </Link>
       </div>
 
-      {/* Menu */}
       <ScrollArea className="flex-1 px-3">
         <div className="space-y-1 py-4">
           {sidebarItems.map((item) => {
@@ -82,7 +79,6 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </ScrollArea>
 
-      {/* Logout */}
       <div className="border-t border-gray-200 p-3">
         <Button
           variant="ghost"
@@ -115,7 +111,6 @@ export function MobileSidebar() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      {/* Trigger bouton menu */}
       <SheetTrigger asChild>
         <Button
           size="icon"
@@ -126,7 +121,6 @@ export function MobileSidebar() {
         </Button>
       </SheetTrigger>
 
-      {/* Contenu du menu */}
       <SheetContent side="left" className="flex flex-col p-0">
         <SidebarContent onNavigate={() => setOpen(false)} />
       </SheetContent>

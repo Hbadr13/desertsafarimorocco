@@ -1,4 +1,5 @@
-// components/PackageDetailsPage.tsx
+
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -11,6 +12,13 @@ import Link from "next/link"
 import Image from "next/image"
 import PackageCard from "./packageCard"
 import { Swiper } from "./ui/swiper"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
 
 interface PackageDetailsPageProps {
     pkg: Package
@@ -18,11 +26,231 @@ interface PackageDetailsPageProps {
     otherPackages: Package[]
     lang: 'en' | 'fr' | 'es'
 }
+const translations = {
+    en: {
+        whatsapp: "WhatsApp",
+        call: "Call",
+        whatsappMessage: `Hello, I would like to make a reservation for the package: `,
+        breadcrumb: {
+            home: "Home",
+            tours: "Tours",
+            packages: "Packages"
+        },
+        tabs: {
+            overview: "Overview",
+            itinerary: "Itinerary",
+            included: "What's Included"
+        },
+        booking: {
+            bestSeller: "⭐ Best Seller",
+            selectTripType: "Select Trip Type",
+            shared: "Shared",
+            private: "Private",
+            perPerson: "per person",
+            freeCancellation: "Free cancellation",
+            startDate: "Start Date",
+            travelers: "Travelers",
+            adults: "Adults",
+            children: "Children",
+            priceBreakdown: "Price Breakdown",
+            totalAmount: "Total Amount",
+            bookNow: "Book Now",
+            securePayment: "Secure payment",
+            bestPriceGuarantee: "Best price guarantee",
+            needHelp: "Need Help Booking?",
+            customerSupport: "24/7 Customer Support",
+            contactInfo: "Contact Information",
+            fullName: "Full Name",
+            email: "Email Address",
+            phone: "Phone Number",
+            notes: "Additional Notes",
+            optional: "Optional",
+            contactUsForPrice: "Contact us for price",
+            noPriceAvailable: "Price not available"
+        },
+        content: {
+            tourHighlights: "Tour Highlights",
+            quickFacts: "Quick Facts",
+            groupSize: "Group Size",
+            difficulty: "Difficulty",
+            ageRange: "Age Range",
+            detailedItinerary: "Detailed Itinerary",
+            whatsIncluded: "What's Included",
+            whatsExcluded: "What's Excluded",
+            otherPackages: "Other Packages in This Tour",
+            viewPackageDetails: "View Package Details",
+            from: "From",
+            experience: "Experience",
+            accommodation: "Accommodation",
+            meals: "Meals Included",
+            transportation: "Transportation",
+            guide: "Professional Guide",
+            readMore: 'Read more'
+        },
+        features: {
+            groupSize: "2-12 people",
+            difficulty: "Moderate",
+            ageRange: "8-70 years"
+        },
+        messages: {
+            successTitle: "Booking Request Submitted!",
+            successMessage: "Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.",
+            processingMessage: "Our travel experts will review your booking request. We'll contact you within 24 hours to confirm availability. Once confirmed, we'll send you detailed itinerary and payment instructions.",
+            errorTitle: "Booking Failed",
+            errorMessage: "There was an error submitting your booking. Please try again or contact us directly."
+        }
+    },
+    fr: {
+        whatsapp: "WhatsApp",
+        call: "Appeler",
+        whatsappMessage: `Bonjour, je voudrais faire une réservation pour le package : `,
+        breadcrumb: {
+            home: "Accueil",
+            tours: "Circuits",
+            packages: "Forfaits"
+        },
+        tabs: {
+            overview: "Aperçu",
+            itinerary: "Itinéraire",
+            included: "Ce qui est inclus"
+        },
+        booking: {
+            bestSeller: "⭐ Meilleure Vente",
+            selectTripType: "Sélectionnez le type de voyage",
+            shared: "Partagé",
+            private: "Privé",
+            perPerson: "par personne",
+            freeCancellation: "Annulation gratuite",
+            startDate: "Date de début",
+            travelers: "Voyageurs",
+            adults: "Adultes",
+            children: "Enfants",
+            priceBreakdown: "Détail du prix",
+            totalAmount: "Montant total",
+            bookNow: "Réserver",
+            securePayment: "Paiement sécurisé",
+            bestPriceGuarantee: "Meilleur prix garanti",
+            needHelp: "Besoin d'aide pour réserver?",
+            customerSupport: "Support client 24/7",
+            contactInfo: "Informations de contact",
+            fullName: "Nom complet",
+            email: "Adresse email",
+            phone: "Numéro de téléphone",
+            notes: "Notes supplémentaires",
+            optional: "Optionnel",
+            contactUsForPrice: "Contactez-nous pour le prix",
+            noPriceAvailable: "Prix non disponible"
+        },
+        content: {
+            tourHighlights: "Points forts du circuit",
+            quickFacts: "Informations rapides",
+            groupSize: "Taille du groupe",
+            difficulty: "Difficulté",
+            ageRange: "Tranche d'âge",
+            detailedItinerary: "Itinéraire détaillé",
+            whatsIncluded: "Ce qui est inclus",
+            whatsExcluded: "Ce qui est exclu",
+            otherPackages: "Autres forfaits de ce circuit",
+            viewPackageDetails: "Voir les détails du forfait",
+            from: "À partir de",
+            experience: "Expérience",
+            accommodation: "Hébergement",
+            meals: "Repas inclus",
+            transportation: "Transport",
+            guide: "Guide professionnel",
+            readMore: 'En savoir plus'
+        },
+        features: {
+            groupSize: "2-12 personnes",
+            difficulty: "Modérée",
+            ageRange: "8-70 ans"
+        },
+        messages: {
+            successTitle: "Demande de Réservation Envoyée !",
+            successMessage: "Merci ! Votre message a été envoyé avec succès. Nous vous répondrons dans les 24 heures.",
+            processingMessage: "Nos experts voyages examineront votre demande de réservation. Nous vous contacterons dans les 24 heures pour confirmer la disponibilité. Une fois confirmé, nous vous enverrons l'itinéraire détaillé et les instructions de paiement.",
+            errorTitle: "Échec de la Réservation",
+            errorMessage: "Une erreur s'est produite lors de l'envoi de votre réservation. Veuillez réessayer ou nous contacter directement."
+        }
+    },
+    es: {
+        whatsapp: "WhatsApp",
+        call: "Llamar",
+        whatsappMessage: `Hola, me gustaría hacer una reserva para el paquete:`,
+        breadcrumb: {
+            home: "Inicio",
+            tours: "Tours",
+            packages: "Paquetes"
+        },
+        tabs: {
+            overview: "Resumen",
+            itinerary: "Itinerario",
+            included: "Qué incluye"
+        },
+        booking: {
+            bestSeller: "⭐ Más Vendido",
+            selectTripType: "Selecciona el tipo de viaje",
+            shared: "Compartido",
+            private: "Privado",
+            perPerson: "por persona",
+            freeCancellation: "Cancelación gratuita",
+            startDate: "Fecha de inicio",
+            travelers: "Viajeros",
+            adults: "Adultos",
+            children: "Niños",
+            priceBreakdown: "Desglose del precio",
+            totalAmount: "Monto total",
+            bookNow: "Reservar",
+            securePayment: "Pago seguro",
+            bestPriceGuarantee: "Mejor precio garantizado",
+            needHelp: "¿Necesitas ayuda para reservar?",
+            customerSupport: "Soporte al cliente 24/7",
+            contactInfo: "Información de contacto",
+            fullName: "Nombre completo",
+            email: "Correo electrónico",
+            phone: "Número de teléfono",
+            notes: "Notas adicionales",
+            optional: "Opcional",
+            contactUsForPrice: "Contáctenos para precio",
+            noPriceAvailable: "Precio no disponible"
+        },
+        content: {
+            tourHighlights: "Destacados del tour",
+            quickFacts: "Datos rápidos",
+            groupSize: "Tamaño del grupo",
+            difficulty: "Dificultad",
+            ageRange: "Rango de edad",
+            detailedItinerary: "Itinerario detallado",
+            whatsIncluded: "Qué incluye",
+            whatsExcluded: "Qué excluye",
+            otherPackages: "Otros paquetes de este tour",
+            viewPackageDetails: "Ver detalles del paquete",
+            from: "Desde",
+            experience: "Experiencia",
+            accommodation: "Alojamiento",
+            meals: "Comidas incluidas",
+            transportation: "Transporte",
+            guide: "Guía profesional",
+            readMore: 'leer más'
 
+        },
+        features: {
+            groupSize: "2-12 personas",
+            difficulty: "Moderada",
+            ageRange: "8-70 años"
+        },
+        messages: {
+            successTitle: "¡Solicitud de Reserva Enviada!",
+            successMessage: "¡Gracias! Su mensaje ha sido enviado exitosamente. Nos pondremos en contacto con usted dentro de 24 horas.",
+            processingMessage: "Nuestros expertos en viajes revisarán su solicitud de reserva. Nos contactaremos con usted dentro de 24 horas para confirmar la disponibilidad. Una vez confirmado, le enviaremos el itinerario detallado y las instrucciones de pago.",
+            errorTitle: "Reserva Fallida",
+            errorMessage: "Hubo un error al enviar su reserva. Por favor, intente nuevamente o contáctenos directamente."
+        }
+    }
+}
 export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDetailsPageProps) {
     const [selectedPackageType, setSelectedPackageType] = useState<'shared' | 'private'>('shared')
     const [startDate, setStartDate] = useState('')
-    const [endDate, setEndDate] = useState('')
     const [adults, setAdults] = useState(1)
     const [children, setChildren] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
@@ -34,15 +262,19 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
         phone: '',
         notes: ''
     })
-    const [readmore, SetReadmore] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [dialogTitle, setDialogTitle] = useState('')
+    const [dialogMessage, setDialogMessage] = useState('')
     const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || '+12395375059'
     const email = process.env.NEXT_PUBLIC_EMAIL
 
-    // Check if prices exist
     const hasSharedPrice = pkg.shareTrip && pkg.shareTrip > 0
     const hasPrivatePrice = pkg.privateTrip && pkg.privateTrip > 0
 
-    // Set default package type based on available prices
+    const hasOnlyOnePrice = (hasSharedPrice && !hasPrivatePrice) || (!hasSharedPrice && hasPrivatePrice)
+    const hasBothPrices = hasSharedPrice && hasPrivatePrice
+
     useEffect(() => {
         if (!hasSharedPrice && hasPrivatePrice) {
             setSelectedPackageType('private')
@@ -51,226 +283,8 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
         }
     }, [hasSharedPrice, hasPrivatePrice])
 
-    // Translations
-    const translations = {
-        en: {
-            whatsapp: "WhatsApp",
-            call: "Call",
-            whatsappMessage: `Hello, I would like to make a reservation for the package: `,
-            breadcrumb: {
-                home: "Home",
-                tours: "Tours",
-                packages: "Packages"
-            },
-            tabs: {
-                overview: "Overview",
-                itinerary: "Itinerary",
-                included: "What's Included"
-            },
-            booking: {
-                bestSeller: "⭐ Best Seller",
-                selectTripType: "Select Trip Type",
-                shared: "Shared",
-                private: "Private",
-                perPerson: "per person",
-                freeCancellation: "Free cancellation",
-                startDate: "Start Date",
-                endDate: "End Date",
-                travelers: "Travelers",
-                adults: "Adults",
-                children: "Children",
-                priceBreakdown: "Price Breakdown",
-                totalAmount: "Total Amount",
-                bookNow: "Book Now",
-                securePayment: "Secure payment",
-                bestPriceGuarantee: "Best price guarantee",
-                needHelp: "Need Help Booking?",
-                customerSupport: "24/7 Customer Support",
-                contactInfo: "Contact Information",
-                fullName: "Full Name",
-                email: "Email Address",
-                phone: "Phone Number",
-                notes: "Additional Notes",
-                optional: "Optional",
-                contactUsForPrice: "Contact us for price",
-                noPriceAvailable: "Price not available"
-            },
-            content: {
-                tourHighlights: "Tour Highlights",
-                quickFacts: "Quick Facts",
-                groupSize: "Group Size",
-                difficulty: "Difficulty",
-                ageRange: "Age Range",
-                detailedItinerary: "Detailed Itinerary",
-                whatsIncluded: "What's Included",
-                whatsExcluded: "What's Excluded",
-                otherPackages: "Other Packages in This Tour",
-                viewPackageDetails: "View Package Details",
-                from: "From",
-                experience: "Experience",
-                accommodation: "Accommodation",
-                meals: "Meals Included",
-                transportation: "Transportation",
-                guide: "Professional Guide",
-                readMore: 'Read more'
-            },
-            features: {
-                groupSize: "2-12 people",
-                difficulty: "Moderate",
-                ageRange: "8-70 years"
-            }
-        },
-        fr: {
-            whatsapp: "WhatsApp",
-
-            call: "Appeler",
-            whatsappMessage: `Bonjour, je voudrais faire une réservation pour le package : `,
-            breadcrumb: {
-                home: "Accueil",
-                tours: "Circuits",
-                packages: "Forfaits"
-            },
-            tabs: {
-                overview: "Aperçu",
-                itinerary: "Itinéraire",
-                included: "Ce qui est inclus"
-            },
-            booking: {
-                bestSeller: "⭐ Meilleure Vente",
-                selectTripType: "Sélectionnez le type de voyage",
-                shared: "Partagé",
-                private: "Privé",
-                perPerson: "par personne",
-                freeCancellation: "Annulation gratuite",
-                startDate: "Date de début",
-                endDate: "Date de fin",
-                travelers: "Voyageurs",
-                adults: "Adultes",
-                children: "Enfants",
-                priceBreakdown: "Détail du prix",
-                totalAmount: "Montant total",
-                bookNow: "Réserver",
-                securePayment: "Paiement sécurisé",
-                bestPriceGuarantee: "Meilleur prix garanti",
-                needHelp: "Besoin d'aide pour réserver?",
-                customerSupport: "Support client 24/7",
-                contactInfo: "Informations de contact",
-                fullName: "Nom complet",
-                email: "Adresse email",
-                phone: "Numéro de téléphone",
-                notes: "Notes supplémentaires",
-                optional: "Optionnel",
-                contactUsForPrice: "Contactez-nous pour le prix",
-                noPriceAvailable: "Prix non disponible"
-            },
-            content: {
-                tourHighlights: "Points forts du circuit",
-                quickFacts: "Informations rapides",
-                groupSize: "Taille du groupe",
-                difficulty: "Difficulté",
-                ageRange: "Tranche d'âge",
-                detailedItinerary: "Itinéraire détaillé",
-                whatsIncluded: "Ce qui est inclus",
-                whatsExcluded: "Ce qui est exclu",
-                otherPackages: "Autres forfaits de ce circuit",
-                viewPackageDetails: "Voir les détails du forfait",
-                from: "À partir de",
-                experience: "Expérience",
-                accommodation: "Hébergement",
-                meals: "Repas inclus",
-                transportation: "Transport",
-                guide: "Guide professionnel",
-                readMore: 'En savoir plus'
-            },
-            features: {
-                groupSize: "2-12 personnes",
-                difficulty: "Modérée",
-                ageRange: "8-70 ans"
-            }
-        },
-        es: {
-            whatsapp: "WhatsApp",
-            call: "Llamar",
-            whatsappMessage: `Hola, me gustaría hacer una reserva para el paquete:`,
-            breadcrumb: {
-                home: "Inicio",
-                tours: "Tours",
-                packages: "Paquetes"
-            },
-            tabs: {
-                overview: "Resumen",
-                itinerary: "Itinerario",
-                included: "Qué incluye"
-            },
-            booking: {
-                bestSeller: "⭐ Más Vendido",
-                selectTripType: "Selecciona el tipo de viaje",
-                shared: "Compartido",
-                private: "Privado",
-                perPerson: "por persona",
-                freeCancellation: "Cancelación gratuita",
-                startDate: "Fecha de inicio",
-                endDate: "Fecha de fin",
-                travelers: "Viajeros",
-                adults: "Adultos",
-                children: "Niños",
-                priceBreakdown: "Desglose del precio",
-                totalAmount: "Monto total",
-                bookNow: "Reservar",
-                securePayment: "Pago seguro",
-                bestPriceGuarantee: "Mejor precio garantizado",
-                needHelp: "¿Necesitas ayuda para reservar?",
-                customerSupport: "Soporte al cliente 24/7",
-                contactInfo: "Información de contacto",
-                fullName: "Nombre completo",
-                email: "Correo electrónico",
-                phone: "Número de teléfono",
-                notes: "Notas adicionales",
-                optional: "Opcional",
-                contactUsForPrice: "Contáctenos para precio",
-                noPriceAvailable: "Precio no disponible"
-            },
-            content: {
-                tourHighlights: "Destacados del tour",
-                quickFacts: "Datos rápidos",
-                groupSize: "Tamaño del grupo",
-                difficulty: "Dificultad",
-                ageRange: "Rango de edad",
-                detailedItinerary: "Itinerario detallado",
-                whatsIncluded: "Qué incluye",
-                whatsExcluded: "Qué excluye",
-                otherPackages: "Otros paquetes de este tour",
-                viewPackageDetails: "Ver detalles del paquete",
-                from: "Desde",
-                experience: "Experiencia",
-                accommodation: "Alojamiento",
-                meals: "Comidas incluidas",
-                transportation: "Transporte",
-                guide: "Guía profesional",
-                readMore: 'leer más'
-
-            },
-            features: {
-                groupSize: "2-12 personas",
-                difficulty: "Moderada",
-                ageRange: "8-70 años"
-            }
-        }
-    }
-
     const t = translations[lang]
-    // Calculate end date based on duration
-    // useEffect(() => {
-    //     if (startDate) {
-    //         const duration = parseInt((pkg.duration?.[lang] || pkg.duration?.en || "7").split(' ')[0]) || 7
-    //         const start = new Date(startDate)
-    //         const end = new Date(start)
-    //         end.setDate(start.getDate() + duration)
-    //         setEndDate(end.toISOString().split('T')[0])
-    //     }
-    // }, [startDate, pkg.duration, lang])
 
-    // Calculate total price
     useEffect(() => {
         const basePrice = selectedPackageType === 'shared' ? pkg.shareTrip : pkg.privateTrip
         if (basePrice && basePrice > 0) {
@@ -290,20 +304,70 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
         })
     }
 
-    const handleReservation = (e: React.FormEvent) => {
+    const handleAdultsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(e.target.value) || 0
+        setAdults(Math.max(1, Math.min(10, value)))
+    }
+
+    const handleChildrenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(e.target.value) || 0
+        setChildren(Math.max(0, Math.min(10, value)))
+    }
+
+    const handleReservation = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log({
-            package: pkg.title?.[lang] || pkg.title?.en,
-            type: selectedPackageType,
+        setIsSubmitting(true)
+
+        const bookingData = {
+            packageId: pkg._id,
+            packageName: pkg.title?.[lang] || pkg.title?.en,
+            packageType: selectedPackageType,
             startDate,
-            endDate,
+            name: formData.fullName,
+            email: formData.email,
+            phone: formData.phone,
+            notes: formData.notes,
             adults,
             children,
             totalPrice,
-            ...formData
-        })
-        // Here you would typically send this data to your backend
-        alert(t.booking.bookNow + " - Reservation submitted!")
+            lang,
+            timestamp: new Date().toISOString()
+        }
+
+        try {
+            const response = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bookingData),
+            })
+
+            if (response.ok) {
+                const result = await response.json()
+                setDialogTitle(t.messages.successTitle)
+                setDialogMessage(`${t.messages.successMessage}\n\n${t.messages.processingMessage}`)
+                setDialogOpen(true)
+                setFormData({
+                    fullName: '',
+                    email: '',
+                    phone: '',
+                    notes: ''
+                })
+                setStartDate('')
+                setAdults(1)
+                setChildren(0)
+            } else {
+                throw new Error('Failed to submit booking')
+            }
+        } catch (error) {
+            console.error('Error submitting booking:', error)
+            setDialogTitle(t.messages.errorTitle)
+            setDialogMessage(t.messages.errorMessage)
+            setDialogOpen(true)
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     const packageTitle = pkg.title?.[lang] || pkg.title?.en || ""
@@ -312,23 +376,26 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
     const packageLocation = pkg.location?.[lang] || pkg.location?.en || ""
     const tourTitle = tour?.title?.[lang] || tour?.title?.en || ""
 
-    // Get current price based on selection
     const getCurrentPrice = () => {
         const price = selectedPackageType === 'shared' ? pkg.shareTrip : pkg.privateTrip
         return price && price > 0 ? price : 0
     }
+
+    const getSinglePrice = () => {
+        if (hasSharedPrice) return pkg.shareTrip
+        if (hasPrivatePrice) return pkg.privateTrip
+        return 0
+    }
+
     const swiperItems = otherPackages.map((pkg) => (
         <PackageCard key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
     ))
+
     return (
         <div className="min-h-screen bg-white pt-10">
-
-
             <div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Left Column - Package Details */}
                     <div className="lg:col-span-2 space-y-8">
-                        {/* Image Gallery */}
                         <div className="rounded-2xl overflow-hidden shadow-lg">
                             <div className="relative h-80 sm:h-96 w-full">
                                 <Image
@@ -342,15 +409,15 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                     <>
                                         <button
                                             onClick={() => setCurrentImageIndex((prev) => prev > 0 ? prev - 1 : pkg.images!.length - 1)}
-                                            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
+                                            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/50 hover:bg-white/60 p-3 rounded-full shadow-lg transition-all"
                                         >
-                                            <ChevronLeft className="h-5 w-5 text-gray-700" />
+                                            <ChevronLeft strokeWidth={3} className="h-5 w-5 text-blue-700" />
                                         </button>
                                         <button
                                             onClick={() => setCurrentImageIndex((prev) => prev < pkg.images!.length - 1 ? prev + 1 : 0)}
-                                            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
+                                            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/50 hover:bg-white/60 p-3 rounded-full shadow-lg transition-all"
                                         >
-                                            <ChevronRight className="h-5 w-5 text-gray-700" />
+                                            <ChevronRight strokeWidth={3} className="h-5 w-5 text-blue-700" />
                                         </button>
                                     </>
                                 )}
@@ -378,36 +445,34 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                             )}
                         </div>
 
-                        {/* Package Header */}
                         <div className="space-y-4">
                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                                 <div>
                                     <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-2">{packageTitle}</h1>
                                     <div className="flex flex-wrap items-center gap-4 text-gray-600 text-sm">
-                                        <div className="flex items-center gap-1">
+                                        {packageLocation != '' && <div className="flex items-center gap-1">
                                             <MapPin className="h-4 w-4" />
                                             <span>{packageLocation}</span>
-                                        </div>
-                                        <div className="flex items-center gap-1">
+                                        </div>}
+                                        {packageDuration != '' && <div className="flex items-center gap-1">
                                             <Clock className="h-4 w-4" />
                                             <span>{packageDuration}</span>
-                                        </div>
-                                        <div className="flex items-center gap-1">
+                                        </div>}
+                                        {pkg.departureTime != '' && <div className="flex items-center gap-1">
                                             <Calendar className="h-4 w-4" />
                                             <span>Departure: {pkg.departureTime}</span>
-                                        </div>
+                                        </div>}
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Navigation Tabs */}
                             <div className="border-b border-gray-200">
                                 <nav className="flex space-x-8">
                                     {[
                                         { id: 'overview', label: t.tabs.overview },
                                         { id: 'itinerary', label: t.tabs.itinerary },
                                         { id: 'included', label: t.tabs.included }
-                                    ].map((tab) => (
+                                    ].filter((it) => !(it.id == 'itinerary' && pkg.itinerary.length == 0)).map((tab) => (
                                         <button
                                             key={tab.id}
                                             onClick={() => setActiveTab(tab.id as any)}
@@ -423,15 +488,12 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                             </div>
                         </div>
 
-                        {/* Tab Content */}
                         <div className="space-y-6">
                             {activeTab === 'overview' && (
                                 <div className="space-y-6">
-                                    <p className="text-gray-700 leading-relaxed  text-sm md:text-lg">{packageDescription}</p>
+                                    <p className="text-gray-700  whitespace-pre-wrap leading-relaxed  text-sm md:text-lg">{packageDescription}</p>
 
-                                    {/* Redesigned Tour Highlights & Quick Facts */}
                                     <div className="grid grid-cols-1 gap-8">
-                                        {/* Tour Highlights - New Design */}
                                         {pkg.itinerary && pkg.itinerary.length != 0 && <Card className="border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-white">
                                             <CardContent className="p-6">
                                                 <div className="flex items-center gap-3 mb-4">
@@ -456,7 +518,6 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                             </CardContent>
                                         </Card>}
 
-                                        {/* Quick Facts - New Design */}
                                         <Card className="border-2 border-green-100 bg-gradient-to-br from-green-50 to-white">
                                             <CardContent className="p-6">
                                                 <div className="flex items-center gap-3 mb-4">
@@ -512,7 +573,7 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                                     </h4>
                                                 </div>
                                                 <div className="p-6 bg-white">
-                                                    <p className="text-gray-700 leading-relaxed text-sm">{day.description?.[lang] || day.description?.en || ""}</p>
+                                                    <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap ">{day.description?.[lang] || day.description?.en || ""}</p>
                                                 </div>
                                             </div>
                                         ))}
@@ -554,21 +615,21 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                             )}
                         </div>
 
-                        {/* Other Packages */}
 
                     </div>
 
-                    {/* Right Column - Booking Widget */}
                     <div className="space-y-6">
                         <Card className="border border-blue-200 shadow-xl">
                             <CardContent className="p-6">
                                 <div className="text-center mb-6">
-                                    {getCurrentPrice() > 0 ? (
+                                    {hasOnlyOnePrice || hasBothPrices ? (
                                         <>
                                             <div className="text-3xl font-bold text-blue-600 mb-1">
-                                                ${getCurrentPrice()}
+                                                ${hasOnlyOnePrice ? getSinglePrice() : getCurrentPrice()}
                                             </div>
-                                            <div className="text-sm text-gray-600">{t.booking.perPerson}</div>
+                                            <div className="text-sm text-gray-600">
+                                                {t.booking.perPerson}
+                                            </div>
                                         </>
                                     ) : (
                                         <div className="text-xl font-bold text-gray-600 mb-2">
@@ -576,46 +637,38 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                         </div>
                                     )}
                                 </div>
-
                                 <form onSubmit={handleReservation} className="space-y-4">
-                                    {/* Trip Type - Only show if prices exist */}
-                                    {(hasSharedPrice != 0 || hasPrivatePrice != 0) && (
+                                    {hasBothPrices != 0 && (
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-3">{t.booking.selectTripType}</label>
                                             <div className="grid grid-cols-2 gap-3">
-                                                {hasSharedPrice != 0 && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setSelectedPackageType('shared')}
-                                                        className={`p-4 border-2 rounded-xl text-center transition-all ${selectedPackageType === 'shared'
-                                                            ? 'border-blue-600 bg-blue-50 text-blue-600 shadow-md'
-                                                            : 'border-gray-300 hover:border-blue-400 bg-white'
-                                                            }`}
-                                                    >
-                                                        <Users className="h-6 w-6 mx-auto mb-2" />
-                                                        <div className="font-semibold">{t.booking.shared}</div>
-                                                        <div className="text-lg font-bold">${pkg.shareTrip}</div>
-                                                    </button>
-                                                )}
-                                                {hasPrivatePrice != 0 && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setSelectedPackageType('private')}
-                                                        className={`p-4 border-2 rounded-xl text-center transition-all ${selectedPackageType === 'private'
-                                                            ? 'border-blue-600 bg-blue-50 text-blue-600 shadow-md'
-                                                            : 'border-gray-300 hover:border-blue-400 bg-white'
-                                                            }`}
-                                                    >
-                                                        <Shield className="h-6 w-6 mx-auto mb-2" />
-                                                        <div className="font-semibold">{t.booking.private}</div>
-                                                        <div className="text-lg font-bold">${pkg.privateTrip}</div>
-                                                    </button>
-                                                )}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedPackageType('shared')}
+                                                    className={`p-4 border-2 rounded-xl text-center transition-all ${selectedPackageType === 'shared'
+                                                        ? 'border-blue-600 bg-blue-50 text-blue-600 shadow-md'
+                                                        : 'border-gray-300 hover:border-blue-400 bg-white'
+                                                        }`}
+                                                >
+                                                    <Users className="h-6 w-6 mx-auto mb-2" />
+                                                    <div className="font-semibold">{t.booking.shared}</div>
+                                                    <div className="text-lg font-bold">${pkg.shareTrip}</div>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedPackageType('private')}
+                                                    className={`p-4 border-2 rounded-xl text-center transition-all ${selectedPackageType === 'private'
+                                                        ? 'border-blue-600 bg-blue-50 text-blue-600 shadow-md'
+                                                        : 'border-gray-300 hover:border-blue-400 bg-white'
+                                                        }`}
+                                                >
+                                                    <Shield className="h-6 w-6 mx-auto mb-2" />
+                                                    <div className="font-semibold">{t.booking.private}</div>
+                                                    <div className="text-lg font-bold">${pkg.privateTrip}</div>
+                                                </button>
                                             </div>
                                         </div>
                                     )}
-
-                                    {/* Contact Information */}
                                     <div className="border-t pt-4">
                                         <h4 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
                                             <User className="h-4 w-4" />
@@ -680,11 +733,10 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                         </div>
                                     </div>
 
-                                    {/* Dates */}
                                     <div className="space-y-3">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                                {t.booking.startDate}
+                                                {t.booking.startDate} *
                                             </label>
                                             <input
                                                 type="date"
@@ -694,62 +746,49 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                             />
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                                {t.booking.endDate}
-                                            </label>
-                                            <input
-                                                type="date"
-                                                onChange={(e) => setEndDate(e.target.value)}
-                                                value={endDate}
-                                                className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
-                                            />
-                                        </div>
                                     </div>
 
-                                    {/* Guests */}
                                     <div>
                                         <label className="block text-sm font-semibold text-gray-700 mb-3">{t.booking.travelers}</label>
                                         <div className="grid grid-cols-2 gap-3">
                                             <div>
-                                                <select
+                                                <label className="block text-xs text-gray-600 mb-1">{t.booking.adults}</label>
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="10"
                                                     value={adults}
-                                                    onChange={(e) => setAdults(parseInt(e.target.value))}
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                >
-                                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                                                        <option key={num} value={num}>{num} {t.booking.adults}{num > 1 ? 's' : ''}</option>
-                                                    ))}
-                                                </select>
+                                                    onChange={handleAdultsChange}
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                />
                                             </div>
                                             <div>
-                                                <select
+                                                <label className="block text-xs text-gray-600 mb-1">{t.booking.children}</label>
+                                                <input
+                                                    type="number"
+                                                    min="0"
+                                                    max="10"
                                                     value={children}
-                                                    onChange={(e) => setChildren(parseInt(e.target.value))}
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                                >
-                                                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                                                        <option key={num} value={num}>{num} {t.booking.children}{num !== 1 ? 'ren' : ''}</option>
-                                                    ))}
-                                                </select>
+                                                    onChange={handleChildrenChange}
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                />
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Price Breakdown - Only show if price exists */}
-                                    {getCurrentPrice() > 0 && (
+                                    {(hasOnlyOnePrice || hasBothPrices) && (
                                         <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                                             <div className="flex justify-between text-sm">
                                                 <span>{t.booking.adults} x{adults}</span>
                                                 <span className="font-semibold">
-                                                    ${(adults * getCurrentPrice()).toLocaleString()}
+                                                    ${(adults * (hasOnlyOnePrice ? getSinglePrice() : getCurrentPrice())).toLocaleString()}
                                                 </span>
                                             </div>
                                             {children > 0 && (
                                                 <div className="flex justify-between text-sm text-green-600">
                                                     <span>{t.booking.children} x{children} (30% off)</span>
                                                     <span className="font-semibold">
-                                                        ${(children * getCurrentPrice() * 0.7).toLocaleString()}
+                                                        ${(children * (hasOnlyOnePrice ? getSinglePrice() : getCurrentPrice()) * 0.7).toLocaleString()}
                                                     </span>
                                                 </div>
                                             )}
@@ -762,7 +801,6 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                         </div>
                                     )}
 
-                                    {/* Book Button */}
                                     <div className="flex gap-2 text-sm">
                                         <Link
                                             href={`https://wa.me/${phoneNumber.replace(/\D/g, "")}?text=${encodeURIComponent(t.whatsappMessage + pkg.title[lang])}`}
@@ -781,14 +819,15 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                             {t.call}
                                         </Link>
                                     </div>
+
                                     <Button
                                         type="submit"
-                                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 text-lg font-semibold shadow-lg"
+                                        disabled={isSubmitting}
+                                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 text-lg font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
-                                        {t.booking.bookNow}
+                                        {isSubmitting ? "Submitting..." : t.booking.bookNow}
                                     </Button>
 
-                                    {/* Trust Features */}
                                     <div className="text-center space-y-2 text-xs text-gray-500">
                                         <div className="flex items-center justify-center gap-4">
                                             <div className="flex items-center gap-1">
@@ -829,19 +868,29 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
             </div>
 
             <div className="border-t border-gray-200">
-
                 {otherPackages.length > 0 && (
                     <div className=" pt-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                        <h2 className=" text-2xl md:text-5xl font-bold text-gray-900 mb-6">{t.content.otherPackages}</h2>
+                        <h2 className=" text-xl md:text-3xl font-bold text-gray-900 mb-6">{t.content.otherPackages}</h2>
                         <Swiper
                             items={swiperItems}
-                            cardWidth={340}
-                            cardGap={2}
-                            showNavigation={true}
                         />
                     </div>
                 )}
             </div>
+
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <DialogContent className="bg-white">
+                    <DialogHeader>
+                        <DialogTitle>{dialogTitle}</DialogTitle>
+                        <DialogDescription className="whitespace-pre-line">
+                            {dialogMessage}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Button onClick={() => setDialogOpen(false)} className="mt-1 bg-blue-500 text-white">
+                        OK
+                    </Button>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

@@ -69,7 +69,6 @@ export default function ForgotPassword() {
               </Alert>
             )}
 
-            {/* Email Field */}
             <div className="space-y-1">
               <Label htmlFor="email" className="font-medium text-slate-700">Email</Label>
               <div className="relative">
@@ -81,10 +80,10 @@ export default function ForgotPassword() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={isLoading}
-                className="pl-10 rounded-xl placeholder:opacity-50 border border-blue-300 focus:border-blue-900 ring-0  duration-200 transition-all"
+                  className="pl-10 rounded-xl placeholder:opacity-50 border border-blue-300 focus:border-blue-900 ring-0  duration-200 transition-all"
                 />
                 <span className="absolute inset-y-0 left-3 flex items-center text-slate-400">
-                   <User2Icon width={16}/>
+                  <User2Icon width={16} />
                 </span>
               </div>
             </div>
@@ -104,7 +103,6 @@ export default function ForgotPassword() {
               )}
             </Button>
 
-            {/* Back to login */}
             <div className="text-center">
               <Link
                 href="/desert26safariadmin/login"

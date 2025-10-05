@@ -11,7 +11,7 @@ import { Clock, MapPin, MessageCircle, Phone, Shield, Users } from "lucide-react
 
 const PackagePageDetailsCard = ({ pkg, lang, packagesTranslations }: { pkg: Package, lang: 'fr' | 'en' | 'es', packagesTranslations: any }) => {
     const t = packagesTranslations[lang]
-    const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || "+12395375059"; // Default number if not set
+    const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || "+12395375059";
 
     return (
 
@@ -46,7 +46,6 @@ const PackagePageDetailsCard = ({ pkg, lang, packagesTranslations }: { pkg: Pack
                             ))}
                         </Swiper>
 
-                        {/* Custom Navigation */}
                         <button className={`prev-${pkg.slug} absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg z-10 transition-all`}>
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

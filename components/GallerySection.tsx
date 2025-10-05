@@ -56,7 +56,6 @@ export default function GallerySection({
     const router = useRouter()
     const [shuffledImages, setShuffledImages] = useState<CategoryImage[]>([])
 
-    // Shuffle images only on client to avoid hydration errors
     useEffect(() => {
         const shuffled = [...images].sort(() => Math.random() - 0.5)
         setShuffledImages(shuffled)
@@ -90,7 +89,6 @@ export default function GallerySection({
                             navigation
                             pagination={{ clickable: true }}
                             autoplay={{ delay: 4000, disableOnInteraction: false }}
-                            // loop
                             spaceBetween={0}
                             slidesPerView={1}
                             breakpoints={{

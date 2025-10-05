@@ -23,9 +23,6 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getDatabase } from "@/lib/mongodb"
-import { Category } from "@/lib/models"
-import { id } from "date-fns/locale"
 import LoadingComponent from "@/components/admin/LoadingComponent"
 
 export default function NewCategoryPage({
@@ -46,7 +43,6 @@ export default function NewCategoryPage({
   const router = useRouter()
 
   useEffect(() => {
-    // Fetch existing category data if editing
     async function fetchCategory() {
       if (!params.categoryId) return
       setIsLoading(true)
@@ -72,7 +68,6 @@ export default function NewCategoryPage({
     fetchCategory()
   }, [params.categoryId])
 
-  // Handle multilingual input changes
   const handleMultiLangInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     field: "title" | "shortDescription" | "description",
@@ -233,7 +228,6 @@ export default function NewCategoryPage({
                 </Alert>
               )}
 
-              {/* Multilingual Title */}
               <div className="space-y-2">
                 <Label className="text-slate-700 flex items-center gap-2">
                   <Type className="h-4 w-4" />
@@ -273,7 +267,6 @@ export default function NewCategoryPage({
                 </div>
               </div>
 
-              {/* Slug */}
               <div className="space-y-2">
                 <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
                   <LinkIcon className="h-4 w-4" />
@@ -291,7 +284,6 @@ export default function NewCategoryPage({
                 />
               </div>
 
-              {/* Multilingual Short Description */}
               <div className="space-y-2">
                 <Label className="text-slate-700 flex items-center gap-2">
                   <AlignLeft className="h-4 w-4" />
@@ -331,7 +323,6 @@ export default function NewCategoryPage({
                 </div>
               </div>
 
-              {/* Multilingual Description */}
               <div className="space-y-2">
                 <Label className="text-slate-700 flex items-center gap-2">
                   <FileText className="h-4 w-4" />

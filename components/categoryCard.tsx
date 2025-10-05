@@ -9,7 +9,6 @@ const CategoryCard = ({ category, lang }: { category: Category, lang: 'fr' | 'es
     return (
         <Card className="border max-w-[280px] w-[80vw] border-gray-200 bg-white rounded-xl overflow-hidden h-full hover:border-blue-300 transition-all duration-200 group">
             <CardContent className="p-0 flex flex-col h-full">
-                {/* Image with Gradient Overlay */}
                 <div className="h-52 w-full overflow-hidden relative">
                     <img
                         src={category.images[0]}
@@ -18,14 +17,12 @@ const CategoryCard = ({ category, lang }: { category: Category, lang: 'fr' | 'es
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"></div>
 
-                    {/* Top Badge */}
                     <div className="absolute top-4 left-4">
                         <Badge className="bg-white text-gray-800 font-semibold border-0 shadow-md">
                             ⭐ Popular
                         </Badge>
                     </div>
 
-                    {/* Bottom Text Overlay */}
                     <div className="absolute bottom-4 left-4 right-4">
                         <h3 className="text-xl font-bold text-white drop-shadow-lg">
                             {category.title[lang]}
@@ -37,7 +34,6 @@ const CategoryCard = ({ category, lang }: { category: Category, lang: 'fr' | 'es
                     </div>
                 </div>
 
-                {/* Content Section */}
                 <div className=" p-1.5  md:p-3 flex flex-col flex-grow justify-between">
                     <p className="text-gray-600 text-sm leading-relaxed">
                         {category.shortDescription[lang]}

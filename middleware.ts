@@ -1,10 +1,9 @@
-// middleware.ts
 import { NextResponse } from "next/server"
 
 export function middleware(request: any) {
   const { pathname } = request.nextUrl
 
-  if (pathname.startsWith("/desert26safariadmin/login")||pathname.startsWith("/desert26safariadmin/forgot-password")||pathname.startsWith("/desert26safariadmin/reset-password")) {
+  if (pathname.startsWith("/desert26safariadmin/login") || pathname.startsWith("/desert26safariadmin/forgot-password") || pathname.startsWith("/desert26safariadmin/reset-password")) {
     return NextResponse.next()
   }
 

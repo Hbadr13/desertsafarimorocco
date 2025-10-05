@@ -56,13 +56,11 @@ export async function POST(request: NextRequest) {
 
     const db = await getDatabase()
 
-    // Check if slug already exists
     const existingTour = await db.collection<Tour>("tours").findOne({ slug })
     if (existingTour) {
       return NextResponse.json({ error: "Slug already exists" }, { status: 409 })
     }
 
-    // Verify category exists
     const category = await db.collection("categories").findOne({ _id: new ObjectId(categoryId) })
     if (!category) {
       return NextResponse.json({ error: "Category not found" }, { status: 404 })
@@ -82,7 +80,6 @@ export async function POST(request: NextRequest) {
 
     const result = await db.collection<Tour>("tours").insertOne(newTour)
 
-    // Update category to include this tour
     await db
       .collection("categories")
       .updateOne({ _id: new ObjectId(categoryId) }, { $push: { tours: result.insertedId } })

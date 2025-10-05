@@ -46,16 +46,15 @@ export async function POST(request: NextRequest) {
 
     const db = await getDatabase()
 
-    // Check if slug already exists
     const existingCategory = await db.collection<Category>("categories").findOne({ slug })
     if (existingCategory) {
       return NextResponse.json({ error: "Slug already exists" }, { status: 409 })
     }
 
     const newCategory: Category = {
-      title: title, // { en, fr, es }
-      shortDescription: shortDescription, // { en, fr, es }
-      description: description, // { en, fr, es }
+      title: title,
+      shortDescription: shortDescription,
+      description: description,
       slug,
       images: images || [],
       tours: [],

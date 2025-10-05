@@ -1,4 +1,3 @@
-// app/[lang]/categories/[slug]/page.tsx
 export const revalidate = 60;
 import { getDatabase } from "@/lib/mongodb"
 import { Category, Tour, Package } from "@/lib/models"
@@ -6,7 +5,6 @@ import { CategoryToursPage } from "@/components/CategoryToursPage"
 import { notFound } from "next/navigation"
 import { ObjectId } from "mongodb"
 
-// lib/translations/category-detail.ts
 const categoryDetailTranslations: Record<'en' | 'fr' | 'es', {
     hero: {
         tours: string;
@@ -278,7 +276,6 @@ export default async function CategoryPage({ params }: { params: { lang: "en" | 
         return notFound()
     }
 
-    // Structured Data for SEO
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "TouristDestination",
@@ -305,7 +302,6 @@ export default async function CategoryPage({ params }: { params: { lang: "en" | 
 
     return (
         <>
-            {/* Structured Data for SEO */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

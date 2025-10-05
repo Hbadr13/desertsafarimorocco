@@ -193,7 +193,6 @@ export default function NewCategoryPage() {
                 </Alert>
               )}
 
-              {/* Multilingual Title */}
               <div className="space-y-2">
                 <Label className="text-slate-700 flex items-center gap-2">
                   <Type className="h-4 w-4" />
@@ -233,7 +232,6 @@ export default function NewCategoryPage() {
                 </div>
               </div>
 
-              {/* Slug */}
               <div className="space-y-2">
                 <Label htmlFor="slug" className="text-slate-700 flex items-center gap-2">
                   <LinkIcon className="h-4 w-4" />
@@ -251,7 +249,6 @@ export default function NewCategoryPage() {
                 />
               </div>
 
-              {/* Multilingual Short Description */}
               <div className="space-y-2">
                 <Label className="text-slate-700 flex items-center gap-2">
                   <AlignLeft className="h-4 w-4" />
@@ -291,7 +288,6 @@ export default function NewCategoryPage() {
                 </div>
               </div>
 
-              {/* Multilingual Description */}
               <div className="space-y-2">
                 <Label className="text-slate-700 flex items-center gap-2">
                   <FileText className="h-4 w-4" />

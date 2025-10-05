@@ -223,7 +223,6 @@ export default function EditTourPage({
 
 
 
-              {/* Multilingual Title */}
               <div className="space-y-2">
                 <Label>Title</Label>
                 <div className="grid grid-cols-1 gap-4">
@@ -271,7 +270,6 @@ export default function EditTourPage({
                 />
               </div>
 
-              {/* Multilingual Short Description */}
               <div className="space-y-2">
                 <Label>Short Description</Label>
                 <div className="grid grid-cols-1 gap-4">
@@ -301,7 +299,6 @@ export default function EditTourPage({
                   />
                 </div>
               </div>
-              {/* Multilingual Description */}
               <div className="space-y-2">
                 <Label>Description</Label>
                 <div className="grid grid-cols-1 gap-4">

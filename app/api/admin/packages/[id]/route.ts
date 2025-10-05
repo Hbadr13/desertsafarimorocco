@@ -68,7 +68,6 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
     const db = await getDatabase()
 
-    // Verify tour exists
     const tour = await db.collection("tours").findOne({ _id: new ObjectId(tourId) })
     if (!tour) {
       return NextResponse.json({ error: "Tour not found" }, { status: 404 })

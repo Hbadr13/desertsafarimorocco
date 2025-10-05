@@ -1,36 +1,3 @@
-// "use client"
-
-// import { Trash2 } from "lucide-react"
-// import { Button } from "@/components/ui/button"
-
-// export function DeleteButton({ id,type }: { id: string,type:"categories"|"tours"|"packages" }) {
-//   async function handleDelete() {
-//     const res = await fetch(`/api/admin/${type}/${id}`, {
-//       method: "DELETE",
-//     })
-
-//     if (res.ok) {
-//       alert("Category deleted!")
-//       window.location.reload() 
-//     } else {
-//       alert("Error deleting category")
-//     }
-//   }
-
-//   return (
-//     <Button
-//       onClick={handleDelete}
-//       // variant=""
-//       size="sm"
-//       className="text-red-500 bg-transparent rounded-xl border-[1.3px] border-red-300 "
-//     >
-//       <Trash2 className="mr-2 h-4 w-4" />
-//       Delete
-//     </Button>
-//   )
-// }
-
-
 "use client"
 
 import { useState } from "react"
@@ -44,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-export function DeleteButton({notAllow, id, type }: {notAllow:boolean, id: string, type: "categories" | "tours" | "packages" }) {
+export function DeleteButton({ notAllow, id, type }: { notAllow: boolean, id: string, type: "categories" | "tours" | "packages" | "bookings" }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -77,13 +44,13 @@ export function DeleteButton({notAllow, id, type }: {notAllow:boolean, id: strin
         onClick={() => setIsDialogOpen(true)}
         size="sm"
         className="text-red-500 bg-transparent rounded-xl border-[1.3px] border-red-300 hover:bg-red-50 transition-colors"
-        disabled={isDeleting||notAllow}
+        disabled={isDeleting || notAllow}
       >
         <Trash2 className="mr-2 h-4 w-4" />
         Delete
       </Button>
 
-      <Dialog   open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md rounded-2xl bg-white ">
           <DialogHeader>
             <DialogTitle className="text-red-600 flex items-center gap-2">
@@ -94,7 +61,7 @@ export function DeleteButton({notAllow, id, type }: {notAllow:boolean, id: strin
               Are you sure you want to delete this {type.slice(0, -1)}? This action cannot be undone and all associated data will be permanently removed.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button
               onClick={handleDelete}
@@ -113,7 +80,7 @@ export function DeleteButton({notAllow, id, type }: {notAllow:boolean, id: strin
                 </>
               )}
             </Button>
-            
+
             <Button
               onClick={() => setIsDialogOpen(false)}
               disabled={isDeleting}
