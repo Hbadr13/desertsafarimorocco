@@ -491,6 +491,9 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
                         )}
                     </section>
 
+                </main>
+                <div className="container py-2 bg-gray-200 mx-auto px-2 md:px-4">
+
                     {relatedTours.length > 0 && (
                         <section className="mb-12">
                             <h2 className="text-3xl font-bold text-gray-900 mb-8">
@@ -502,11 +505,11 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
                                         <div
                                             key={relatedTour._id?.toString()}
 
-                                            className="bg-white group/v1 w-[90vw] max-w-[350px] rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-all group"
+                                            className="bg-white group/v1 h-full  max-w-[350px] w-[82vw] rounded-2xl   overflow-hidden border border-gray-200  transition-all group"
                                         >
                                             <div className="relative h-48 overflow-hidden">
                                                 <Image
-                                                    src={relatedTour.images?.[0] || "/default-tour.jpg"}
+                                                    src={relatedTour.images?.[0] || "/categories-hero.webp"}
                                                     alt={relatedTour.title}
                                                     fill
                                                     className="object-cover group-hover/v1:scale-[102%] transition-transform duration-300"
@@ -514,7 +517,7 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
                                                 <div className="absolute inset-0 bg-black/0 group-hover/v1:bg-black/10 transition-colors"></div>
                                             </div>
 
-                                            <div className="p-6">
+                                            <div className=" p-3 md:p-6">
                                                 <h3 className="text-xl font-bold text-amber-500 active:text-amber-600 mb-2 line-clamp-2 group-hover/v1:text-amber-600 transition-colors">
                                                     <Link href={`/${lang}/tours/${relatedTour.slug}`}>
                                                         {relatedTour.title}
@@ -535,7 +538,7 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
                             </div>
                         </section>
                     )}
-                </main>
+                </div>
 
                 <div className="bg-white border-t border-gray-200 py-8">
                     <div className="container mx-auto px-4">

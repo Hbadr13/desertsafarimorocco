@@ -97,12 +97,12 @@ export async function POST(request: NextRequest) {
       title,
       shortDescription,
       description,
-      slug,
+      slug: slug,
       images: images || [],
       updatedAt: new Date(),
     }
     const existingcategory = await db.collection<Category>("categories").findOne({ slug })
-    if (existingcategory) {
+    if (existingcategory && existingcategory._id.toString() !== id) {
       return NextResponse.json({ error: "Slug already exists" }, { status: 409 })
     }
     const result = await db.collection<Category>("categories").updateOne(
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
     )
 
     return NextResponse.json({
-      message: "Category created successfully",
+      message: "Category update successfully",
       category: { ...newCategory, _id: id },
     })
   } catch (error) {

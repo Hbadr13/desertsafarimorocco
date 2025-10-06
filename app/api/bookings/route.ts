@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
       startDate: startDate,
       adults: parseInt(adults),
       children: parseInt(children) || 0,
-      totalPrice: parseFloat(totalPrice) || 0,
+      totalPrice: parseFloat(totalPrice) || -1,
       notes: notes || "",
       packageUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/packages/${packageDetails.slug}`,
       lang: lang || "en"

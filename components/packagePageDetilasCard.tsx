@@ -19,7 +19,7 @@ const PackagePageDetailsCard = ({ pkg, lang, packagesTranslations }: { pkg: Pack
             <div className="flex flex-col lg:flex-row">
                 <div className="lg:w-2/5 relative">
                     <div className="aspect-video lg:aspect-auto lg:h-full">
-                        <Swiper
+                        {/* <Swiper
                             modules={[Navigation]}
                             navigation={{
                                 prevEl: `.prev-${pkg.slug}`,
@@ -44,8 +44,52 @@ const PackagePageDetailsCard = ({ pkg, lang, packagesTranslations }: { pkg: Pack
                                     </div>
                                 </SwiperSlide>
                             ))}
-                        </Swiper>
+                        </Swiper> */}
+                        <Swiper
+                            modules={[Navigation]}
+                            navigation={{
+                                prevEl: `.prev-${pkg.slug}`,
+                                nextEl: `.next-${pkg.slug}`
+                            }}
 
+                            spaceBetween={0}
+                            slidesPerView={1}
+                            className="h-full "
+                            onSlideChange={(swiper) => {
+                                const prevArrow = document.querySelector(`.prev-${pkg.slug}`) as HTMLElement;
+                                const nextArrow = document.querySelector(`.next-${pkg.slug}`) as HTMLElement;
+
+                                if (prevArrow && nextArrow) {
+                                    if (swiper.activeIndex === 0) {
+                                        prevArrow.style.display = "none";
+                                        nextArrow.style.display = "block";
+                                    }
+                                    else if (swiper.activeIndex === pkg.images.length - 1) {
+                                        prevArrow.style.display = "block";
+                                        nextArrow.style.display = "none";
+                                    }
+                                    else {
+                                        prevArrow.style.display = "block";
+                                        nextArrow.style.display = "block";
+                                    }
+                                }
+                            }}
+                        >
+                            {pkg.images.map((img, index) => (
+                                <SwiperSlide key={index}>
+                                    <div className="relative w-full h-64 lg:h-full">
+                                        <Image
+                                            src={img}
+                                            alt={pkg.title[lang]}
+                                            fill
+                                            className="object-cover "
+                                            sizes="(max-width: 1024px) 100vw, 40vw"
+                                            priority={index === 0}
+                                        />
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
                         <button className={`prev-${pkg.slug} absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg z-10 transition-all`}>
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

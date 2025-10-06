@@ -1,6 +1,7 @@
 
 
 "use client"
+import ReactMarkdown from "react-markdown"
 
 import { useState, useEffect } from "react"
 import { Package, Tour } from "@/lib/models"
@@ -19,6 +20,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
+import { GiConfirmed } from "react-icons/gi"
 
 interface PackageDetailsPageProps {
     pkg: Package
@@ -390,7 +392,120 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
     const swiperItems = otherPackages.map((pkg) => (
         <PackageCard key={pkg.slug || pkg._id?.toString()} pkg={pkg} lang={lang} />
     ))
+    function FormattedDescription(description: string) {
+        const rawLines = description.replace(/\r\n/g, "\n").split("\n")
+        type Section =
+            | { type: "title"; text: string }
+            | { type: "paragraph"; text: string }
+            | { type: "list"; items: string[]; title?: string }
+        const sections: Section[] = []
+        let buffer: string[] = []
+        let currentTitle: string | undefined = undefined
 
+        const flushBufferAsParagraphOrList = () => {
+            const lines = buffer.map(l => l.trim()).filter(l => l !== "")
+            if (lines.length === 0) {
+                buffer = []
+                return
+            }
+
+            const explicitList = lines.some(l => /^[-*]\s+/.test(l))
+
+            if (explicitList) {
+                const items = lines.map(l => l.replace(/^[-*]\s+/, ""))
+                sections.push({ type: "list", items, title: currentTitle })
+            } else if (lines.length > 1) {
+                const avgLen = lines.reduce((s, l) => s + l.length, 0) / lines.length
+                if (avgLen < 120) {
+                    sections.push({ type: "list", items: lines, title: currentTitle })
+                } else {
+                    sections.push({ type: "paragraph", text: lines.join("\n\n") })
+                }
+            } else {
+                sections.push({ type: "paragraph", text: lines[0] })
+            }
+
+            buffer = []
+            currentTitle = undefined
+        }
+
+        for (let raw of rawLines) {
+            const line = raw.replace(/\u00A0/g, " ").replace(/\t/g, " ").trimEnd()
+
+            if (line.trim() === "") {
+                flushBufferAsParagraphOrList()
+                continue
+            }
+
+            if (/:$/.test(line.trim())) {
+                flushBufferAsParagraphOrList()
+                currentTitle = line.trim().replace(/:$/, "")
+                sections.push({ type: "title", text: currentTitle })
+                currentTitle = line.trim().replace(/:$/, "")
+                continue
+            }
+            buffer.push(line)
+        }
+
+        flushBufferAsParagraphOrList()
+
+        return (
+            <article className="max-w-3xl mx-auto text-gray-800">
+                <div className="space-y-4">
+                    {sections.map((sec, idx) => {
+                        if (sec.type === "title") {
+                            return (
+                                <h3
+                                    key={idx}
+                                    className="text-[14px] md:text-[16px] font-semibold text-amber-600 uppercase tracking-wide
+                           bg-amber-50/70 px-3 py-1 rounded-md border-l-4 border-amber-400"
+                                >
+                                    {sec.text}
+                                </h3>
+                            )
+                        }
+
+                        if (sec.type === "paragraph") {
+                            return (
+                                <p
+                                    key={idx}
+                                    className="text-[14px] md:text-[15px] text-gray-700 whitespace-pre-wrap leading-relaxed"
+                                >
+                                    {sec.text}
+                                </p>
+                            )
+                        }
+
+                        if (sec.type === "list") {
+                            return (
+                                <div key={idx} className="pl-3">
+                                    {sec.title && (
+                                        <div className="mb-2">
+                                            <h4 className="text-[13px] md:text-[15px] font-semibold text-gray-900">
+                                                {sec.title}
+                                            </h4>
+                                        </div>
+                                    )}
+                                    <ul className="list-disc list-inside space-y-1 text-[13px] md:text-[14px] text-gray-700">
+                                        {sec.items.map((it, i) => (
+                                            <li
+                                                key={i}
+                                                className="relative pl-1 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-1 before:rounded-full before:bg-amber-500="
+                                            >
+                                                {it}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )
+                        }
+
+                        return null
+                    })}
+                </div>
+            </article>
+        )
+    }
     return (
         <div className="min-h-screen bg-white pt-10">
             <div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8 py-8">
@@ -462,6 +577,10 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                             <Calendar className="h-4 w-4" />
                                             <span>Departure: {pkg.departureTime}</span>
                                         </div>}
+                                        {pkg.departure[lang] != '' && <div className="flex items-center gap-1">
+                                            <MapPin className="h-4 w-4" />
+                                            <span>Departure Location: {pkg.departure[lang]}</span>
+                                        </div>}
                                     </div>
                                 </div>
                             </div>
@@ -491,7 +610,8 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                         <div className="space-y-6">
                             {activeTab === 'overview' && (
                                 <div className="space-y-6">
-                                    <p className="text-gray-700  whitespace-pre-wrap leading-relaxed  text-sm md:text-lg">{packageDescription}</p>
+                                    {/* <p className="text-gray-700  whitespace-pre-wrap leading-relaxed  text-sm md:text-base">{packageDescription}</p> */}
+                                    <div className="text-gray-700  whitespace-pre-wrap leading-relaxed  text-sm md:text-base">{FormattedDescription(packageDescription)}</div>
 
                                     <div className="grid grid-cols-1 gap-8">
                                         {pkg.itinerary && pkg.itinerary.length != 0 && <Card className="border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-white">
@@ -776,7 +896,7 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                         </div>
                                     </div>
 
-                                    {(hasOnlyOnePrice || hasBothPrices) && (
+                                    {(hasOnlyOnePrice != 0 || hasBothPrices != 0) && (
                                         <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                                             <div className="flex justify-between text-sm">
                                                 <span>{t.booking.adults} x{adults}</span>
@@ -800,7 +920,6 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                                             </div>
                                         </div>
                                     )}
-
                                     <div className="flex gap-2 text-sm">
                                         <Link
                                             href={`https://wa.me/${phoneNumber.replace(/\D/g, "")}?text=${encodeURIComponent(t.whatsappMessage + pkg.title[lang])}`}
@@ -881,7 +1000,11 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogContent className="bg-white">
                     <DialogHeader>
-                        <DialogTitle>{dialogTitle}</DialogTitle>
+                        <DialogTitle className="text-green-400 flex flex-col items-center gap-2">
+                            <div className="">
+                                {"dialogTitle"}
+                            </div>
+                            <GiConfirmed /></DialogTitle>
                         <DialogDescription className="whitespace-pre-line">
                             {dialogMessage}
                         </DialogDescription>

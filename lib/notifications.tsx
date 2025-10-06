@@ -149,10 +149,10 @@ export async function sendBookingConfirmationEmail(
                   <strong>${t.guests}:</strong>
                   <span>${bookingDetails.adults} adults, ${bookingDetails.children} children</span>
                 </div>
-                <div class="detail-row">
+               ${bookingDetails.totalPrice != 0 && `<div class="detail-row">
                   <strong>${t.totalPrice}:</strong>
                   <span>$${bookingDetails.totalPrice.toLocaleString()}</span>
-                </div>
+                </div>`}
                 ${bookingDetails.notes ? `
                 <div class="detail-row">
                   <strong>${t.yourNotes}:</strong>

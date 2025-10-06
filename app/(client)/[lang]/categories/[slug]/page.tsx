@@ -197,7 +197,6 @@ export async function generateStaticParams() {
     try {
         const db = await getDatabase()
         const categories = await db.collection<Category>("categories").find({}).toArray()
-
         return categories.flatMap((category) =>
             LANGS.map((lang) => ({
                 lang,
@@ -214,6 +213,7 @@ async function getCategoryData(lang: "en" | "fr" | "es", slug: string) {
         const db = await getDatabase()
 
         const categoryData = await db.collection<Category>("categories").findOne({ slug })
+
         if (!categoryData) {
             throw new Error('Category not found')
         }
@@ -221,10 +221,16 @@ async function getCategoryData(lang: "en" | "fr" | "es", slug: string) {
         const allCategories = await db.collection<Category>("categories").find({}).toArray()
 
         const tours = await db.collection<Tour>("tours").find({ categoryId: categoryData._id }).toArray()
-
+        // if(tours. === 0) {
         const allPackageIds = tours.flatMap(tour =>
             (tour.packages || []).map(id => new ObjectId(id))
         )
+        if (allPackageIds.length == 0) return {
+            category: categoryData,
+            categories: allCategories,
+            tours: [],
+            allPackages: []
+        }
 
         const allPackages = await db.collection<Package>("packages")
             .find({ _id: { $in: allPackageIds } })
@@ -249,7 +255,6 @@ async function getCategoryData(lang: "en" | "fr" | "es", slug: string) {
                 }))
             }
         })
-        console.log(toursWithPackages[0].packages[0].itinerary)
 
         return {
             category: categoryData,
@@ -273,6 +278,7 @@ export default async function CategoryPage({ params }: { params: { lang: "en" | 
     const { category, categories, tours, allPackages } = await getCategoryData(lang, slug)
 
     if (!category) {
+        console.log('Category not found, returning 404')
         return notFound()
     }
 

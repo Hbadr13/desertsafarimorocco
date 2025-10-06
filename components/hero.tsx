@@ -62,7 +62,7 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
                         {t.exploreBtn}
                     </Link>
 
-                    <Link href={`/${lang}/categories/camel-ride`} className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold text-sm md:text-lg hover:bg-white/20 transition-all duration-300">
+                    <Link href={`/${lang}/categories/desert-safaris`} className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold text-sm md:text-lg hover:bg-white/20 transition-all duration-300">
                         {t.packagesBtn}
                     </Link>
                 </div>

@@ -145,9 +145,7 @@ export default function NewPackagePage() {
   }
 
   const removeItineraryItem = (index: number) => {
-    if (itinerary.length > 1) {
-      setItinerary(itinerary.filter((_, i) => i !== index))
-    }
+    setItinerary(itinerary.filter((_, i) => i !== index))
   }
 
   const handleTourDetailChange = (
@@ -176,10 +174,10 @@ export default function NewPackagePage() {
   }
 
   const removeTourDetail = (type: "included" | "excluded", index: number) => {
-    if (type === "included" && toursIncluded.length > 1) {
+    if (type === "included") {
       setToursIncluded(toursIncluded.filter((_, i) => i !== index))
     }
-    if (type === "excluded" && toursExcluded.length > 1) {
+    if (type === "excluded") {
       setToursExcluded(toursExcluded.filter((_, i) => i !== index))
     }
   }
@@ -659,17 +657,15 @@ export default function NewPackagePage() {
                         </div>
                       </div>
                       <div className="md:col-span-1 flex items-end h-full">
-                        {itinerary.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="destructive"
-                            size="icon"
-                            onClick={() => removeItineraryItem(index)}
-                            className="rounded-full h-8 w-8"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        )}
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          onClick={() => removeItineraryItem(index)}
+                          className="rounded-full h-8 w-8"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -718,17 +714,15 @@ export default function NewPackagePage() {
                           />
                         </div>
                         <div className="md:col-span-1 flex items-end h-full">
-                          {toursIncluded.length > 1 && (
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="icon"
-                              onClick={() => removeTourDetail("included", index)}
-                              className="rounded-full h-8 w-8 placeholder:text-gray-400/55"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          )}
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            onClick={() => removeTourDetail("included", index)}
+                            className="rounded-full h-8 w-8 placeholder:text-gray-400/55"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
                     ))}
@@ -774,17 +768,15 @@ export default function NewPackagePage() {
                           />
                         </div>
                         <div className="md:col-span-1 flex items-end h-full">
-                          {toursExcluded.length > 1 && (
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="icon"
-                              onClick={() => removeTourDetail("excluded", index)}
-                              className="rounded-full h-8 w-8 placeholder:text-gray-400/55"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          )}
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            onClick={() => removeTourDetail("excluded", index)}
+                            className="rounded-full h-8 w-8 placeholder:text-gray-400/55"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
                     ))}

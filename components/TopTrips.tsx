@@ -58,7 +58,7 @@ export function TopTrips({ packages, lang, index }: TopTripsProps) {
     ))
 
     return (
-        <section className={`py-16 ${index == 0 ? 'bg-white' : ''}`}>
+        <section className={`py-5 ${index == 0 ? 'bg-white' : ''}`}>
             <div className="max-w-7xl mx-auto px-2 md:px-4">
                 <div className="text- mb-2">
                     <h2 className=" text-xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-3">

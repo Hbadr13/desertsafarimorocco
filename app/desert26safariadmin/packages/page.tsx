@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import Image from "next/image"
-import { Plus, Edit, Clock, DollarSign, FolderOpen, Tag } from "lucide-react"
+import { Plus, Edit, Clock, DollarSign, FolderOpen, Tag, Map, MapPin } from "lucide-react"
 import { DeleteButton } from "@/components/admin/DeleteButton"
 import {
   Accordion,
@@ -132,28 +132,25 @@ export default async function PackagesPage() {
                                 </div>
                               </div>
 
-                              <CardHeader className="pb-3">
-                                <CardTitle className=" text-slate-800 text-lg">{pkg.title.en}</CardTitle>
+                              <CardHeader className="pb-3 p-2">
+                                <CardTitle className=" text-slate-800 text-base">{pkg.title.en}</CardTitle>
                               </CardHeader>
-                              <CardContent className="pt-0 space-y-3 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-muted-foreground">Departure:</span>
-                                  <span className="font-medium">{pkg.departure.en}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-muted-foreground">Location:</span>
+                              <CardContent className="p-2 space-y-3 text-xs">
+
+                                {pkg.location && <div className="flex items-center gap-1">
+                                  <MapPin className="text-gray-500 w-4 h-4" />
                                   <span className="font-medium">{pkg.location.en}</span>
-                                </div>
-                                <div className="grid grid-cols-2 gap-2">
+                                </div>}
+                                <div className="">
                                   {pkg.shareTrip != 0 && <div className="flex items-center">
-                                    <DollarSign className="w-3 h-3 mr-1 text-muted-foreground" />
-                                    <span className="text-muted-foreground">Shared:</span>
-                                    <span className="font-semibold ml-1">${pkg.shareTrip}</span>
+                                    <DollarSign className="w-4 h-4 text-gray-500" />
+                                    <span className="text-gray-500 ">Shared:</span>
+                                    <span className="font-semibold ml-1">{pkg.shareTrip} Euro</span>
                                   </div>}
                                   {pkg.privateTrip != 0 && <div className="flex items-center">
-                                    <DollarSign className="w-3 h-3 mr-1 text-muted-foreground" />
-                                    <span className="text-muted-foreground">Private:</span>
-                                    <span className="font-semibold ml-1">${pkg.privateTrip}</span>
+                                    <DollarSign className="w-4 h-4 text-gray-500" />
+                                    <span className="text-gray-500 ">Private:</span>
+                                    <span className="font-semibold ml-1">{pkg.privateTrip} Euro</span>
                                   </div>}
                                 </div>
 

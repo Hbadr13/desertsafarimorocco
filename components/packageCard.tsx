@@ -60,7 +60,7 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
     return (
         <Card
             key={pkg._id?.toString() || pkg.slug}
-            className="max-w-[330px] w-[90vw] border border-gray-200 rounded-xl overflow-hidden h-full flex flex-col transition-all duration-200 group/child"
+            className="max-w-[280px] w-[90vw] border border-gray-200 rounded-xl overflow-hidden h-full flex flex-col transition-all duration-200 group/child"
         >
             <div className="h-52  w-full relative">
                 <Swiper
@@ -130,7 +130,7 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
 
                     <div className="flex justify-between items-start mb-1">
                         <h3 className="text-lg font-bold text-gray-900  leading-tight flex-1">
-                            <Link className="active:text-blue-600 duration-200" href={`/${lang}/packages/${pkg.slug}`}>
+                            <Link className=" active:text-blue-600 duration-200" href={`/${lang}/packages/${pkg.slug}`}>
                                 {pkg.title[lang] || pkg.title.en}
                             </Link>
                         </h3>
