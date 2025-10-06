@@ -100,7 +100,22 @@ const translations = {
             processingMessage: "Our travel experts will review your booking request. We'll contact you within 24 hours to confirm availability. Once confirmed, we'll send you detailed itinerary and payment instructions.",
             errorTitle: "Booking Failed",
             errorMessage: "There was an error submitting your booking. Please try again or contact us directly."
+        },
+        features2: {
+            trustSafety: {
+                title: "Trust & Safety",
+                description: "Secure and guaranteed payments"
+            },
+            support: {
+                title: "24/7 Support",
+                description: "Our team assists you anytime"
+            },
+            bestPrice: {
+                title: "Best Price Guaranteed",
+                description: "Find a lower price? We'll match it!"
+            }
         }
+
     },
     fr: {
         whatsapp: "WhatsApp",
@@ -173,6 +188,20 @@ const translations = {
             processingMessage: "Nos experts voyages examineront votre demande de réservation. Nous vous contacterons dans les 24 heures pour confirmer la disponibilité. Une fois confirmé, nous vous enverrons l'itinéraire détaillé et les instructions de paiement.",
             errorTitle: "Échec de la Réservation",
             errorMessage: "Une erreur s'est produite lors de l'envoi de votre réservation. Veuillez réessayer ou nous contacter directement."
+        },
+        features2: {
+            trustSafety: {
+                title: "Confiance et sécurité",
+                description: "Paiements sécurisés et garantis"
+            },
+            support: {
+                title: "Support 24/7",
+                description: "Notre équipe vous assiste à tout moment"
+            },
+            bestPrice: {
+                title: "Meilleur prix garanti",
+                description: "Trouvez un prix inférieur ? Nous égalons !"
+            }
         }
     },
     es: {
@@ -247,6 +276,20 @@ const translations = {
             processingMessage: "Nuestros expertos en viajes revisarán su solicitud de reserva. Nos contactaremos con usted dentro de 24 horas para confirmar la disponibilidad. Una vez confirmado, le enviaremos el itinerario detallado y las instrucciones de pago.",
             errorTitle: "Reserva Fallida",
             errorMessage: "Hubo un error al enviar su reserva. Por favor, intente nuevamente o contáctenos directamente."
+        },
+        features2: {
+            trustSafety: {
+                title: "Confianza y seguridad",
+                description: "Pagos seguros y garantizados"
+            },
+            support: {
+                title: "Soporte 24/7",
+                description: "Nuestro equipo te ayuda en cualquier momento"
+            },
+            bestPrice: {
+                title: "Mejor precio garantizado",
+                description: "¿Encontraste un precio menor? ¡Igualamos!"
+            }
         }
     }
 }
@@ -996,7 +1039,39 @@ export function PackageDetailsPage({ pkg, tour, otherPackages, lang }: PackageDe
                     </div>
                 )}
             </div>
-
+            <div className="bg-white border-t border-gray-200 py-8">
+                <div className="container mx-auto px-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div className="flex flex-col items-center">
+                            <Shield className="w-12 h-12 text-amber-500 mb-3" />
+                            <h3 className="font-semibold text-gray-900 mb-2">
+                                {t.features2.trustSafety.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                                {t.features2.trustSafety.description}
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <Users className="w-12 h-12 text-amber-500 mb-3" />
+                            <h3 className="font-semibold text-gray-900 mb-2">
+                                {t.features2.support.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                                {t.features2.support.description}
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <Star className="w-12 h-12 text-amber-500 mb-3" />
+                            <h3 className="font-semibold text-gray-900 mb-2">
+                                {t.features2.bestPrice.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                                {t.features2.bestPrice.description}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogContent className="bg-white">
                     <DialogHeader>

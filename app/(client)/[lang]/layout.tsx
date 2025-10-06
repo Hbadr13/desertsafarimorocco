@@ -1,4 +1,4 @@
-export const revalidate = 60;
+export const revalidate = 3600;
 
 import { notFound, usePathname, useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"

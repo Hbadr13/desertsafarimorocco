@@ -59,7 +59,7 @@ export function Swiper({ items }: SwiperProps) {
 
         <div
           ref={containerRef}
-          className="flex space-x-4 overflow-x-auto scrollbar-none scroll-smooth"
+          className="flex space-x-2  md:space-x-4 overflow-x-auto scrollbar-none scroll-smooth"
         >
           {items.map((item, index) => (
             <div key={index} className="flex-shrink-0">

@@ -13,40 +13,59 @@ interface TopTripsProps {
 }
 
 export function TopTrips({ packages, lang, index }: TopTripsProps) {
-    const translations = [{
-        en: {
-            title: "Best Deals in Marrakech",
-            subtitle: "Handpicked experiences with the best value and reviews",
-            viewAll: "View All Packages"
+    const translations = [
+        {
+            en: {
+                title: "Best Deals in Marrakech",
+                subtitle: "Handpicked experiences with the best value and reviews",
+                viewAll: "View All Packages"
+            },
+            fr: {
+                title: "Meilleures Offres à Marrakech",
+                subtitle: "Expériences sélectionnées avec le meilleur rapport qualité-prix et avis",
+                viewAll: "Voir Tous les Forfaits"
+            },
+            es: {
+                title: "Mejores Ofertas en Marrakech",
+                subtitle: "Experiencias seleccionadas con la mejor relación calidad-precio y reseñas",
+                viewAll: "Ver Todos los Paquetes"
+            }
         },
-        fr: {
-            title: "Meilleures Offres à Marrakech",
-            subtitle: "Expériences sélectionnées avec le meilleur rapport qualité-prix et avis",
-            viewAll: "Voir Tous les Forfaits"
+        {
+            en: {
+                title: "Desert Safaris Day Tours",
+                subtitle: "Unforgettable desert adventures from Marrakech with great deals",
+                viewAll: "View All Desert Packages"
+            },
+            fr: {
+                title: "Excursions Journalières dans le Désert",
+                subtitle: "Aventures inoubliables depuis Marrakech avec les meilleures offres",
+                viewAll: "Voir Tous les Forfaits Désert"
+            },
+            es: {
+                title: "Excursiones de Un Día al Desierto",
+                subtitle: "Aventuras inolvidables desde Marrakech con las mejores ofertas",
+                viewAll: "Ver Todos los Paquetes del Desierto"
+            }
         },
-        es: {
-            title: "Mejores Ofertas en Marrakech",
-            subtitle: "Experiencias seleccionadas con la mejor relación calidad-precio y reseñas",
-            viewAll: "Ver Todos los Paquetes"
+        {
+            en: {
+                title: "Jeep Safari in Merzouga",
+                subtitle: "Experience thrilling Jeep dune bashing and desert exploration",
+                viewAll: "View All Jeep Safari Tours"
+            },
+            fr: {
+                title: "Safari en Jeep à Merzouga",
+                subtitle: "Vivez une expérience palpitante de conduite sur les dunes et d’exploration du désert",
+                viewAll: "Voir Tous les Safaris en Jeep"
+            },
+            es: {
+                title: "Safari en Jeep en Merzouga",
+                subtitle: "Vive una emocionante experiencia de conducción por dunas y exploración del desierto",
+                viewAll: "Ver Todos los Safaris en Jeep"
+            }
         }
-    },
-    {
-        en: {
-            title: "Desert Safaris Day Tours",
-            subtitle: "Unforgettable desert adventures from Marrakech with great deals",
-            viewAll: "View All Desert Packages"
-        },
-        fr: {
-            title: "Excursions Journalières dans le Désert",
-            subtitle: "Aventures inoubliables depuis Marrakech avec les meilleures offres",
-            viewAll: "Voir Tous les Forfaits Désert"
-        },
-        es: {
-            title: "Excursiones de Un Día al Desierto",
-            subtitle: "Aventuras inolvidables desde Marrakech con las mejores ofertas",
-            viewAll: "Ver Todos los Paquetes del Desierto"
-        }
-    }]
+    ];
 
     const t = translations[index][lang]
 

@@ -37,22 +37,22 @@ export default function DesertServices({ lang = "en" }: { lang?: "en" | "fr" | "
     const t = translations[lang] || translations.en
 
     return (
-        <section className="py-10 bg-gradient-to-br from-orange-50 to-amber-50">
+        <section className=" py-4 md:py-10 bg-gradient-to-br from-orange-50 to-amber-50">
             <div className="max-w-6xl mx-auto px-4 text-center">
                 <motion.h2
-                    className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
+                    className="text-4xl md:text-5xl font-bold text-gray-800 mb-1 md:mb-4"
                 >
                     {t.title}
                 </motion.h2>
-                <p className="text-gray-600 mb-12 text-lg">Experience the magic of Moroccan deserts</p>
+                <p className="text-gray-600 mb-4 md:mb-12 text-lg">Experience the magic of Moroccan deserts</p>
 
-                <div className="grid grid-cols-2 flex-1 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 flex-1 md:grid-cols-4 gap-1 md:gap-4">
                     {t.services.map((service, i) => (
                         <motion.div
                             key={i}
                             className="group relative h-full "
                         >
-                            <div className="bg-white flex  h-full flex-col justify-between items-center rounded-2xl p-8  transition-all duration-300 border border-orange-200 group-hover:border-orange-300">
+                            <div className="bg-white flex  h-full flex-col justify-between items-center rounded-2xl p-3 md:p-8  transition-all duration-300 border border-orange-200 group-hover:border-orange-300">
                                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-orange-500 to-red-500 group-hover:from-orange-600 group-hover:to-red-600 transition-all duration-300 mb-4">
                                     <div className="text-white transform group-hover:scale-110 transition-transform duration-300">
                                         {service.icon}

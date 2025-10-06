@@ -51,11 +51,12 @@ export function CategoryToursPage({ category, tours, allCategories, lang, transl
                     priority
                 />
                 <div className="absolute inset-0 bg-black/40"></div>
-                <div className={`${!isDescriptionExpanded ? 'items-center' : 'items-start'} absolute inset-0 flex justify-center`}>
+                <div className={`${!isDescriptionExpanded ? 'items-center' : 'items-start'} z-30 absolute inset-0 flex justify-center`}>
                     <div className={`text-center ${!isDescriptionExpanded ? '' : ''} text-white w-full max-w-6xl px-4`}>
                         {!isDescriptionExpanded && (
-                            <h1 className="text-2xl md:text-5xl font-bold mb-6 drop-shadow-2xl">
-                                {categoryTitle} {translations.hero.tours}
+                            <h1 className="inline-flex items-center px-4 py-2 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-300/30 mb-6">
+                                <span className="w-2 h-2 bg-amber-400 rounded-full mr-2 animate-pulse"></span>
+                                <span className="text-amber-100 text-sm font-medium">{categoryTitle} {translations.hero.tours}</span>
                             </h1>
                         )}
                         {categoryDescription && (
@@ -100,7 +101,7 @@ export function CategoryToursPage({ category, tours, allCategories, lang, transl
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="max-w-7xl mx-auto px-1 md:px-4 sm:px-6 lg:px-8 py-12">
                 {tours.length === 0 ? (
                     <Card>
                         <CardContent className="p-12 text-center">

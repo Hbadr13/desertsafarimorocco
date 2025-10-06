@@ -60,7 +60,7 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
     return (
         <Card
             key={pkg._id?.toString() || pkg.slug}
-            className="max-w-[280px] w-[90vw] border border-gray-200 rounded-xl overflow-hidden h-full flex flex-col transition-all duration-200 group/child"
+            className="max-w-[310px] w-[90vw] border border-gray-200 rounded-xl overflow-hidden h-full flex flex-col transition-all duration-200 group/child"
         >
             <div className="h-52  w-full relative">
                 <Swiper
@@ -69,24 +69,33 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
                         prevEl: `.prev-${pkg.slug}`,
                         nextEl: `.next-${pkg.slug}`
                     }}
-
                     spaceBetween={0}
                     slidesPerView={1}
-                    className="h-full "
+                    className="h-full"
+                    onInit={(swiper) => {
+                        // Hide left arrow on initialization (first slide)
+                        const prevArrow = document.querySelector(`.prev-${pkg.slug}`) as HTMLElement;
+                        if (prevArrow) {
+                            prevArrow.style.display = "none";
+                        }
+                    }}
                     onSlideChange={(swiper) => {
                         const prevArrow = document.querySelector(`.prev-${pkg.slug}`) as HTMLElement;
                         const nextArrow = document.querySelector(`.next-${pkg.slug}`) as HTMLElement;
 
                         if (prevArrow && nextArrow) {
                             if (swiper.activeIndex === 0) {
+                                // First slide - hide left arrow
                                 prevArrow.style.display = "none";
                                 nextArrow.style.display = "block";
                             }
                             else if (swiper.activeIndex === pkg.images.length - 1) {
+                                // Last slide - hide right arrow
                                 prevArrow.style.display = "block";
                                 nextArrow.style.display = "none";
                             }
                             else {
+                                // Middle slides - show both arrows
                                 prevArrow.style.display = "block";
                                 nextArrow.style.display = "block";
                             }
@@ -100,7 +109,7 @@ const PackageCard = ({ pkg, lang }: { pkg: Package, lang: 'fr' | 'es' | 'en' }) 
                                     src={img}
                                     alt={pkg.title[lang]}
                                     fill
-                                    className="object-cover "
+                                    className="object-cover"
                                     sizes="(max-width: 1024px) 100vw, 40vw"
                                     priority={index === 0}
                                 />

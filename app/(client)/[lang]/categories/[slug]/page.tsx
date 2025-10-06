@@ -1,4 +1,4 @@
-export const revalidate = 60;
+export const revalidate = 3600;
 import { getDatabase } from "@/lib/mongodb"
 import { Category, Tour, Package } from "@/lib/models"
 import { CategoryToursPage } from "@/components/CategoryToursPage"

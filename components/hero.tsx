@@ -34,7 +34,7 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
     const t = translations[lang];
 
     return (
-        <section className="pt-16 relative min-h-[600px] h-[80vw] max-h-[700px] flex items-center justify-center overflow-hidden">
+        <section className="pt-16 relative min-h-[600px]= h-[80vh] max-h-[500px] flex items-center justify-center overflow-hidden">
             <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{
@@ -46,7 +46,7 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
             </div>
 
             <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
-                <h1 className="text-4xl md:text-7xl font-bold mb-6 leading-tight">
+                <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                     <span className="block text-white">{t.titleLine1}</span>
                     <span className="block bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
                         {t.titleLine2}
@@ -58,11 +58,11 @@ const HeroSection = ({ lang }: { lang: 'fr' | 'en' | 'es' }) => {
                 </p>
 
                 <div className="flex flex-row gap-4 justify-center items-center">
-                    <Link href={`/${lang}/packages`} className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm md:text-lg shadow-2xl hover:shadow-orange-500/30 transition-shadow duration-300">
+                    <Link href={`/${lang}/packages`} className="rounded-xl px-2 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm md:text-lg shadow-2xl hover:shadow-orange-500/30 transition-shadow duration-300">
                         {t.exploreBtn}
                     </Link>
 
-                    <Link href={`/${lang}/categories/desert-safaris`} className="rounded-xl px-2 md:px-8 py-2 md:py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold text-sm md:text-lg hover:bg-white/20 transition-all duration-300">
+                    <Link href={`/${lang}/categories/desert-safaris`} className="rounded-xl px-2 py-2 bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold text-sm md:text-lg hover:bg-white/20 transition-all duration-300">
                         {t.packagesBtn}
                     </Link>
                 </div>

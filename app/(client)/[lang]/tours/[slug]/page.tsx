@@ -1,7 +1,7 @@
-export const revalidate = 60;
+export const revalidate = 3600;
 
 import { Package, Tour, Category } from "@/lib/models"
-import { Star, MapPin, Clock, Users, Shield, ArrowLeft } from "lucide-react"
+import { Star, MapPin, Clock, Users, Shield, ArrowLeft, MessageCircle } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -14,6 +14,7 @@ const WEBSITE_NAME = process.env.NEXT_PUBLIC_SITE_URL
 
 const tourPageTranslations = {
     en: {
+        whatsappMessage: `Hello, I would like to make a reservation for the package: `,
         breadcrumb: {
             home: "Home",
             tours: "Tours",
@@ -56,6 +57,7 @@ const tourPageTranslations = {
         }
     },
     fr: {
+        whatsappMessage: `Bonjour, je voudrais faire une réservation pour le package : `,
         breadcrumb: {
             home: "Accueil",
             tours: "Circuits",
@@ -98,6 +100,7 @@ const tourPageTranslations = {
         }
     },
     es: {
+        whatsappMessage: `Hola, me gustaría hacer una reserva para el paquete:`,
         breadcrumb: {
             home: "Inicio",
             tours: "Tours",
@@ -292,6 +295,7 @@ async function getTourData(slug: string, lang: "en" | "fr" | "es") {
 
 export default async function TourDetailPage({ params }: { params: { lang: "en" | "fr" | "es", slug: string } }) {
     const { lang, slug } = params
+    const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || "+12395375059";
 
     if (!LANGS.includes(lang)) {
         return notFound()
@@ -396,7 +400,7 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
                         {packages.length > 0 ? (
                             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                                 {packages.map(pkg => (
-                                    <div key={pkg._id?.toString()} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow">
+                                    <div key={pkg._id?.toString()} className="bg-white flex flex-col justify-between flex-1  rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow">
                                         <div className="relative h-48">
                                             <Image
                                                 src={pkg.images?.[0] || "/default-package.jpg"}
@@ -405,7 +409,7 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
                                                 className="object-cover"
                                             />
                                             <div className="absolute top-4 left-4">
-                                                {pkg.shareTrip && pkg.privateTrip && (
+                                                {pkg.shareTrip != 0 && pkg.privateTrip != 0 && (
                                                     <span className="inline-flex items-center px-2 py-1 rounded-full bg-amber-500 text-white text-xs font-medium">
                                                         {t.packages.shared} & {t.packages.private}
                                                     </span>
@@ -413,7 +417,7 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
                                             </div>
                                         </div>
 
-                                        <div className="p-6">
+                                        <div className=" p-2.5 md:p-5 flex flex-col justify-between flex-1">
                                             <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
                                                 {pkg.title}
                                             </h3>
@@ -462,10 +466,14 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
 
                                             <div className="flex gap-2">
                                                 <Link
-                                                    href={`/${lang}/packages/${pkg.slug}`}
-                                                    className="flex-1 bg-gray-100 text-gray-700 hover:bg-gray-200 py-2 px-4 rounded-lg text-center text-sm font-medium transition-colors"
+                                                    href={`https://wa.me/${phoneNumber.replace(/\D/g, "")}?text=${encodeURIComponent(t.whatsappMessage + pkg.title)}`}
+                                                    target="_blank"
+                                                    className="flex-1 bg-gray-100 text-gray-700 hover:bg-gray-200 py-2 px-4 rounded-lg flex items-center space-x-1 text-sm font-medium transition-colors"
                                                 >
-                                                    {t.packages.viewDetails}
+                                                    <MessageCircle className="h-4 w-4" />
+                                                    <div className="">
+                                                        Whatsapp
+                                                    </div>
                                                 </Link>
                                                 <Link
                                                     href={`/${lang}/packages/${pkg.slug}#booking`}
@@ -492,7 +500,7 @@ export default async function TourDetailPage({ params }: { params: { lang: "en" 
                     </section>
 
                 </main>
-                <div className="container py-2 bg-gray-200 mx-auto px-2 md:px-4">
+                <div className="container py-2 bg-gray-200 mx-auto px-2 md:px-4 rounded-xl mb-4">
 
                     {relatedTours.length > 0 && (
                         <section className="mb-12">

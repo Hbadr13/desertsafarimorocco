@@ -1,4 +1,4 @@
-export const revalidate = 60;
+export const revalidate = 3600;
 import { getDatabase } from "@/lib/mongodb"
 import { Category, Tour, Package } from "@/lib/models"
 import HeroSection from "@/components/hero"
@@ -87,10 +87,12 @@ async function getHomeData() {
     try {
         const db = await getDatabase()
 
-        const [categories, packagesDay, packagesMarrakech, tours] = await Promise.all([
+        const [categories, packagesDay, packagesMarrakech, packagesJeeps, packagesJeepsDuneBashing, tours] = await Promise.all([
             db.collection<Category>("categories").find({}).toArray(),
             db.collection<Package>("packages").find({ tourId: new ObjectId('68d9b92cabc6733561312e71') }).limit(12).toArray(),
             db.collection<Package>("packages").find({ tourId: new ObjectId('68dbc748e852b9e051011779') }).limit(12).toArray(),
+            db.collection<Package>("packages").find({ tourId: new ObjectId('68e3c798d98391489f404bcf') }).limit(12).toArray(),
+            db.collection<Package>("packages").find({ tourId: new ObjectId('68e39871b925759430b44c4a') }).limit(12).toArray(),
             db.collection<Tour>("tours").find({}).limit(12).toArray()
         ])
 
@@ -98,6 +100,8 @@ async function getHomeData() {
             categories,
             packagesDay,
             packagesMarrakech,
+            packagesJeeps,
+            packagesJeepsDuneBashing,
             tours
         }
     } catch (error) {
@@ -113,7 +117,7 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
         return <div>Not Found</div>
     }
 
-    const { categories, packagesDay, packagesMarrakech, tours } = await getHomeData()
+    const { categories, packagesDay, packagesJeeps, packagesJeepsDuneBashing, packagesMarrakech, tours } = await getHomeData()
 
     const structuredData = {
         "@context": "https://schema.org",
@@ -162,6 +166,7 @@ export default async function HomePage({ params }: { params: { lang: "en" | "fr"
                 <CategoriesSection categories={categories} lang={lang} />
                 <TopTrips index={0} packages={packagesMarrakech || []} lang={lang} />
                 <TopTrips index={1} packages={packagesDay || []} lang={lang} />
+                {packagesJeeps && packagesJeepsDuneBashing && <TopTrips index={2} packages={packagesJeeps?.concat(packagesJeepsDuneBashing) || []} lang={lang} />}
 
                 <ToursSection tours={tours} lang={lang} />
                 <DesertServices lang={lang} />

@@ -12,25 +12,25 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
           icon: CheckCircle,
           title: "Guaranteed Departure",
           description: "All tours are guaranteed to depart as scheduled",
-          bgColor: "bg-blue-50",
-          iconColor: "text-blue-600",
-          iconBg: "bg-blue-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: DollarSign,
           title: "Lowest Price Guarantee",
           description: "Best prices guaranteed or we'll match any competitor",
-          bgColor: "bg-green-50",
-          iconColor: "text-green-600",
-          iconBg: "bg-green-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: Calendar,
           title: "Flexible Cancellation",
           description: "Free cancellation up to 24 hours before departure",
-          bgColor: "bg-purple-50",
-          iconColor: "text-purple-600",
-          iconBg: "bg-purple-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: Users,
@@ -44,9 +44,9 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
           icon: Star,
           title: "Customer Reviews",
           description: "5-star rated experiences from thousands of travelers",
-          bgColor: "bg-red-50",
-          iconColor: "text-red-600",
-          iconBg: "bg-red-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
       ]
     },
@@ -58,25 +58,25 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
           icon: CheckCircle,
           title: "Départ Garanti",
           description: "Tous les circuits sont garantis de partir comme prévu",
-          bgColor: "bg-blue-50",
-          iconColor: "text-blue-600",
-          iconBg: "bg-blue-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: DollarSign,
           title: "Meilleur Prix Garanti",
           description: "Meilleurs prix garantis ou nous égalons tout concurrent",
-          bgColor: "bg-green-50",
-          iconColor: "text-green-600",
-          iconBg: "bg-green-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: Calendar,
           title: "Annulation Flexible",
           description: "Annulation gratuite jusqu'à 24 heures avant le départ",
-          bgColor: "bg-purple-50",
-          iconColor: "text-purple-600",
-          iconBg: "bg-purple-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: Users,
@@ -90,9 +90,9 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
           icon: Star,
           title: "Avis Clients",
           description: "Expériences notées 5 étoiles par des milliers de voyageurs",
-          bgColor: "bg-red-50",
-          iconColor: "text-red-600",
-          iconBg: "bg-red-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
       ]
     },
@@ -104,25 +104,25 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
           icon: CheckCircle,
           title: "Salida Garantizada",
           description: "Todos los tours están garantizados para salir según lo programado",
-          bgColor: "bg-blue-50",
-          iconColor: "text-blue-600",
-          iconBg: "bg-blue-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: DollarSign,
           title: "Garantía de Mejor Precio",
           description: "Mejores precios garantizados o igualamos cualquier competidor",
-          bgColor: "bg-green-50",
-          iconColor: "text-green-600",
-          iconBg: "bg-green-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: Calendar,
           title: "Cancelación Flexible",
           description: "Cancelación gratuita hasta 24 horas antes de la salida",
-          bgColor: "bg-purple-50",
-          iconColor: "text-purple-600",
-          iconBg: "bg-purple-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
         {
           icon: Users,
@@ -136,9 +136,9 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
           icon: Star,
           title: "Reseñas de Clientes",
           description: "Experiencias calificadas con 5 estrellas por miles de viajeros",
-          bgColor: "bg-red-50",
-          iconColor: "text-red-600",
-          iconBg: "bg-red-100"
+          bgColor: "bg-orange-50",
+          iconColor: "text-orange-600",
+          iconBg: "bg-orange-100"
         },
       ]
     }
@@ -163,10 +163,10 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
   ))
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto p-0 md:px-4">
+    <section className=" py-4 md:py-16 bg-gray-50 mt-7">
+      <div className="container mx-auto px-4 md:px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">{t.title}</h2>
+          <h2 className="text-2xl md:text-4xl font-bold  mb-1 md:mb-4 text-gray-900">{t.title}</h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             {t.subtitle}
           </p>
