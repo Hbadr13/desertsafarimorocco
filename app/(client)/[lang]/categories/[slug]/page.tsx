@@ -220,7 +220,8 @@ async function getCategoryData(lang: "en" | "fr" | "es", slug: string) {
 
         const allCategories = await db.collection<Category>("categories").find({}).toArray()
 
-        const tours = await db.collection<Tour>("tours").find({ categoryId: categoryData._id }).toArray()
+        const tours = await db.collection<Tour>("tours").find({ categoryId: categoryData._id }).sort({ createdAt: 1 }).toArray()
+        console.log('Fetched tours:', tours)
         // if(tours. === 0) {
         const allPackageIds = tours.flatMap(tour =>
             (tour.packages || []).map(id => new ObjectId(id))
