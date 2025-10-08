@@ -1,13 +1,6 @@
-"use client"
-import Header from '@/components/header'
 import './globals.css'
-import { Analytics } from '@vercel/analytics/next'
 import { Poppins } from 'next/font/google'
-import { getDatabase } from '@/lib/mongodb'
-import { Category } from '@/lib/models'
-import { Footer } from '@/components/footer'
-import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import ClientLayout from '@/components/ClientLayout'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -15,44 +8,30 @@ const poppins = Poppins({
   variable: '--font-poppins',
 })
 
+export const metadata = {
+  title: 'Desert Safaris Morocco | Luxury Desert Tours & Adventures',
+  description: "Experience the magic of Moroccan deserts with our luxury tours. Camel treks, desert camps, and unforgettable adventures in the Sahara.",
+  icons: {
+    icon: ['/favicon.ico'],
+    apple: ['/apple-touch-icon.png?v=4'],
+    shortcut: ['/apple-touch-icon.png']
+  }
+}
+
+
 export default function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
 
-  const [categories, setCategories] = useState<any[]>([])
-  const pathname = usePathname()
-  const router = useRouter()
-  useEffect(() => {
-    fetch(`/api/client/categories`)
-      .then(res => res.json())
-      .then(catData => {
-        setCategories((catData.categories || []).map((cat: any) => ({
-          ...cat,
-          title: cat.title || "",
-          description: cat.description || "",
-          shortDescription: cat.shortDescription || "",
-        })))
-      })
-  }, [])
-  if (pathname == '/')
-    router.push('/en')
   return (
     <html lang="en" className={poppins.className}>
       <head />
       <body>
-        {pathname == '/' ? <>
-          <Header lang={"en"} categories={categories} />
+        <ClientLayout>
           {children}
-          <Analytics />
-          <Footer lang={"en"} categories={categories} />
-        </> :
-          <>
-            {children}
-            <Analytics />
-          </>
-        }
+        </ClientLayout>
       </body>
     </html>
   )

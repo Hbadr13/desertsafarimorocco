@@ -2,61 +2,61 @@ import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from "nodemailer"
 
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: Number(process.env.EMAIL_PORT),
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
+  host: process.env.EMAIL_HOST,
+  port: Number(process.env.EMAIL_PORT),
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
 })
 
 
 export async function POST(request: NextRequest) {
-    try {
-        const formData = await request.json()
+  try {
+    const formData = await request.json()
 
-        const requiredFields = ['name', 'email', 'subject', 'message']
-        for (const field of requiredFields) {
-            if (!formData[field]) {
-                return NextResponse.json(
-                    { error: `${field} is required` },
-                    { status: 400 }
-                )
-            }
-        }
-
-        const emailResult = await sendAdminContactNotification(formData)
-
-        if (emailResult.success) {
-            return NextResponse.json(
-                { message: 'Contact message sent successfully' },
-                { status: 200 }
-            )
-        } else {
-            return NextResponse.json(
-                { error: 'Failed to send contact message' },
-                { status: 500 }
-            )
-        }
-    } catch (error) {
-        console.error('Contact API error:', error)
+    const requiredFields = ['name', 'email', 'subject', 'message']
+    for (const field of requiredFields) {
+      if (!formData[field]) {
         return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
+          { error: `${field} is required` },
+          { status: 400 }
         )
+      }
     }
+
+    const emailResult = await sendAdminContactNotification(formData)
+
+    if (emailResult.success) {
+      return NextResponse.json(
+        { message: 'Contact message sent successfully' },
+        { status: 200 }
+      )
+    } else {
+      return NextResponse.json(
+        { error: 'Failed to send contact message' },
+        { status: 500 }
+      )
+    }
+  } catch (error) {
+    console.error('Contact API error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
 }
 
 export async function sendAdminContactNotification(contactDetails: {
-    name: string
-    email: string
-    phone?: string
-    subject: string
-    message: string
+  name: string
+  email: string
+  phone?: string
+  subject: string
+  message: string
 }) {
-    try {
-        const emailHtml = `
+  try {
+    const emailHtml = `
       <!DOCTYPE html>
       <html>
         <head>
@@ -65,10 +65,10 @@ export async function sendAdminContactNotification(contactDetails: {
           <title>New Contact Message - Desert Safaris Morocco</title>
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .container { max-width: 600px; margin: 0 auto; padding: 10px; }
             .header { background: #1f2937; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
-            .message-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .content { background: #f9fafb; padding: 14px; border-radius: 0 0 8px 8px; }
+            .message-details { background: white; padding: 10px; border-radius: 8px; margin: 20px 0; }
             .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
             .detail-row:last-child { border-bottom: none; }
             .urgent { background: #fef2f2; border-left: 4px solid #ef4444; padding: 15px; margin: 20px 0; }
@@ -139,16 +139,16 @@ export async function sendAdminContactNotification(contactDetails: {
       </html>
     `
 
-        await transporter.sendMail({
-            from: `"Desert Safaris Morocco Contact Form" <${process.env.EMAIL_USER}>`,
-            to: process.env.EMAIL_USER,
-            subject: `New Contact Message: ${contactDetails.subject}`,
-            html: emailHtml,
-        })
+    await transporter.sendMail({
+      from: `"Desert Safaris Morocco Contact Form" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject: `New Contact Message: ${contactDetails.subject}`,
+      html: emailHtml,
+    })
 
-        return { success: true }
-    } catch (error) {
-        console.error("Admin contact email sending error:", error)
-        return { success: false, message: "Failed to send contact notification" }
-    }
+    return { success: true }
+  } catch (error) {
+    console.error("Admin contact email sending error:", error)
+    return { success: false, message: "Failed to send contact notification" }
+  }
 }

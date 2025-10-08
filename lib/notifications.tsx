@@ -110,14 +110,14 @@ export async function sendBookingConfirmationEmail(
           <title>${t.subject}</title>
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
-            .booking-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .container { max-width: 600px; margin: 0 auto; padding: 8px; }
+            .header { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 14px; text-align: center; border-radius: 8px 8px 0 0; }
+            .content { background: #f9fafb; padding: 15px; border-radius: 0 0 8px 8px; }
+            .booking-details { background: white; padding: 10px; border-radius: 8px; margin: 10px 0; }
             .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
             .detail-row:last-child { border-bottom: none; }
             .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
-            .button { display: inline-block; background: #f7eac6; color: #f9faf5; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
+            .button { display: inline-block; background: #759dd1; color: #f9faf5; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
           </style>
         </head>
         <body>
@@ -221,14 +221,14 @@ export async function sendAdminNotificationEmail(bookingDetails: {
           <title>New Booking Request - Desert Safaris Morocco</title>
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: #1f2937; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
-            .booking-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .container { max-width: 600px; margin: 0 auto; padding: 8px; }
+            .header { background: #1f2937; color: white; padding: 10px; text-align: center; border-radius: 8px 8px 0 0; }
+            .content { background: #f9fafb; padding: 14px; border-radius: 0 0 8px 8px; }
+            .booking-details { background: white; padding: 10px; border-radius: 8px; margin: 20px 0; }
             .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
             .detail-row:last-child { border-bottom: none; }
-            .urgent { background: #fef2f2; border-left: 4px solid #ef4444; padding: 15px; margin: 20px 0; }
-            .button { display: inline-block; background: #f7eac6; color: #f9faf5; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
+            .urgent { background: #fef2f2; border-left: 4px solid #ef4444; padding: 10px; margin: 20px 0; }
+            .button { display: inline-block; background: #759dd1; color: #f9faf5; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
           </style>
         </head>
         <body>

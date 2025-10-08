@@ -33,17 +33,17 @@ export function TopTrips({ packages, lang, index }: TopTripsProps) {
         },
         {
             en: {
-                title: "Desert Safaris Day Tours",
+                title: "Marrakech Day Tours",
                 subtitle: "Unforgettable desert adventures from Marrakech with great deals",
                 viewAll: "View All Desert Packages"
             },
             fr: {
-                title: "Excursions Journalières dans le Désert",
+                title: "Excursions d'une journée à Marrakech",
                 subtitle: "Aventures inoubliables depuis Marrakech avec les meilleures offres",
                 viewAll: "Voir Tous les Forfaits Désert"
             },
             es: {
-                title: "Excursiones de Un Día al Desierto",
+                title: "Excursiones de un día a Marrakech",
                 subtitle: "Aventuras inolvidables desde Marrakech con las mejores ofertas",
                 viewAll: "Ver Todos los Paquetes del Desierto"
             }
