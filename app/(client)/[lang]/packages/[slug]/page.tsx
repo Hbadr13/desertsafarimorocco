@@ -5,7 +5,7 @@ import { PackageDetailsPage } from "@/components/PackageDetailsPage"
 import { notFound } from "next/navigation"
 
 const LANGS = ["en", "fr", "es"]
-const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris morocco"
+const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris Marrakech"
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es", slug: string } }) {
@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
         const title = `${pkg.title?.[lang] || pkg.title?.en || ""} | ${WEBSITE_NAME}`
         const description = pkg.shortDescription?.[lang] || pkg.shortDescription?.en || pkg.description?.[lang] || pkg.description?.en || ""
         const tourTitle = tour?.title?.[lang] || tour?.title?.en || ""
+        const image = pkg.images?.[0] || `${SITE_URL}/default-package.jpg`
 
         return {
             title,
@@ -36,13 +37,13 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
             openGraph: {
                 title,
                 description: description.slice(0, 160) + '...',
-                type: 'website',
-                locale: lang,
+                type: 'article',
+                locale: lang === "fr" ? "fr_FR" : lang === "es" ? "es_ES" : "en_US",
                 siteName: WEBSITE_NAME,
                 url: `${SITE_URL}/${lang}/packages/${slug}`,
                 images: [
                     {
-                        url: pkg.images?.[0] || `${SITE_URL}/default-package.jpg`,
+                        url: image,
                         width: 1200,
                         height: 630,
                         alt: pkg.title?.[lang] || pkg.title?.en || "",
@@ -56,6 +57,14 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
                     'fr': `${SITE_URL}/fr/packages/${slug}`,
                     'es': `${SITE_URL}/es/packages/${slug}`,
                 },
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title,
+                description: description.slice(0, 160) + '...',
+                images: [image],
+                creator: '@YourTwitterHandle', // اختياري
+                site: '@YourWebsiteName' // اختياري
             },
             robots: {
                 index: true,

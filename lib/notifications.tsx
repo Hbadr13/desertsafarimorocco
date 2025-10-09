@@ -31,7 +31,7 @@ export async function sendBookingConfirmationEmail(
       en: {
         subject: `Booking Confirmation - ${bookingDetails.packageTitle}`,
         greeting: `Hello ${bookingDetails.name},`,
-        thankYou: "Thank you for choosing Desert Safaris Morocco!",
+        thankYou: "Thank you for choosing Desert safaris Marrakech!",
         confirmation: "We're excited to confirm that we've received your booking request. Our team will review your request and contact you within 24 hours to finalize the details.",
         bookingDetails: "Booking Details",
         package: "Package",
@@ -49,12 +49,12 @@ export async function sendBookingConfirmationEmail(
         ],
         visitWebsite: "Visit Our Website",
         questions: "If you have any questions, feel free to contact us",
-        copyright: "© 2026 Desert Safaris Morocco. All rights reserved."
+        copyright: "© 2026 Desert safaris Marrakech. All rights reserved."
       },
       fr: {
         subject: `Confirmation de Réservation - ${bookingDetails.packageTitle}`,
         greeting: `Bonjour ${bookingDetails.name},`,
-        thankYou: "Merci d'avoir choisi Desert Safaris Morocco !",
+        thankYou: "Merci d'avoir choisi Desert safaris Marrakech !",
         confirmation: "Nous sommes ravis de confirmer que nous avons bien reçu votre demande de réservation. Notre équipe examinera votre demande et vous contactera dans les 24 heures pour finaliser les détails.",
         bookingDetails: "Détails de la Réservation",
         package: "Forfait",
@@ -72,12 +72,12 @@ export async function sendBookingConfirmationEmail(
         ],
         visitWebsite: "Visiter Notre Site Web",
         questions: "Si vous avez des questions, n'hésitez pas à nous contacter",
-        copyright: "© 2026 Desert Safaris Morocco. Tous droits réservés."
+        copyright: "© 2026 Desert safaris Marrakech. Tous droits réservés."
       },
       es: {
         subject: `Confirmación de Reserva - ${bookingDetails.packageTitle}`,
         greeting: `Hola ${bookingDetails.name},`,
-        thankYou: "¡Gracias por elegir Desert Safaris Morocco!",
+        thankYou: "¡Gracias por elegir Desert safaris Marrakech!",
         confirmation: "Nos complace confirmar que hemos recibido su solicitud de reserva. Nuestro equipo revisará su solicitud y se comunicará con usted dentro de las 24 horas para finalizar los detalles.",
         bookingDetails: "Detalles de la Reserva",
         package: "Paquete",
@@ -95,7 +95,7 @@ export async function sendBookingConfirmationEmail(
         ],
         visitWebsite: "Visitar Nuestro Sitio Web",
         questions: "Si tiene alguna pregunta, no dude en contactarnos",
-        copyright: "© 2026 Desert Safaris Morocco. Todos los derechos reservados."
+        copyright: "© 2026 Desert safaris Marrakech. Todos los derechos reservados."
       }
     }
 
@@ -184,7 +184,7 @@ export async function sendBookingConfirmationEmail(
     `
 
     await transporter.sendMail({
-      from: `"Desert Safaris Morocco" <${process.env.EMAIL_USER}>`,
+      from: `"Desert safaris Marrakech" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: t.subject,
       html: emailHtml,
@@ -218,7 +218,7 @@ export async function sendAdminNotificationEmail(bookingDetails: {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>New Booking Request - Desert Safaris Morocco</title>
+          <title>New Booking Request - Desert safaris Marrakech</title>
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 8px; }
@@ -235,7 +235,7 @@ export async function sendAdminNotificationEmail(bookingDetails: {
           <div class="container">
             <div class="header">
               <h1>🔔 New Booking Request</h1>
-              <p>Desert Safaris Morocco Admin</p>
+              <p>Desert safaris Marrakech Admin</p>
             </div>
             
             <div class="content">
@@ -311,7 +311,7 @@ export async function sendAdminNotificationEmail(bookingDetails: {
     `
 
     await transporter.sendMail({
-      from: `"Desert Safaris Morocco System" <${process.env.EMAIL_USER}>`,
+      from: `"Desert safaris Marrakech System" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
       subject: `New Booking Request - ${bookingDetails.packageTitle}`,
       html: emailHtml,

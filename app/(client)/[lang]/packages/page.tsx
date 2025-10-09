@@ -169,7 +169,8 @@ export const packagesTranslations: Record<'en' | 'fr' | 'es', {
     }
 };
 const LANGS = ["en", "fr", "es"]
-const WEBSITE_NAME = process.env.NEXT_PUBLIC_SITE_URL
+const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris Marrakech"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 
 
@@ -181,30 +182,36 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
     return {
         title: `${t.hero.title} | ${WEBSITE_NAME}`,
         description: t.hero.subtitle,
-        keywords: `travel, packages, tours, vacation, ${lang}`,
+        keywords: `morocco travel packages, desert tours, sahara trips, holidays, ${lang}`,
         openGraph: {
             title: t.hero.title,
             description: t.hero.subtitle,
             type: 'website',
-            locale: lang,
+            url: `${SITE_URL}/${lang}/packages`,
+            locale: lang === "fr" ? "fr_FR" : lang === "es" ? "es_ES" : "en_US",
             siteName: WEBSITE_NAME,
-            url: `${WEBSITE_NAME}/${lang}/packages`,
-
+            canonical: `${SITE_URL}/${lang}/packages`,
             images: [
                 {
-                    url: `${WEBSITE_NAME}/TravelPackages-bg.png`,
+                    url: `${SITE_URL}/TravelPackages-bg.png`,
                     width: 1200,
                     height: 630,
                     alt: 'Travel packages',
                 },
             ],
         },
+        twitter: {
+            card: 'summary_large_image',
+            title: t.hero.title,
+            description: t.hero.subtitle,
+            images: [`${SITE_URL}/TravelPackages-bg.png`],
+        },
         alternates: {
-            canonical: `${WEBSITE_NAME}/${lang}/packages`,
+            canonical: `${SITE_URL}/${lang}/packages`,
             languages: {
-                'en': `${WEBSITE_NAME}/en/packages`,
-                'fr': `${WEBSITE_NAME}/fr/packages`,
-                'es': `${WEBSITE_NAME}/es/packages`,
+                'en': `${SITE_URL}/en/packages`,
+                'fr': `${SITE_URL}/fr/packages`,
+                'es': `${SITE_URL}/es/packages`,
             },
         },
         robots: {
@@ -224,7 +231,7 @@ async function getPackages(lang: "en" | "fr" | "es") {
     try {
         const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
         const res = await fetch(`${baseUrl}/api/client/packages`, {
-            cache: 'no-store',
+            next: { revalidate: 3600 },
             headers: {
                 'Content-Type': 'application/json',
             }

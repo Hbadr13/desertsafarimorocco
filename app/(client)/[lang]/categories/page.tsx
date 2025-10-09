@@ -138,13 +138,15 @@ const categoriesTranslations: Record<'en' | 'fr' | 'es', {
     }
 };
 const LANGS = ["en", "fr", "es"]
-const WEBSITE_NAME = process.env.NEXT_PUBLIC_SITE_URL
+const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris Marrakech"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es" } }) {
     const { lang } = params
+    if (!LANGS.includes(lang)) return null
+
     const t = categoriesTranslations[lang]
-    if (!LANGS.includes(lang))
-        return null
+
     return {
         title: `${t.hero.title} | ${WEBSITE_NAME}`,
         description: t.hero.subtitle,
@@ -152,26 +154,32 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
         openGraph: {
             title: t.hero.title,
             description: t.hero.subtitle,
-            type: 'website',
+            type: "website",
             locale: lang,
             siteName: WEBSITE_NAME,
-            url: `${WEBSITE_NAME}/${lang}/categories`,
-
+            url: `${SITE_URL}/${lang}/categories`,
             images: [
                 {
-                    url: `${WEBSITE_NAME}/categories-og.jpg`,
+                    url: `${SITE_URL}/categories-og.jpg`,
                     width: 1200,
                     height: 630,
-                    alt: 'Travel Categories',
+                    alt: "Travel Categories",
                 },
             ],
         },
+        twitter: {
+            card: "summary_large_image",
+            title: `${t.hero.title} | ${WEBSITE_NAME}`,
+            description: t.hero.subtitle,
+            site: "@YourTwitterHandle",
+            images: [`${SITE_URL}/categories-og.jpg`],
+        },
         alternates: {
-            canonical: `${WEBSITE_NAME}/${lang}/categories`,
+            canonical: `${SITE_URL}/${lang}/categories`,
             languages: {
-                'en': `${WEBSITE_NAME}/en/categories`,
-                'fr': `${WEBSITE_NAME}/fr/categories`,
-                'es': `${WEBSITE_NAME}/es/categories`,
+                en: `${SITE_URL}/en/categories`,
+                fr: `${SITE_URL}/fr/categories`,
+                es: `${SITE_URL}/es/categories`,
             },
         },
         robots: {
@@ -180,9 +188,9 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
             googleBot: {
                 index: true,
                 follow: true,
-                'max-video-preview': -1,
-                'max-image-preview': 'large',
-                'max-snippet': -1,
+                "max-video-preview": -1,
+                "max-image-preview": "large",
+                "max-snippet": -1,
             },
         },
     }
@@ -198,7 +206,7 @@ async function getCategories(lang: "en" | "fr" | "es") {
     try {
         const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
         const res = await fetch(`${baseUrl}/api/client/categories`, {
-            cache: 'no-store',
+            next: { revalidate: 3600 },
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -286,23 +294,21 @@ export default async function CategoriesPage({ params }: { params: { lang: "en" 
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": t.hero.title,
-        "description": t.hero.subtitle,
-        "numberOfItems": categories.length,
-        "itemListElement": categories.map((category: Category, index: number) => ({
+        name: t.hero.title,
+        description: t.hero.subtitle,
+        numberOfItems: categories.length,
+        url: `${SITE_URL}/${lang}/categories`,
+        itemListElement: categories.map((category: Category, index: number) => ({
             "@type": "ListItem",
-            "position": index + 1,
-            "item": {
+            position: index + 1,
+            item: {
                 "@type": "TouristDestination",
-                "name": category.title,
-                "description": category.shortDescription,
-                "url": `https://yourdomain.com/${lang}/categories/${category.slug}`,
-                "containsPlace": {
-                    "@type": "Place",
-                    "name": "Morocco"
-                }
-            }
-        }))
+                name: category.title,
+                description: category.shortDescription,
+                url: `${SITE_URL}/${lang}/categories/${category.slug}`,
+                containsPlace: { "@type": "Place", name: "Morocco" },
+            },
+        })),
     }
 
     return (

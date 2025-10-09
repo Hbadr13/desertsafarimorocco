@@ -35,8 +35,8 @@ interface Translation {
 
 const translations: Record<Language, Translation> = {
     en: {
-        aboutTitle: "About Desert Safaris Morocco",
-        aboutDescription: "Desert Safaris Morocco is specialized in showing you the authentic Morocco, deeply rooted in culture and history. Our experienced local guides provide travelers the chance to experience Morocco like locals.",
+        aboutTitle: "About Desert safaris Marrakech",
+        aboutDescription: "Desert safaris Marrakech is specialized in showing you the authentic Morocco, deeply rooted in culture and history. Our experienced local guides provide travelers the chance to experience Morocco like locals.",
         locationTitle: "Our Location",
         locationDescription: "Our main base is located in Marrakech, and we operate desert tours across Merzouga, Zagora, Mhamid, and Chegaga.",
         galleryTitle: "Gallery",
@@ -52,8 +52,8 @@ const translations: Record<Language, Translation> = {
         service4: "Custom Private Tours"
     },
     fr: {
-        aboutTitle: "À propos de Desert Safaris Morocco",
-        aboutDescription: "Desert Safaris Morocco est spécialisé dans la découverte du Maroc authentique, profondément enraciné dans la culture et l'histoire. Nos guides locaux offrent une expérience immersive.",
+        aboutTitle: "À propos de Desert safaris Marrakech",
+        aboutDescription: "Desert safaris Marrakech est spécialisé dans la découverte du Maroc authentique, profondément enraciné dans la culture et l'histoire. Nos guides locaux offrent une expérience immersive.",
         locationTitle: "Notre emplacement",
         locationDescription: "Notre base principale est située à Marrakech, et nous opérons des tours dans le désert à Merzouga, Zagora, Mhamid et Chegaga.",
         galleryTitle: "Galerie",
@@ -69,8 +69,8 @@ const translations: Record<Language, Translation> = {
         service4: "Tours Privés Personnalisés"
     },
     es: {
-        aboutTitle: "Acerca de Desert Safaris Morocco",
-        aboutDescription: "Desert Safaris Morocco está especializado en mostrarte el Marruecos auténtico, profundamente arraigado en la cultura y la historia. Nuestros guías locales brindan a los viajeros la oportunidad de experimentar Marruecos como locales.",
+        aboutTitle: "Acerca de Desert safaris Marrakech",
+        aboutDescription: "Desert safaris Marrakech está especializado en mostrarte el Marruecos auténtico, profundamente arraigado en la cultura y la historia. Nuestros guías locales brindan a los viajeros la oportunidad de experimentar Marruecos como locales.",
         locationTitle: "Nuestra ubicación",
         locationDescription: "Nuestra base principal está ubicada en Marrakech, y operamos tours por el desierto en Merzouga, Zagora, Mhamid y Chegaga.",
         galleryTitle: "Galería",
@@ -111,7 +111,7 @@ export default function AboutPage({ params }: { params: { lang: Language } }) {
 
     const contactInfo = {
         phone: process.env.NEXT_PUBLIC_PHONE_NUMBER || "+12395375059",
-        email: process.env.NEXT_PUBLIC_EMAIL || "desertsafarimorocco@gmail.com"
+        email: process.env.NEXT_PUBLIC_EMAIL || "desertsafarismorocco@gmail.com"
     };
 
     useEffect(() => {
@@ -168,7 +168,7 @@ export default function AboutPage({ params }: { params: { lang: Language } }) {
                 <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
                     <div className="inline-flex items-center px-4 py-2 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-300/30 mb-6">
                         <span className="w-2 h-2 bg-amber-400 rounded-full mr-2 animate-pulse"></span>
-                        <span className="text-amber-100 text-sm font-medium">Desert Safaris Morocco</span>
+                        <span className="text-amber-100 text-sm font-medium">Desert safaris Marrakech</span>
                     </div>
 
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">

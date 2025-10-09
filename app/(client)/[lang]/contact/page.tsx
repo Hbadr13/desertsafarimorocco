@@ -3,6 +3,7 @@
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Language = "en" | "fr" | "es";
 
@@ -312,17 +313,20 @@ export default function ContactPage({ params }: { params: { lang: Language } }) 
                             <h3 className="text-xl font-bold mb-4">{t.followUs}</h3>
                             <div className="flex space-x-4">
                                 {[
-                                    { name: 'Facebook', icon: <Facebook className="w-5 h-5" />, color: 'hover:bg-amber-600' },
-                                    { name: 'Instagram', icon: <Instagram className="w-5 h-5" />, color: 'hover:bg-pink-600' },
-                                    { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, color: 'hover:bg-amber-400' },
-                                    { name: 'YouTube', icon: <Youtube className="w-5 h-5" />, color: 'hover:bg-red-600' }
+                                    { name: 'Facebook', link: 'https://www.facebook.com/share/19itjY8Mis/?mibextid=wwXIfr', icon: <Facebook className="w-5 h-5" />, color: 'hover:bg-amber-600' },
+                                    { name: 'Instagram', link: '#', icon: <Instagram className="w-5 h-5" />, color: 'hover:bg-pink-600' },
+                                    { name: 'Twitter', link: '#', icon: <Twitter className="w-5 h-5" />, color: 'hover:bg-amber-400' },
+                                    { name: 'YouTube', link: '#', icon: <Youtube className="w-5 h-5" />, color: 'hover:bg-red-600' }
                                 ].map((social, index) => (
-                                    <button
+                                    <Link
+                                        href={social.link}
                                         key={index}
+                                        target={social.link.startsWith('http') ? "_blank" : undefined}
+                                        rel="noopener noreferrer"
                                         className={`w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-white transition-all duration-300 hover:bg-white/30 hover:scale-110 backdrop-blur-sm`}
                                     >
                                         {social.icon}
-                                    </button>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

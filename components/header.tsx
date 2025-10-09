@@ -279,7 +279,7 @@ export default function Header({ categories, lang }: HeaderProps) {
                     <MapPin className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-lg font-bold text-gray-900">Desert Safaris Morocco</span>
+                    <span className="text-lg font-bold text-gray-900">Desert safaris Marrakech</span>
                   </div>
                 </div>
                 <Button

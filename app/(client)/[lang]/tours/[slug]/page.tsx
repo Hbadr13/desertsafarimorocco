@@ -202,7 +202,7 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
     } catch (error) {
         console.error('Error generating metadata:', error)
         return {
-            title: "Tour | Desert Safaris Morocco",
+            title: "Tour | Desert safaris Marrakech",
             description: "Discover amazing tours and packages"
         }
     }

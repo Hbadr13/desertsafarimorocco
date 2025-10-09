@@ -62,7 +62,7 @@ export async function sendAdminContactNotification(contactDetails: {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>New Contact Message - Desert Safaris Morocco</title>
+          <title>New Contact Message - Desert safaris Marrakech</title>
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 10px; }
@@ -80,7 +80,7 @@ export async function sendAdminContactNotification(contactDetails: {
           <div class="container">
             <div class="header">
               <h1>📧 New Contact Message</h1>
-              <p>Desert Safaris Morocco Admin</p>
+              <p>Desert safaris Marrakech Admin</p>
             </div>
             
             <div class="content">
@@ -131,7 +131,7 @@ export async function sendAdminContactNotification(contactDetails: {
               </ul>
               
               <p style="color: #6b7280; font-size: 14px; text-align: center; margin-top: 30px;">
-                This message was sent from the contact form on Desert Safaris Morocco website.
+                This message was sent from the contact form on Desert safaris Marrakech website.
               </p>
             </div>
           </div>
@@ -140,7 +140,7 @@ export async function sendAdminContactNotification(contactDetails: {
     `
 
     await transporter.sendMail({
-      from: `"Desert Safaris Morocco Contact Form" <${process.env.EMAIL_USER}>`,
+      from: `"Desert safaris Marrakech Contact Form" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
       subject: `New Contact Message: ${contactDetails.subject}`,
       html: emailHtml,

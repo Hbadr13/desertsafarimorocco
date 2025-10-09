@@ -9,7 +9,7 @@ const poppins = Poppins({
 })
 
 export const metadata = {
-  title: 'Desert Safaris Morocco | Luxury Desert Tours & Adventures',
+  title: 'Desert safari Marrakech | camel ride & desert overnight in Marrakech',
   description: "Experience the magic of Moroccan deserts with our luxury tours. Camel treks, desert camps, and unforgettable adventures in the Sahara.",
   icons: {
     icon: ['/favicon.ico'],

@@ -11,7 +11,7 @@ import GallerySection from "@/components/GallerySection"
 import DesertServices from "@/components/DesertServices";
 
 const LANGS = ["en", "fr", "es"]
-const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris morocco"
+const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris Marrakech"
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es" } }) {
@@ -19,15 +19,15 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
 
     const translations = {
         en: {
-            title: "Desert Safaris Morocco | Luxury Desert Tours & Adventures",
+            title: "Desert safari Marrakech | camel ride & desert overnight in Marrakech",
             description: "Experience the magic of Moroccan deserts with our luxury tours. Camel treks, desert camps, and unforgettable adventures in the Sahara."
         },
         fr: {
-            title: "Safaris Désert Maroc | Circuits Luxe et Aventures dans le Désert",
+            title: "Safari dans le désert de Marrakech | balade à dos de chameau et nuit dans le désert à Marrakech",
             description: "Vivez la magie des déserts marocains avec nos circuits de luxe. Randonnées à dos de chameau, camps dans le désert et aventures inoubliables au Sahara."
         },
         es: {
-            title: "Safaris del Desierto Marruecos | Tours de Lujo y Aventuras",
+            title: "Safari por el desierto de Marrakech | Paseo en camello y noche en el desierto de Marrakech",
             description: "Vive la magia de los desiertos marroquíes con nuestros tours de lujo. Paseos en camello, campamentos en el desierto y aventuras inolvidables en el Sahara."
         }
     }
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
                     url: `${SITE_URL}/og-home.jpg`,
                     width: 1200,
                     height: 630,
-                    alt: 'Desert Safaris Morocco',
+                    alt: 'Desert safaris Marrakech',
                 },
             ],
         },

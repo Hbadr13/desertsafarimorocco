@@ -23,7 +23,7 @@ export function Footer({ categories, lang }: FooterProps) {
       tourCategories: "Tour Categories",
       allCategories: "All Categories",
       contactUs: "Contact Us",
-      copyright: "© 2026 Desert Safaris Morocco. All rights reserved.",
+      copyright: "© 2026 Desert safaris Marrakech. All rights reserved.",
       privacyPolicy: "Privacy Policy",
       termsOfService: "Terms of Service",
       cookiePolicy: "Cookie Policy"
@@ -39,7 +39,7 @@ export function Footer({ categories, lang }: FooterProps) {
       tourCategories: "Catégories de Circuits",
       allCategories: "Toutes les Catégories",
       contactUs: "Contactez-Nous",
-      copyright: "© 2026 Desert Safaris Morocco. Tous droits réservés.",
+      copyright: "© 2026 Desert safaris Marrakech. Tous droits réservés.",
       privacyPolicy: "Politique de Confidentialité",
       termsOfService: "Conditions d'Utilisation",
       cookiePolicy: "Politique des Cookies"
@@ -55,7 +55,7 @@ export function Footer({ categories, lang }: FooterProps) {
       tourCategories: "Categorías de Tours",
       allCategories: "Todas las Categorías",
       contactUs: "Contáctenos",
-      copyright: "© 2026 Desert Safaris Morocco. Todos los derechos reservados.",
+      copyright: "© 2026 Desert safaris Marrakech. Todos los derechos reservados.",
       privacyPolicy: "Política de Privacidad",
       termsOfService: "Términos de Servicio",
       cookiePolicy: "Política de Cookies"
@@ -63,7 +63,7 @@ export function Footer({ categories, lang }: FooterProps) {
   }
 
   const t = translations[lang]
-  const email = process.env.NEXT_PUBLIC_EMAIL || "desertsafarimorocco@gmail.com"
+  const email = process.env.NEXT_PUBLIC_EMAIL || "desertsafarismorocco@gmail.com"
   const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER || "+12395375059";
 
   const quickLinks = [
@@ -104,9 +104,9 @@ export function Footer({ categories, lang }: FooterProps) {
               {t.companyDescription}
             </p>
             <div className="flex gap-4">
-              <div className="p-2 bg-amber-500 rounded-full cursor-pointer hover:bg-amber-600 transition-colors">
+              <Link href={'https://www.facebook.com/share/19itjY8Mis/?mibextid=wwXIfr'} target="_blank" className="p-2 bg-amber-500 rounded-full cursor-pointer hover:bg-amber-600 transition-colors">
                 <Facebook className="h-5 w-5" />
-              </div>
+              </Link>
               <div className="p-2 bg-pink-500 rounded-full cursor-pointer hover:bg-pink-600 transition-colors">
                 <Instagram className="h-5 w-5" />
               </div>

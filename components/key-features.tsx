@@ -5,7 +5,7 @@ import { Swiper } from "./ui/swiper"
 export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
   const translations = {
     en: {
-      title: "Why Desert Safaris Morocco",
+      title: "Why Desert safaris Marrakech",
       subtitle: "We're committed to providing exceptional experiences with unmatched service",
       features: [
         {
@@ -51,7 +51,7 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
       ]
     },
     fr: {
-      title: "Pourquoi Desert Safaris Morocco",
+      title: "Pourquoi Desert safaris Marrakech",
       subtitle: "Nous nous engageons à offrir des expériences exceptionnelles avec un service incomparable",
       features: [
         {
@@ -97,7 +97,7 @@ export function KeyFeatures({ lang }: { lang: 'en' | 'es' | 'fr' }) {
       ]
     },
     es: {
-      title: "Por Qué Desert Safaris Morocco",
+      title: "Por Qué Desert safaris Marrakech",
       subtitle: "Nos comprometemos a proporcionar experiencias excepcionales con un servicio inigualable",
       features: [
         {

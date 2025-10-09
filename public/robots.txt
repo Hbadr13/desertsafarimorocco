@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /app/desert26safariadmin
+
+Sitemap: https://desertsafarismarrakech.com/sitemap.xml

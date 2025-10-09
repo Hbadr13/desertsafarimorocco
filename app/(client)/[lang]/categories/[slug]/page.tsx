@@ -124,7 +124,7 @@ const categoryDetailTranslations: Record<'en' | 'fr' | 'es', {
 };
 
 const LANGS = ["en", "fr", "es"]
-const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris morocco"
+const WEBSITE_NAME = process.env.NEXT_PUBLIC_WEBSITE_NAME || "Desert safaris Marrakech"
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 export async function generateMetadata({ params }: { params: { lang: "en" | "fr" | "es", slug: string } }) {
@@ -172,6 +172,12 @@ export async function generateMetadata({ params }: { params: { lang: "en" | "fr"
                     'fr': `${SITE_URL}/fr/categories/${slug}`,
                     'es': `${SITE_URL}/es/categories/${slug}`,
                 },
+            },
+            twitter: {
+                card: "summary_large_image",
+                title,
+                description: description.slice(0, 160) + "...",
+                images: [categoryData.images?.[0] || `${SITE_URL}/default-og.jpg`],
             },
             robots: {
                 index: true,
